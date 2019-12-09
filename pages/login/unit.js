@@ -44,7 +44,7 @@ Page({
               wxRequest.getUserInfo().then(res => {
                 console.log('res.data: ----', res.data)
                 this.setData({
-                  avatarUrl:res.data.data.avatarUrl
+                  nickName:res.data.data.nickName
                 });
               });
             } else {
@@ -131,22 +131,31 @@ Page({
     });
   },
   //提交信息
-  submit: function(){
-    let that = this;
-    wxRequest.improvement(
+  async submit() {
+    await wxRequest.getUserInfo().then(res => {
+      console.log('res.data: -->',res.data)
+      this.setData({
+        avatarUrl: res.data.data.avatarUrl,
+        gender: res.data.data.gender
+      });
+
+    });
+    await wxRequest.improvement(
         this.data.name1,
         this.data.name2,
         this.data.position,
-        wx.getStorageSync('userInformation').avatarUrl,
-        wx.getStorageSync('userInformation').gender
+        this.data.avatarUrl,
+        this.data.gender
+        // wx.getStorageSync('userInformation').avatarUrl,
+        // wx.getStorageSync('userInformation').gender
     ).then((res) => {
       if (res.data.code === 20000) {
         wx.setStorageSync('personalInfo', {
           realName: this.data.name1,
           company: this.data.name2,
           position: this.data.position,
-          avatarUrl: wx.getStorageSync('userInformation').avatarUrl,
-          gender: wx.getStorageSync('userInformation').gender
+          avatarUrl: this.data.avatarUrl,
+          gender: this.data.gender
         });
         wxRequest.relogin().then((res) => {
           if (res.data.code === 20000) {
@@ -228,11 +237,13 @@ Page({
         if (res.code) {
           wxRequest.login(res.code).then(r => {
             console.log('r.data: ', r.data)
-            this.setData({
-              nickName: r.data.data.user.nickName,
-              phoneNumber: r.data.data.user.phoneNumber,
-              realName: r.data.data.user.realName
-            })
+            if (r.data.data) {
+              this.setData({
+                nickName: r.data.data.user.nickName,
+                phoneNumber: r.data.data.user.phoneNumber,
+                realName: r.data.data.user.realName
+              });
+            }
           });
         }
       }

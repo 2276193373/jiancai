@@ -137,6 +137,9 @@ Page({
     });
     this.reSortBySupply();
     let that = this;
+    wxRequest.getUserInfo().then(res => {
+      console.log('res.data: 000000', res.data);
+    });
     wxRequest.relogin().then((res) => {
       if (res.data.code === 20000) {
         let info = res.data.data.user;
