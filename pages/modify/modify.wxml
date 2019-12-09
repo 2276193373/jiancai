@@ -1,0 +1,58 @@
+<!--pages/modify/modify.wxml-->
+<view class="container" style="height:{{winHeight*2+40}}rpx">
+    <view class="info-part">
+        <text class="name">头像</text>
+        <view class="gt" bindtap="modifyAvatar">
+            <image class="avatar" src="{{avatarUrl}}"></image>
+        </view>
+    </view>
+    <view class="info-part" bindtap="gotoName">
+        <text>姓名</text>
+        <view class="name-arrow-container">
+            <text>{{realName}}</text>
+            <view class="image-wrapper">
+                <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+            </view>
+        </view>
+    </view>
+    <view class="info-part" bindtap="">
+        <text>性别</text>
+        <picker class="picker-gender" bindchange="bindPickerChange" value="{{gender-1}}" range="{{sex}}">
+            <view class="name-arrow-container">
+                <text>{{gender==1?'男':'女'}}</text>
+                <view class="image-wrapper">
+                    <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+                </view>
+            </view>
+        </picker>
+
+    </view>
+
+    <view class="info-part border-bottom" bindtap="gotoPhone">
+        <text>电话</text>
+        <view class="name-arrow-container">
+            <text>{{phoneNumber}}</text>
+            <view class="image-wrapper">
+                <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+            </view>
+        </view>
+    </view>
+    <view class="info-part" bindtap="gotoCompany">
+        <text>公司名称</text>
+        <view class="name-arrow-container">
+        <text decode>{{company}}</text>
+            <view class="image-wrapper">
+                <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+            </view>
+        </view>
+    </view>
+    <view class="info-part" bindtap="gotoPosition">
+        <text>职位</text>
+        <view class="name-arrow-container">
+            <text decode>{{position}}</text>
+            <view class="image-wrapper">
+                <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="278fead7-707c-42db-9486-bf362571f18f" name="Default Changelist" comment="Initial Commit">
+      <change afterPath="$PROJECT_DIR$/components/dialog/dialog.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/dialog/dialog.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/dialog/dialog.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/dialog/dialog.wxss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/company/company.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/company/company.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/company/company.wxss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/name/name.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/name/name.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/name/name.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/name/name.wxss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/phone/phone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/position/position.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/position/position.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/position/position.wxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/submodify/position/position.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CustomNav/CustomNav.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/components/CustomNav/CustomNav.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CustomNav/CustomNav.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/components/CustomNav/CustomNav.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login/phone_auth/phone_auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/phone_auth/phone_auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login/wx_auth/wx_auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/wx_auth/wx_auth.js" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/pages/me/me.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/me/me.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test/test.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test/test.wxml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/pages/login/wx_auth/wx_auth.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/wx_auth/wx_auth.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/me/me.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/me/me.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/me/me.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/me/me.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/modify/modify.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/modify/modify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/modify/modify.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/modify/modify.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/modify/modify.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/pages/modify/modify.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/publish/publish.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/publish/publish.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/publish/publish.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/publish/publish.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/publish/publish.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/pages/publish/publish.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/submodify/submodify.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/submodify/phone/phone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/submodify/submodify.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages/submodify/company/company.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/submodify/submodify.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/submodify/phone/phone.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/submodify/submodify.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/pages/submodify/phone/phone.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test2/test2.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test2/test2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test2/test2.json" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test2/test2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test2/test2.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test2/test2.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/test2/test2.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test2/test2.wxss" afterDir="false" />
+>>>>>>> work
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="chm &lt;2276193373@qq.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1SzfYchvnYqPdrPyqErsuw1bVNt" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="ignore.virus.scanning.warn.message" value="true" />
+<<<<<<< HEAD
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pages/submodify" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\26935\Documents\miniprogram-3\pages\submodify\phone" />
+>>>>>>> work
+      <recent name="C:\Users\chm\WeChatProjects\miniprogram-3\pages\login\wx_auth" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\26935\Documents\miniprogram-3\pages\submodify" />
+      <recent name="C:\Users\26935\Documents\miniprogram-3\pages" />
+      <recent name="C:\Users\chm\WeChatProjects\miniprogram-3\imgs" />
+      <recent name="C:\Users\chm\WeChatProjects\miniprogram-3\components" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="278fead7-707c-42db-9486-bf362571f18f" name="Default Changelist" comment="" />
+      <created>1572571393420</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572571393420</updated>
+      <workItem from="1572571395934" duration="30442000" />
+      <workItem from="1572753709340" duration="44414000" />
+      <workItem from="1572878601622" duration="12333000" />
+      <workItem from="1572933776207" duration="247000" />
+      <workItem from="1572934042756" duration="2874000" />
+      <workItem from="1572936931236" duration="8924000" />
+      <workItem from="1572945990370" duration="32883000" />
+<<<<<<< HEAD
+      <workItem from="1573089151979" duration="79267000" />
+      <workItem from="1573609165253" duration="515000" />
+=======
+      <workItem from="1573089151979" duration="80135000" />
+      <workItem from="1573458252975" duration="43726000" />
+>>>>>>> work
+    </task>
+    <task id="LOCAL-00001" summary="Initial Commit">
+      <created>1573029687863</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1573029687864</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Initial Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
+  </component>
+</project>

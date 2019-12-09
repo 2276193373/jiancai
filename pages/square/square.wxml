@@ -1,0 +1,115 @@
+<!--pages/square/square.wxml-->
+<wxs module="distance">
+    var distance = function(distance) {
+        return Number(distance/1000).toFixed(2);
+    }
+    module.exports.getDistance = distance;
+</wxs>
+<!--发布成功界面-->
+<view class="published_container_wrap" wx:if="{{pop_published}}">
+    <view class="published_container" style="height: {{(winHeight)*2}}rpx;">
+        <!--    遮罩层     -->
+        <view class="mask" catchtouchmove="preventTouchMove">
+        </view>
+        <!--    弹出框  -->
+        <view class="pop-window" catchtouchmove="false">
+            <view class="top">
+                <image src="/imgs/published.png"></image>
+            </view>
+            <text>发布成功啦</text>
+            <text>快将的建材供求发给你的好友吧！</text>
+            <button class="share" bindtap="share" open-type="share">分享到微信群</button>
+            <view class="close" bindtap="close"></view>
+        </view>
+    </view>
+</view>
+
+<!--主体部分-->
+<view class="container">
+    <view class="navbar-container">
+        <view class="navbar">
+            <view bindtap="activeNav" data-index="{{index}}" class="{{index===currentIndex?'active':''}}" wx:for="{{values}}" wx:key="{{index}}">
+                {{item.value}}
+            </view>
+        </view>
+        <view class="split-line"></view>
+        <!--    排序（按时间排序，按距离排序）-->
+        <view class="sort-container">
+            <view class="sort-bar" bindtap="btn">
+                <image src="/imgs/sort.png"></image>
+                {{sortWay}}
+            </view>
+        </view>
+        <!--    遮罩层     -->
+        <view class="mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}" style="height:{{winHeight}}px"></view>
+        <!-- 弹出层 -->
+        <view class="modalDlg" wx:if="{{showModal}}">
+            <view class="triangle"></view>
+            <view bindtap="sortByDistance" class="ok {{sortType==='sortByDistance'?'active-sort':''}}">按距离排序</view>
+            <view class="sort-line"></view>
+            <view bindtap="sortByTime" class="ok {{sortType==='sortByTime'?'active-sort':''}}">按时间排序</view>
+        </view>
+    </view>
+    <!--    列表部分  ---------->
+    <view class="body-container" wx:for="{{productionInfo}}" wx:key="{{index}}" wx:if="{{productionInfo.length}}">
+<!--        只看供应 -->
+        <view class="body-part"  bindtap="gotoDetail" data-index="{{index}}">
+            <view class="block-shadow">
+                <view class="type">{{item.type==="supply"?"供":"求"}}</view>
+                <view class="avatar-bar">
+                    <image src="{{item.creatorAvatar}}"></image>
+                    <view>
+                        <text class="creatorNickname">{{item.creatorNickname}}</text>
+                        <text class="company">{{item.company}}</text>
+                    </view>
+                    <!--发布时间-->
+                    <text class="publish-time" wx:if="{{(timestamp-productionInfo[index].createdAt)/1000/60/60/24|Int}}">{{(timestamp-productionInfo[index].createdAt)/1000/60/60/24|Int}}天前发布</text>
+                    <text class="publish-time" wx:elif="{{(timestamp-productionInfo[index].createdAt)/1000/60/60|Int}}">{{(timestamp-productionInfo[index].createdAt)/1000/60/60|Int}}小时前发布</text>
+                    <text class="publish-time" wx:elif="{{(timestamp-productionInfo[index].createdAt)/1000/60|Int}}">{{(timestamp-productionInfo[index].createdAt)/1000/60|Int}}分钟前发布</text>
+                    <text class="publish-time" wx:else="{{(timestamp-productionInfo[index].createdAt)/1000|Int}}">{{(timestamp-productionInfo[index].createdAt)/1000|Int}}秒钟前发布</text>
+                </view>
+<!--                标题-->
+                <text class="block-title">{{item.title}}</text>
+                <view class="intro">{{item.desc}}</view>
+                <view class="production-img-container" wx:if="{{item.atlas.length}}">
+                    <view class="production-img" style="{{item.atlas.length>=3?'height: 198rpx;':''}}">
+
+                        <!-- todo 此处需要修改!!!!!!!!!!!!!!!!!!!!   -->
+                        <!--  修改已完成----------->
+                        <image mode="{{item.atlas.length==1?'aspectFit':'aspectFill'}}" style="{{item.atlas.length==1?('Width: 340rpx;Height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
+                        <view class="total-img" wx:if="{{item.atlas.length>3}}">共{{item.atlas.length}}张</view>
+                    </view>
+                </view>
+<!--                描述-->
+            </view>
+<!--这里是分割线-->
+<!--            镂空效果与虚线-->
+            <view class="line-split">
+                <div class="box"></div>
+                <div class="box box-right"></div>
+                <div class="line"></div>
+            </view>
+<!--这里是分割线-->
+
+            <view class="block-shadow down-level">
+                <view class="position">
+                    <view>
+                        <image class="icon" src="/imgs/location/location.png"></image>
+                        <view class="location-display">{{item.location}}</view>
+                    </view>
+                    <text wx:if="{{loc}}">距离{{distance.getDistance(item.distance)}}千米</text>
+                </view>
+            </view>
+
+    </view>
+    </view>
+    <view wx:if="{{productionInfo==0}}">
+        <view class="empty" style="height:{{winHeight-190}}px">
+            <image src="/imgs/empty1.png" style="width: 242rpx; height: 284rpx;"></image>
+            <text class="empty-text">暂无供求动态哦</text>
+            <text class="empty-text">点击创建你的第一条供求吧</text>
+            <image src="/imgs/empty2.png" style="width: 318rpx; height: 328rpx"></image>
+        </view>
+    </view>
+    <view class="add" style="" bindtap="{{loc?'gotoPublish':'tip'}}"><image src="/imgs/add.png"></image></view>
+</view>

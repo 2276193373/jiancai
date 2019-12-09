@@ -1,0 +1,182 @@
+/* pages/modify/modify.wxss */
+
+.container {
+    box-sizing: border-box;
+    background-color: #EFEFF4;
+}
+.info-part {
+    display: flex;
+    justify-content: space-between;
+    padding: 28rpx 32rpx;
+    border-top: 1px solid rgba(0,0,0, 0.06);
+    background-color: white;
+    box-sizing: border-box;
+}
+.info-part > text:first-of-type {
+    font-size: 17px;
+    line-height: 42rpx;
+    color: #000;
+}
+.border-bottom {
+    border-bottom: 1px solid rgba(0,0,0, 0.06);
+    margin-bottom: 30rpx;
+}
+.avatar {
+    width: 84rpx;
+    height: 84rpx;
+    /*border: 1px solid red;*/
+}
+.name {
+    /*border: 1px solid red;*/
+    line-height: 84rpx;
+}
+.gt {
+    display: flex;
+    color: #888;
+    line-height: 84rpx;
+}
+
+.picker-view-style {
+    /*width:100%;*/
+    height: 296rpx;
+    /*font-size: 36rpx;*/
+    /*line-height: 114rpx;*/
+}
+.picker-box {
+    width: 218rpx;
+    height: 114rpx;
+    border-top:6rpx solid #27B5BA;
+    border-bottom:6rpx solid #27B5BA;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.picker-text {
+    line-height: 114rpx;
+    text-align: center;
+    font-size: 18px;
+}
+
+/*##############遮罩层样式（复制来的，可能有多余）######################################*/
+
+.fl {
+    position: absolute;
+    left: 32rpx;
+    color: #000;
+    font-size: 18px;
+    line-height: 50rpx;
+}
+
+.fr {
+    position: absolute;
+    right: 32rpx;
+    color: #27B5BA;
+    font-size: 18px;
+    line-height: 50rpx;
+}
+.top-bottom-border {
+    border-bottom: 2px solid red;
+    border-top: 2px solid red;
+}
+.width130 {
+    width: 130px !important;
+}
+
+.ml130 {
+    margin-left: 130px;
+}
+
+.view-box {
+    width: 100%;
+    padding: 0 24rpx;
+    background-color: #ffffff;
+    margin-top: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.view-li {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 1px solid #efefef;
+}
+
+.view-box .view-li:last-child {
+    border-bottom: none;
+}
+
+.view-li input {
+    height: 48px;
+    line-height: 48px;
+}
+
+
+
+.modals {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.modals-cancel {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bottom-dialog-body {
+    position: absolute;
+    z-index: 10001;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30rpx 0;
+    height: 180px;
+    background-color: #fff;
+}
+
+.bottom-pos {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
+
+.modals-options {
+    height: 35px;
+    margin: 0 auto;
+    padding: 0 30px;
+    font-size: 16px;
+    position: relative;
+    /*border-bottom: 1px solid #dadada;*/
+}
+.image-wrapper {
+    width: 16rpx;
+    height: 26rpx;
+    line-height: 42rpx;
+    /*border: 1px solid red;*/
+}
+.name-arrow-container {
+    height: 42rpx;
+    /*width: 70rpx;*/
+    display: flex;
+    /*justify-content: space-between;*/
+    /*align-content: center;*/
+    color: #888;
+    /*border: 1px solid red;*/
+}
+.arrow-left {
+    width: 16rpx;
+    height: 26rpx;
+    margin: 0 32rpx 0 16rpx;
+}
+.picker-gender {
+    /*border: 1px solid red;*/
+    padding: 0 0 0 15px;
+}

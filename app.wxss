@@ -1,0 +1,4 @@
+/**app.wxss**/
+.container {
+    font-family: PingFangSC-Regular,PingFang SC;
+}

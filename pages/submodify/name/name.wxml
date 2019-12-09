@@ -1,0 +1,6 @@
+<!--pages/submodify/gender.wxml-->
+<view class="info-part">
+    <text>当前姓名</text>
+    <input value="{{realName}}" bindinput="inputedit" data-name="realName"/>
+</view>
+<button class="contact {{realName?'':'disable'}}" bindtap="save">保存</button>

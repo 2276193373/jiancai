@@ -1,0 +1,19 @@
+<!--pages/published/published.wxml-->
+<customNav>发布成功界面</customNav>
+
+<view class="published_container" style="height: {{}}px;">
+    <!--    遮罩层     -->
+    <view class="mask" catchtouchmove="preventTouchMove" wx:if="{{published_showModal}}">
+    </view>
+<!--    弹出框  -->
+    <view class="pop-window" wx:if="{{published_show_}}">
+        <view class="top">
+            <image src="/imgs/published.png"></image>
+        </view>
+        <text>发布成功啦</text>
+        <text>快将的建材供求发给你的好友吧！</text>
+        <button class="share" bindtap="share" open-type="share">分享到微信群</button>
+        <view class="close" bindtap="close"></view>
+    </view>
+</view>
+

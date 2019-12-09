@@ -1,0 +1,59 @@
+<view class="container">
+    <view class="profile" bindtap="modify">
+<!--        名字 -==============-->
+        <view class="avatar-bar avatar-me">
+            <image src="{{avatar}}"></image>
+            <text>{{name}}</text>
+            <view class="image-wrapper">
+                <image src="/imgs/arrow-right.png" class="arrow-left"></image>
+            </view>
+        </view>
+        <view class="personal-info" wx:for="{{personalInfo}}" wx:key="{{index}}">
+            <view>
+                <image src="{{item.imgUrl}}" mode="scaleToFill" class="me-icon"></image>
+            </view>
+            <text>{{item.info}}</text>
+        </view>
+    </view>
+<!--供应与需求导航栏-->
+    <view class="navbar-container">
+        <view class="navbar">
+                <view bindtap="reSortBySupply" data-index="0" class="{{0==currentIndex?'active':''}}" >
+                    {{values[0].value}}
+                </view>
+            <view bindtap="reSortByDemand" data-index="1" class="{{1==currentIndex?'active':''}}">
+                {{values[1].value}}
+            </view>
+        </view>
+    </view>
+
+<!--供应与需求列表-->
+
+    <view class="type-container">
+        <view class="body-container" wx:for="{{currentIndex==0?supplyCollection:demandCollection}}" wx:key="{{index}}">
+            <view class="body-part"  bindtap="gotoDetail" data-index="{{index > minuend ? (1+(index-minuend-1)*2) : index*2}}">
+                <!--【index>minuend】判断是第一列还是第二列，如果是第一列，则将当前索引乘2,(index*2),
+                    如果是第二列，可知其第1项是1，第二项是3，第三项是5，...，形成了公差为2的等差数列，于是当前索引可这样计算：【1+(index-minuend-1)*2】-->
+<!--                {{index > minuend ? (1+(index-minuend-1)*2) : index*2}}-->
+                <view class="avatar-bar">
+                    <image src="{{item.creatorAvatar}}"></image>
+                    <view>
+                        <text class="username-style">{{item.creatorNickname}}</text>
+                    </view>
+                </view>
+                <view class="production-img-container" wx:if="{{item.atlas.length}}">
+                    <view class="production-img">
+                        <!--  todo 此处需要修改!!!!!!!!!!!!!!!!!!!!   -->
+                        <!--  修改已完成 -->
+                        <image  src="{{item.atlas[0]}}" wx:for="{{1}}" wx:for-item="item1" wx:key="idx" style="height:334rpx;height: {{314}}rpx;"></image>
+
+                    </view>
+                </view>
+                <text class="title-me">{{item.title}}</text>
+                <view class="intro">{{item.desc}}</view>
+            </view>
+        </view>
+    </view>
+
+
+</view>

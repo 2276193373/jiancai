@@ -1,0 +1,58 @@
+<!--pages/detail/detail.wxml-->
+<view class="container">
+    <view style="display: inline-block; vertical-align: top;width: 100%;">
+        <view  class="block-shadow container-padding">
+            <view class="type">{{type==="supply"?"供":"求"}}</view>
+            <view class="avatar-bar">
+                <image src="{{avatar}}"></image>
+                <view>
+                    <text>{{name}}</text>
+                    <text class="company">{{company}}</text>
+
+                </view>
+                <!--发布时间-->
+                <text class="publish-time" wx:if="{{(timestamp-createdAt)/1000/60/60/24|Int}}">{{(timestamp-createdAt)/1000/60/60/24|Int}}天前发布</text>
+                <text class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60/60|Int}}">{{(timestamp-createdAt)/1000/60/60|Int}}小时前发布</text>
+                <text class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60|Int}}">{{(timestamp-createdAt)/1000/60|Int}}分钟前发布</text>
+                <text class="publish-time" wx:else="{{(timestamp-createdAt)/1000|Int}}">{{(timestamp-createdAt)/1000|Int}}秒钟前发布</text>
+            </view>
+            <text>{{title}}</text>
+            <view class="intro">{{desc}}</view>
+            <view wx:if="{{atlas!=''}}"class="production-img">
+                <image  mode="{{atlas.length==1?'aspectFit':'aspectFill'}}"  class="{{(index==1||index==4||index==7)?'second-img':''}}" style="{{atlas.length==1?('width: 100%;height: 360rpx;'):(atlas.length==2?'width: 300rpx;height: 300rpx;':'width: 198rpx;height: 198rpx;')}}"
+                     wx:for="{{atlas}}" wx:key="{{index}}" src="{{item}}" bindtap="previewImage" data-index="{{index}}">{{index}}
+                </image>
+            </view>
+            <view class="intro float-right" bindtap="{{interestedCount?'gotoInterested':'todo'}}">
+                {{interestedCount?interestedCount:0}}人可能感兴趣
+                <image src="/imgs/arrow-right-active.png" style="width: 16rpx; height: 26rpx;"></image>
+            </view>
+            <!--    清除浮动-->
+            <view style="clear: both"></view>
+
+        </view>
+        <!--这里是分割线-->
+        <!--镂空效果与虚线-->
+        <view class="line-split">
+            <div class="box"></div>
+            <div class="box box-right"></div>
+            <div class="line"></div>
+        </view>
+        <!--这里是分割线-->
+        <view class="position block-shadow">
+            <view>
+                <image class="icon" src="/imgs/location/location.png"></image>
+                <text class="location-detail">{{location}}</text>
+            </view>
+            <text wx:if="{{loc!='undefined'}}">距离{{distance}}千米</text>
+        </view>
+    </view>
+    <view style="width: 0px;display: inline-block; height: {{getHeight-50}}px"></view>
+    <button class="contact" bindtap="contact">
+        <view>
+            <image src="/imgs/telephone.png" class="contact-btn"></image>
+        </view>
+        立即联系
+    </button>
+</view>
+

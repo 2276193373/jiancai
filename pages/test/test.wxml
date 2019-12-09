@@ -1,0 +1,8 @@
+<button>点击测试picker-view</button>
+<button bindtap="formSubmit">
+    获取地理位置
+</button>
+<view bindtap="formSubmit">
+    <image class="add"></image>
+</view>
+

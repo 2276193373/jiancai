@@ -1,0 +1,92 @@
+<!--pages/login/unit/unit.wxml-->
+<view class="container" style="height:{{winHeight}}px">
+<!--授权微信号-->
+    <view wx:if="{{!nickName}}">
+        <image class="login-img" src="/imgs/logo.png"></image>
+        <view class="title">建材供求圏</view>
+        <view class="title-introduction">聚焦建材行业的供求信息发布的平台</view>
+        <view class="part-container">
+            <view class="part">
+                <image src="/imgs/login/wx_auth/wx.png"></image>
+                <text>授权微信信息</text>
+            </view>
+            <view class="line"></view>
+            <view class="part">
+                <image src="/imgs/login/wx_auth/phone.png"></image>
+                <text>授权手机号码</text>
+            </view>
+            <view class="line1"></view>
+            <view class="part">
+                <image src="/imgs/login/wx_auth/position.png"></image>
+                <text>添加职业信息</text>
+            </view>
+        </view>
+        <button  open-type="getUserInfo" lang="zh_CN" class="login-btn" bindtap="login" bindgetuserinfo="onGotUserInfo">授权微信公开信息</button>
+    </view>
+<!--    <view>{{avatarUrl}}</view>-->
+<!--授权手机号-->
+    <view wx:elif="{{!phoneNumber}}">
+        <image class="login-img" src="/imgs/logo.png"></image>
+        <view class="title">建材供求圏</view>
+        <view class="title-introduction">聚焦建材行业的供求信息发布的平台</view>
+        <view class="part-container">
+            <view class="part">
+                <image src="/imgs/login/phone_auth/active.png"></image>
+                <text>授权微信信息</text>
+            </view>
+            <view class="line active"></view>
+            <view class="part">
+                <image src="/imgs/login/wx_auth/phone.png"></image>
+                <text>授权手机号码</text>
+            </view>
+            <view class="line1"></view>
+            <view class="part">
+                <image src="/imgs/login/wx_auth/position.png"></image>
+                <text>添加职业信息</text>
+            </view>
+        </view>
+        <button class="login-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">授权微信手机号码</button>
+    </view>
+<!--完善个人信息-->
+    <view wx:else>
+        <!--    logo   -->
+        <image class="login-img" src="/imgs/logo.png"></image>
+        <view class="title">建材供求圏</view>
+        <view class="title-introduction">聚焦建材行业的供求信息发布的平台</view>
+        <!--    步骤情况   -->
+        <view class="part-container">
+            <view class="part">
+                <image src="/imgs/login/phone_auth/active.png"></image>
+                <text>授权微信信息</text>
+            </view>
+            <view class="line active"></view>
+            <view class="part">
+                <image src="/imgs/login/input_info/phone_active.png"></image>
+                <text>授权手机号码</text>
+            </view>
+            <view class="line1 active"></view>
+            <view class="part">
+                <image src="/imgs/login/wx_auth/position.png"></image>
+                <text>添加职业信息</text>
+            </view>
+        </view>
+
+        <!--    填写信息框-->
+        <view class="completeInfo-container">
+            <view class="info-part">
+                <text>真实姓名</text>
+                <input placeholder="请填写您的真实姓名"  bindinput="inputedit1" data-name1="name1" maxlength="6" />
+            </view>
+            <view class="info-part">
+                <text>我的公司</text>
+                <input placeholder="我的公司名称"  bindinput="inputedit2" data-name2="name2" maxlength="20" />
+            </view>
+            <view class="info-part">
+                <text>我的职位</text>
+                <input placeholder="请填写您的公司职位（选填）" bindinput="inputedit3" data-position="position" maxlength="20"/>
+            </view>
+        </view>
+        <button class="login-btn  {{name1==''||name2==''?'disable':'active_btn'}}" bindtap="{{name1===''||name2===''?'todoFun':'submit'}}">完成注册</button>
+
+    </view>
+</view>

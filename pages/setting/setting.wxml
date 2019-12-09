@@ -1,0 +1,2 @@
+<!--pages/setting/setting.wxml-->
+<button open-type="openSetting" type="primary">去设置地理位置信息</button>

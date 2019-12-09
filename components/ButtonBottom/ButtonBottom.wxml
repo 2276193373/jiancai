@@ -1,0 +1,4 @@
+<!--components/ButtonBottom/ButtonBottom.wxml-->
+<view class="btn-bottom">
+    <slot></slot>
+</view>

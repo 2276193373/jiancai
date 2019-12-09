@@ -1,0 +1,6 @@
+<!--pages/submodify/gender.wxml-->
+<view class="info-part">
+    <text>当前手机号</text>
+    <text>18759770340</text>
+</view>
+<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class="contact" bindtap="reBindPhone">重新绑定手机号</button>

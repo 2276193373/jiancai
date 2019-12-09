@@ -1,0 +1,15 @@
+/* components/ButtonBottom/ButtonBottom.wxss */
+.btn-bottom {
+    width: 670rpx;
+    height: 94rpx;
+    margin: 0 auto;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 36rpx;
+    box-shadow: 0 4rpx 12rpx 2rpx rgba(84, 14, 13, .37);
+    font-weight: 400;
+    overflow: hidden;
+}

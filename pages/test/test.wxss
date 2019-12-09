@@ -1,0 +1,50 @@
+/**index.wxss**/
+page{
+    background-color: #eee;
+
+}
+.case-page{
+    padding:20rpx;
+}
+.list-masonry{
+    column-count: 2;
+    column-gap: 20rpx;
+}
+.item-masonry{
+    background-color: #fff;
+    break-inside: avoid;/*避免在元素内部插入分页符*/
+    box-sizing: border-box;
+    padding: 20rpx;
+    margin-bottom:20rpx;
+}
+.item-masonry image {
+    width: 100%;
+}
+
+.waterfall-container {
+    /*分几列*/
+    column-count: 2;
+}
+
+.waterfall-item {
+    /*不留白，不知道什么意思可以取消这个样式试试*/
+    break-inside: avoid;
+}
+.empty {
+    background-color: white;
+    /*border: 1px solid red;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 188rpx;
+    box-sizing: border-box;
+}
+.empty-text {
+    margin: 20rpx;
+    color: #07383A;
+    font-size: 32rpx;
+}
+.empty image:last-of-type {
+    position: relative;
+    left: 55px;
+}

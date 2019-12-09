@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "customNav": "/components/CustomNav/CustomNav"
+  },
+  "navigationCustom": "custom",
+  "disableScroll": true
+}

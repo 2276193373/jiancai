@@ -1,0 +1,15 @@
+<!--pages/interested/interested.wxml-->
+<view class="outer-container" wx:for="{{list}}" wx:key="{{index}}">
+    <view class="container">
+        <view class="avatar-bar">
+            <image src="{{item.avatarUrl}}"></image>
+            <view>
+                <text>{{item.nickName}}</text>
+                <text>{{item.company}}</text>
+            </view>
+        </view>
+        <view class="contact" bindtap="contact" data-index="{{index}}"><image src="/imgs/phone1.png" style="width:24rpx; height:24rpx; margin-right: 8rpx"></image>立即联系</view>
+    </view>
+
+</view>
+

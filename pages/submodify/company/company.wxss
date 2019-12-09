@@ -1,0 +1,67 @@
+/* pages/submodify/gender.wxss */
+.disable {
+    background-color: #888888!important;
+}
+.goback {
+    color: black;
+    /*position: absolute;*/
+    top: 6px;
+    /*left: 104px;*/
+    right: 104px;
+    height: 30px;
+    line-height: 30px;
+    /*font-size: 18.5px;*/
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 27px auto 11px;
+    position: absolute;
+    left: -53%;
+    font-size: 35rpx;
+    /*border: 1px solid red;*/
+}
+.goback > image {
+    width: 16rpx;
+    height: 26rpx;
+    margin: 0 14rpx;
+}
+.info-part {
+    display: flex;
+    flex-direction: column;
+    padding: 20rpx 0 20rpx 32rpx;
+    border-bottom: 1px solid rgba(0,0,0, .06);
+}
+.info-part > text:first-child {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 84rpx;
+    color: #888888;
+}
+.info-part > text:last-child {
+    width:560rpx;
+    height:48rpx;
+    font-size: 17px;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(53,53,53,1);
+    line-height:48rpx;
+}
+.contact {
+    width: 670rpx;
+    height: 94rpx;
+    margin: 0 auto;
+    background-color: #27B5BA;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 18px;
+    box-shadow: 0 4rpx 12rpx 2rpx rgba(84, 14, 13, .37);
+    font-weight: 400;
+    position: absolute;
+    bottom: 50rpx;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/square/square",
+    "pages/test/test",
+    "pages/login/unit",
+    "pages/publish/publish",
+    "pages/modify/modify",
+    "pages/me/me",
+    "pages/submodify/company/company",
+    "pages/detail/detail",
+    "pages/published/published",
+    "pages/interested/interested",
+    "pages/submodify/position/position",
+    "pages/submodify/phone/phone",
+    "pages/logs/logs",
+    "pages/setting/setting"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "index1",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "white",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "selectedColor": "#FF4B49",
+    "color": "#888888",
+    "list": [
+      {
+        "pagePath": "pages/square/square",
+        "text": "广场",
+        "iconPath": "/imgs/tabBar/square.png",
+        "selectedIconPath": "/imgs/tabBar/square_active.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "/imgs/tabBar/me.png",
+        "selectedIconPath": "/imgs/tabBar/me_active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的信息将用于小程序位置接口的展示"
+    }
+  }
+}
