@@ -1,6 +1,11 @@
 /* pages/publish/publish.wxss */
 page {
     background-color: #EFEFF4;
+    overflow-y: visible !important;
+}
+.picker-gender {
+    /*border: 1px solid red;*/
+    width: 97%;
 }
 .container {
     /*border: 1px solid red;*/

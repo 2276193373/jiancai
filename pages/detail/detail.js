@@ -52,7 +52,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  async onLoad (options) {
     console.log('options: ',options);
     this.setData({
       title: options.title,
@@ -63,7 +63,8 @@ Page({
       name: options.name,
       loc: options.loc,
       type: options.type,
-      company: options.company
+      company: options.company,
+      phoneNumber: options.phoneNumber
     })
 
     let timestamp = Date.parse(new Date());
@@ -73,7 +74,7 @@ Page({
     wx.setNavigationBarTitle({
       title: '供求详情'
     });
-    wxRequest.getInfoList('', '', wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
+    await wxRequest.getInfoList('', '', wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
       if (res.data.code === 20000) {
         let strAtlas = options.atlas.toString();
         //options传过来的是字符串，要转为数组
@@ -95,7 +96,7 @@ Page({
         console.log(res.errMsg);
       }
     });
-    wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
+    await wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
       if (res.data.code === 20000) {
         console.log("感兴趣!");
         console.log(res);
@@ -105,7 +106,7 @@ Page({
       }
     });
       //options._id是提交请求数据data中的infoId
-    wxRequest.getBrowseringHistory(options._id).then((res) => {
+    await wxRequest.getBrowseringHistory(options._id).then((res) => {
       if (res.data.code === 20000) {
         console.log("请求感兴趣成功！");
         console.log('有n个人感兴趣，看list长度')
@@ -133,65 +134,12 @@ Page({
     });
   },
 
+  //todo 12/10
   contact: function () {
     wxRequest.relogin().then(res => {
       console.log('user', res.data.data.user)
       let phoneNumber = this.data.phoneNumber
       myUtils.phoneCall(phoneNumber);
     });
-    // wx.makePhoneCall({
-    //   phoneNumber: '18759770340' //仅为示例，并非真实的电话号码
-    // })
   },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-  back: function () {
-    wx.navigateBack({
-      delta: 1
-    })
-  }
 })

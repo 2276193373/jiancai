@@ -26,7 +26,7 @@ Page({
         //公司
         comany: '',
         winWidth: wx.getSystemInfoSync().windowWidth + 'rpx',
-        winHeight: wx.getSystemInfoSync().screenHeight,
+        winHeight: wx.getSystemInfoSync().windowHeight,
         values: [
             {value: "只看供应"},
             {value: "只看需求"}
@@ -55,7 +55,6 @@ Page({
                     showCancel: false,
                     success: function(res) {
                         if (res.confirm) {
-                            console.log(res.confirm)
                             wx.navigateTo({
                                 url: '/pages/setting/setting'
                             })
@@ -87,7 +86,6 @@ Page({
         wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
             if (res.data.code === 20000) {
                 let prodInfo = res.data.data.list[e.currentTarget.dataset.index];
-                console.log('prodInfo:', prodInfo);
                 wx.navigateTo({
                     url: "/pages/detail/detail?_id=" + prodInfo._id + '&creatorId=' + prodInfo.creatorId +
                         '&creatorAvatar=' + prodInfo.creatorAvatar + '&creatorNickname=' + prodInfo.creatorNickname +
@@ -133,15 +131,17 @@ Page({
             }
         });
     },
-
     btn: function () {
         this.setData({
             showModal: true
         });
-
+    },
+    hideModal: function () {
+        this.setData({
+            showModal: false
+        })
     },
     sortByTime: function () {
-        console.log('按时间排序');
         this.setData({
             sortWay: '按时间排序',
             showModal: false,
@@ -163,7 +163,6 @@ Page({
     },
     //按距离排序
     sortByDistance: function () {
-        console.log('按距离排序！');
         this.setData({
             sortWay: '按距离排序',
             showModal: false,
@@ -184,7 +183,6 @@ Page({
             }
         });
     },
-
     gotoPublish: function () {
         wx.navigateTo({
             url: '/pages/publish/publish'
@@ -192,6 +190,7 @@ Page({
     },
     close: function () {
         this.setData({
+            sortWay: '按时间排序 ',
             sortKind: 'time',
             sortType: 'sortByTime',
             type: wx.getStorageSync('type')
@@ -257,136 +256,14 @@ Page({
                             });
                         }
                     });
-                    /*wx.request({
-                        url:"http://118.25.21.169:2000/weapp/users/login",
-                        method: 'POST',
-                        data: {
-                            code: res.code
-                        },
-                        success:res=>{
-                            console.log('--====---', res.data.data.user)
-                            if (!res.data.data.user.nickName) {
-                                wx.redirectTo({
-                                    url: '/pages/login/unit'
-                                })
-                            }
-                        }
-                    })*/
                 }
             }
         })
-
-
-       /* //有token,微信授权过，手机号没授权
-        if (wx.getStorageSync('token')) {
-            wxRequest.relogin().then(res => {
-                let user = res.data.data.user;
-                console.log('user-----',user);
-                if (!user.avatarUrl) {
-                    console.log('用户未注册，跳转到注册页面');
-                    wx.redirectTo({
-                        url: '/pages/login/unit'
-                    });
-                    return
-                } else if (!user.phoneNumber) {
-                    console.log('手机号尚未授权，跳转到手机号授权页面！');
-                    wx.redirectTo({
-                        url: '/pages/login/unit'
-                    });
-                    return;
-                } else if (!user.realName) {
-                    console.log('个人信息尚未填写，跳转到个人信息填写页面！');
-                    wx.redirectTo({
-                        url: '/pages/login/unit'
-                    });
-                }
-                wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
-                    if (res.data.code === 20000) {
-                        this.setData({
-                            productionInfo: res.data.data.list
-                        });
-                        console.log('productionInfo: ',this.data.productionInfo);
-                    } else {
-                        console.log('===================');
-                        console.log("出错！\n");
-                        console.log(`错误码：${res.data.code}`);
-                        console.log(`错误信息：${res.data.data}`);
-                        console.log('===================');
-                    }
-                });
-
-
-
-                let timestamp = Date.parse(new Date());
-                this.setData({
-                    timestamp: timestamp
-                });
-            });
-        }
-        //无token，判断是新用户，还是老用户
-        else {
-            console.log('---我是新用户！');
-            wx.login({
-                success: res => {
-
-                    wx.redirectTo({
-                        url: '/pages/login/unit'
-                    })
-                    /!* if (res.code) {
-                         wx.request({
-                             url:"http://118.25.21.169:2000/weapp/users/login",
-                             method: 'POST',
-                             data: {code: res.code},
-                             success:res=>{
-                                 // wx.setStorageSync('token', res.data.data.token);
-                                 let user = res.data.data.user;
-                                 console.log('user: ',user);
-                                 //用户不存在，跳转到注册页面
-                                 if (!user.avatarUrl) {
-                                     wx.redirectTo({
-                                       url: '/pages/login/unit'
-                                     })
-                                 } else if (!user.phoneNumber) {
-                                     wx.redirectTo({
-                                         url: '/pages/login/unit'
-                                     })
-                                 } else if (!user.realName) {
-                                     wx.redirectTo({
-                                         url: '/pages/login/unit'
-                                     })
-                                 }
-                                 wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
-                                     if (res.data.code === 20000) {
-                                         this.setData({
-                                             productionInfo: res.data.data.list
-                                         });
-                                         console.log('productionInfo: ',this.data.productionInfo);
-                                     } else {
-                                         console.log('===================');
-                                         console.log("出错！\n");
-                                         console.log(`错误码：${res.data.code}`);
-                                         console.log(`错误信息：${res.data.data}`);
-                                         console.log('===================');
-                                     }
-                                 });
-                             }
-                         })
-                     }*!/
-                }
-            })
-        }*/
-
-
         //设置标题栏内容
         wx.setNavigationBarTitle({
           title: '建材供应圏'
         });
-    },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
     },
     /**
      * 生命周期函数--监听页面显示
@@ -408,7 +285,6 @@ Page({
             timestamp: timestamp
         });
         if (wx.getStorageSync('pop') == true) {
-            console.log('发布成功！');
             //发布成功滑到顶部
             wx.pageScrollTo({
                 scrollTop: 0,
@@ -418,39 +294,7 @@ Page({
         this.setData({
             pop_published: wx.getStorageSync('pop')
         });
-        //重新封装wx.request
-        wxRequest.relogin().then((res) => {
-            if (res.data.code === 20000) {
-                this.setData({
-                    // company: this.data.data.user.company
-                });
-
-                console.log('重新登录成功！');
-            } else {
-                console.log("重新登录出错！\n");
-                console.log(`错误码：${res.data.code}`);
-                console.log(res.data.data);
-            }
-        });
     },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
     onPullDownRefresh: function () {
         let timestamp = Date.parse(new Date());
         this.setData({
@@ -504,7 +348,7 @@ Page({
                         }
                     })
                 }
-                console.log('res.data.data.list: 列表',res.data.data.list);
+                // console.log('res.data.data.list: 列表',res.data.data.list);
             } else {
                 console.log("出错！\n");
                 console.log(`错误码：${res.data.code}`);
@@ -526,7 +370,8 @@ Page({
             &atlas=${wx.getStorageSync('publish_info').atlas}
             &name=${wx.getStorageSync('publish_info').creatorNickname}
             &location=${wx.getStorageSync('publish_info').location}
-            &createdAt=${wx.getStorageSync('publish_info').createdAt}`
+            &createdAt=${wx.getStorageSync('publish_info').createdAt}
+            &company=${wx.getStorageSync('publish_info').company}`
         }
     }
 })

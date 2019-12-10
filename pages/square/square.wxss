@@ -270,24 +270,26 @@ page {
     box-shadow: 0 0 6px 0 rgba(0,0,0, .23);
     background-color: white;
 }
+.active-font{
+    background: linear-gradient(to right, rgba(255, 0, 0, 0.5), red);
+    -webkit-background-clip: text;
+    color: transparent;
+}
 .active {
-    padding-bottom: 20rpx;
-    border-bottom: 4rpx solid #FF4B49;
     color: #FF4B49;
+    background: linear-gradient(to right, rgba(255, 0, 0, 0.5), red);
 }
 .active-sort {
     color: #FF4B49 !important;
 }
 .split-line {
-    border:2rpx solid #EDEDF2;
+    border:1px solid #EDEDF2;
     height: 0;
 }
 .container {
     position: relative;
     background-color: #EFEFF4;
-    /*width: 96%;*/
     margin: 0 auto;
-    /*border: 1px solid red;*/
 }
 .mask{
     width: 100%;
@@ -297,7 +299,7 @@ page {
     left: 0;
     background: #000;
     z-index: 9000;
-    opacity: 0.13;
+    opacity: 0.4;
 }
 /* 弹出层 */
 .modalDlg{
@@ -482,6 +484,7 @@ page {
     background-color: #ffffff;
     border-radius: 24rpx;
     overflow: hidden;
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, .28);
 }
 .pop-window text:first-of-type {
     color: #353535;
@@ -521,7 +524,7 @@ page {
     position: absolute;
     left: 50%;
     transform: translate(-50%,-10%);
-    z-index: 100;
+    z-index: 100001;
     display: flex;
     align-items: center;
 }

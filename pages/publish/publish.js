@@ -237,6 +237,7 @@ Page({
         }
       });
 
+      //调用腾讯地图api，获取当前经纬度
       qqmapsdk.reverseGeocoder({
         success: (res) => {
           let city = res.result.address_component.province + res.result.address_component.city;

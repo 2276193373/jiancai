@@ -22,7 +22,7 @@
         <view class="content content-selection" bindtap="showModal">
             <!--            判断 type 是否为空 -->
 <!--            {{type?(type=="supply"?"供应":"需求"):"供求选择"}}-->
-            <picker class="picker-gender" bindchange="bindPickerChange" value="{{index}}" range="{{['需求', '供应']}}">
+            <picker style="" class="picker-gender" bindchange="bindPickerChange" value="{{index}}" range="{{['需求', '供应']}}">
                 <view class="name-arrow-container">
                     <text>{{index==0?'需求':'供应'}}</text>
                 </view>
@@ -54,7 +54,7 @@
     </view>
 </view>
 
-<view style="width: 0px;display: inline-block; height: {{winHeight-20}}px"></view>
+<view style="width: 0px;display: inline-block; height: {{winHeight-10}}px"></view>
 <button class="contact {{imgList && title && desc && type && address.location ? 'active':'disable'}}"
         bindtap="{{imgList && title && desc && type && address.location ? 'publish':'todo'}}">
     发布

@@ -1,6 +1,7 @@
 // pages/modify/modify.js
 import myUtils from "../../utils/myUtils";
 import wxRequest from '../../utils/request'
+import config from "../../config/config";
 
 const qiniuUploader = require("../../utils/qiniuUploader");
 Page({
@@ -60,7 +61,7 @@ Page({
                     //七牛云上传图片
                     qiniuUploader.upload(tempFilePaths[i], (res) => {
                             // console.log('-0000', res);
-                            imgList.push("http://q0jlhl1wv.bkt.clouddn.com" + res.imageURL);
+                            imgList.push(config.prefixQiniuImageURL + res.imageURL);
                             console.log(imgList);
                             that.setData({
                                 avatarUrl: imgList[0]

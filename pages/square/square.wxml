@@ -7,7 +7,7 @@
 </wxs>
 <!--发布成功界面-->
 <view class="published_container_wrap" wx:if="{{pop_published}}">
-    <view class="published_container" style="height: {{(winHeight)*2}}rpx;">
+    <view class="published_container" style="height: {{(winHeight)+50}}px;">
         <!--    遮罩层     -->
         <view class="mask" catchtouchmove="preventTouchMove">
         </view>
@@ -28,9 +28,11 @@
 <view class="container">
     <view class="navbar-container">
         <view class="navbar">
-            <view bindtap="activeNav" data-index="{{index}}" class="{{index===currentIndex?'active':''}}" wx:for="{{values}}" wx:key="{{index}}">
+            <view bindtap="activeNav" data-index="{{index}}" class="{{index===currentIndex?'active-font':''}}" wx:for="{{values}}" wx:key="{{index}}">
                 {{item.value}}
+                <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 70%; margin-top: 10px; border-radius: 8px" class="{{index===currentIndex?'active':''}}"></view>
             </view>
+
         </view>
         <view class="split-line"></view>
         <!--    排序（按时间排序，按距离排序）-->
@@ -41,7 +43,7 @@
             </view>
         </view>
         <!--    遮罩层     -->
-        <view class="mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}" style="height:{{winHeight}}px"></view>
+        <view class="mask" catchtouchmove="preventTouchMove" bindtap="hideModal" wx:if="{{showModal}}" style="height:{{winHeight}}px"></view>
         <!-- 弹出层 -->
         <view class="modalDlg" wx:if="{{showModal}}">
             <view class="triangle"></view>
@@ -73,10 +75,7 @@
                 <view class="intro">{{item.desc}}</view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
                     <view class="production-img" style="{{item.atlas.length>=3?'height: 198rpx;':''}}">
-
-                        <!-- todo 此处需要修改!!!!!!!!!!!!!!!!!!!!   -->
-                        <!--  修改已完成----------->
-                        <image mode="{{item.atlas.length==1?'aspectFit':'aspectFill'}}" style="{{item.atlas.length==1?('Width: 340rpx;Height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
+                        <image mode="{{item.atlas.length==1?'aspectFit':'aspectFill'}}" style="border: 1px solid red;{{item.atlas.length==1?('width: 340rpx;height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
                         <view class="total-img" wx:if="{{item.atlas.length>3}}">共{{item.atlas.length}}张</view>
                     </view>
                 </view>
