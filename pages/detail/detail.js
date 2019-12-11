@@ -31,6 +31,66 @@ Page({
     phoneNumber: ''
   },
 
+  authLocation: function () {
+    wx.getSetting({
+      success: (res) => {
+        // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
+        // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
+        // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
+        if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {
+          //未授权
+          wx.showModal({
+            title: '请求授权当前位置',
+            content: '需要获取您的地理位置，请确认授权',
+            success: function (res) {
+              if (res.cancel) {
+                //取消授权
+                wx.showToast({
+                  title: '发布信息需要授权地理位置！',
+                  icon: 'none',
+                  duration: 1500
+                })
+              } else if (res.confirm) {
+                //确定授权，通过wx.openSetting发起授权请求
+                wx.openSetting({
+                  success: function (res) {
+                    if (res.authSetting["scope.userLocation"] == true) {
+                      wx.showToast({
+                        title: '授权成功，可以发布信息了',
+                        icon: 'success',
+                        duration: 1000
+                      })
+                      //再次授权，调用wx.getLocation的API
+                    } else {
+                      wx.showToast({
+                        title: '发布信息需要授权地理位置！',
+                        icon: 'none',
+                        duration: 1500
+                      })
+                    }
+                  }
+                })
+              }
+            }
+          })
+        } else if (res.authSetting['scope.userLocation'] == undefined) {
+            wx.getLocation({
+              success: res => {
+                console.log('地理位置信息：', res)
+              }
+            })
+          console.log(111)
+        } else {
+          console.log(222)
+          // wx.navigateTo({
+          //     url: '/pages/publish/publish'
+          // })
+
+        }
+      }
+    })
+  },
+
   previewImage: function (e) {
     wx.previewImage({
       current: this.data.atlas[e.target.dataset.index],//当前显示的图片
@@ -53,6 +113,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   async onLoad (options) {
+    let _this = this;
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wxRequest.login(res.code).then(res => {
+            //如果该用户还没有登录
+            if (!res.data.data) {
+              //看有没有授权地理位置
+              _this.authLocation()
+            }
+          });
+        }
+      }
+    })
     console.log('options: ',options);
     this.setData({
       title: options.title,

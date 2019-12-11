@@ -40,43 +40,100 @@ Page({
         loc: '',
         type: 'supply'
     },
-
     tip: function () {
-        let that = this;
-        wx.showToast({
-            title: '发布信息需要获取您当前的地理位置！',
-            icon: 'none',
-            duration: 1500,
-            success: function (res) {
-                wx.showModal({
-                    title: '提示！',
-                    confirmText: '去设置',
-                    content: '需要您授权地理位置！',
-                    showCancel: false,
-                    success: function(res) {
-                        if (res.confirm) {
-                            wx.navigateTo({
-                                url: '/pages/setting/setting'
-                            })
-                            wx.getLocation({
-                                success: res => {
-                                    const latitude = res.latitude;
-                                    const longitude = res.longitude;
-                                    wx.setStorageSync('currentLatitude', latitude);
-                                    wx.setStorageSync('currentLongitude', longitude);
-                                    that.setData({
-                                        loc: wx.getStorageSync('currentLatitude')
-                                    });
-
-                                }
-                            });
+        wx.getSetting({
+            success: (res) => {
+                // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
+                // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
+                // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
+                if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {
+                    //未授权
+                    wx.showModal({
+                        title: '请求授权当前位置',
+                        content: '需要获取您的地理位置，请确认授权',
+                        success: function (res) {
+                            if (res.cancel) {
+                                //取消授权
+                                wx.showToast({
+                                    title: '发布信息需要授权地理位置！',
+                                    icon: 'none',
+                                    duration: 1500
+                                })
+                            } else if (res.confirm) {
+                                //确定授权，通过wx.openSetting发起授权请求
+                                wx.openSetting({
+                                    success: function (res) {
+                                        if (res.authSetting["scope.userLocation"] == true) {
+                                            wx.showToast({
+                                                title: '授权成功，可以发布信息了',
+                                                icon: 'success',
+                                                duration: 1000
+                                            })
+                                            //再次授权，调用wx.getLocation的API
+                                        } else {
+                                            wx.showToast({
+                                                title: '发布信息需要授权地理位置！',
+                                                icon: 'none',
+                                                duration: 1500
+                                            })
+                                        }
+                                    }
+                                })
+                            }
                         }
-                    }
-                })
+                    })
+                } else if (res.authSetting['scope.userLocation'] == undefined) {
+                    //用户首次进入页面,调用wx.getLocation的API
+                    // _this.goAddress();
+                    // wx.getLocation({
+                    //     success: res => {
+                    //         console.log(1111)
+                    //     }
+                    // })
+                    console.log(111)
+                } else {
+                    console.log(222)
+                    // wx.navigateTo({
+                    //     url: '/pages/publish/publish'
+                    // })
+
+                }
             }
         })
+        /* let that = this;
+         wx.showToast({
+             title: '发布信息需要获取您当前的地理位置！',
+             icon: 'none',
+             duration: 1500,
+             success: function (res) {
+                 wx.showModal({
+                     title: '提示！',
+                     confirmText: '去设置',
+                     content: '需要您授权地理位置！',
+                     showCancel: false,
+                     success: function(res) {
+                         if (res.confirm) {
+                             wx.navigateTo({
+                                 url: '/pages/setting/setting'
+                             })
+                             wx.getLocation({
+                                 success: res => {
+                                     const latitude = res.latitude;
+                                     const longitude = res.longitude;
+                                     wx.setStorageSync('currentLatitude', latitude);
+                                     wx.setStorageSync('currentLongitude', longitude);
+                                     that.setData({
+                                         loc: wx.getStorageSync('currentLatitude')
+                                     });
+
+                                 }
+                             });
+                         }
+                     }
+                 })
+             }
+         })*/
     },
-    
     gotoDetail(e) {
         //获取当前点击的元素的索引,并缓存
         wx.setStorageSync('itemIndex', e.currentTarget.dataset.index);
@@ -90,8 +147,8 @@ Page({
                     url: "/pages/detail/detail?_id=" + prodInfo._id + '&creatorId=' + prodInfo.creatorId +
                         '&creatorAvatar=' + prodInfo.creatorAvatar + '&creatorNickname=' + prodInfo.creatorNickname +
                         '&title=' + prodInfo.title + '&desc=' + prodInfo.desc + '&distance=' + prodInfo.distance +
-                        '&location=' + prodInfo.location + '&atlas=' + prodInfo.atlas + '&createdAt=' + prodInfo.createdAt+
-                        '&loc='+this.data.loc+'&type='+this.data.type+'&company='+prodInfo.company
+                        '&location=' + prodInfo.location + '&atlas=' + prodInfo.atlas + '&createdAt=' + prodInfo.createdAt +
+                        '&loc=' + this.data.loc + '&type=' + this.data.type + '&company=' + prodInfo.company
                 });
             } else {
                 console.log('====错误！!====\n错误码：', res.data.code);
@@ -219,11 +276,64 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        //设置标题栏内容
+        wx.setNavigationBarTitle({
+            title: '建材供应圏'
+        });
+    },
+    getLocation() {
+        wx.getLocation({
+            success: res => {
+                const latitude = res.latitude;
+                const longitude = res.longitude;
+                wx.setStorageSync('currentLatitude', latitude);
+                wx.setStorageSync('currentLongitude', longitude);
+                this.setData({
+                    loc: wx.getStorageSync('currentLatitude')
+                });
+                wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
+                    if (res.data.code === 20000) {
+                        this.setData({
+                            productionInfo: res.data.data.list
+                        });
+                        console.log('productionInfo: ', this.data.productionInfo);
+                    } else {
+                        console.log('===================');
+                        console.log("出错！\n");
+                        console.log(`错误码：${res.data.code}`);
+                        console.log(`错误信息：${res.data.data}`);
+                        console.log('===================');
+                    }
+                });
+            },
+            fail: res=> {
+                wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
+                    if (res.data.code === 20000) {
+                        this.setData({
+                            productionInfo: res.data.data.list
+                        });
+                        console.log('productionInfo: ', this.data.productionInfo);
+                    } else {
+                        console.log('===================');
+                        console.log("出错！\n");
+                        console.log(`错误码：${res.data.code}`);
+                        console.log(`错误信息：${res.data.data}`);
+                        console.log('===================');
+                    }
+                });
+
+            }
+        });
+    },
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
         wx.login({
-            success:res=>{
+            success: res => {
                 if (res.code) {
                     wxRequest.login(res.code).then(res => {
-                        console.log('++++++',res)
+                        console.log('++++++', res);
                         if (!res.data.data) {
                             wx.redirectTo({
                                 url: '/pages/login/unit'
@@ -240,46 +350,13 @@ Page({
                                 })
                             }
                             wx.setStorageSync('token', res.data.data.token);
-                            wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
-                                if (res.data.code === 20000) {
-                                    this.setData({
-                                        productionInfo: res.data.data.list
-                                    });
-                                    console.log('productionInfo: ',this.data.productionInfo);
-                                } else {
-                                    console.log('===================');
-                                    console.log("出错！\n");
-                                    console.log(`错误码：${res.data.code}`);
-                                    console.log(`错误信息：${res.data.data}`);
-                                    console.log('===================');
-                                }
-                            });
                         }
                     });
                 }
             }
         })
-        //设置标题栏内容
-        wx.setNavigationBarTitle({
-          title: '建材供应圏'
-        });
-
-    },
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-        wx.getLocation({
-            success: res => {
-                const latitude = res.latitude;
-                const longitude = res.longitude;
-                wx.setStorageSync('currentLatitude', latitude);
-                wx.setStorageSync('currentLongitude', longitude);
-                this.setData({
-                    loc: wx.getStorageSync('currentLatitude')
-                });
-            }
-        });
+        this.getLocation();
+        console.log('onShow');
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
@@ -308,7 +385,7 @@ Page({
                 setTimeout(function () {
                     wx.stopPullDownRefresh();
                 }, 500);
-                console.log('广场productionInfo: ',this.data.productionInfo);
+                console.log('广场productionInfo: ', this.data.productionInfo);
             } else {
                 console.log('===================');
                 console.log("出错！\n");
@@ -329,7 +406,7 @@ Page({
                 this.setData({
                     productionInfo: this.data.productionInfo.concat(res.data.data.list)
                 });
-                if (res.data.data.list.length===0) {
+                if (res.data.data.list.length === 0) {
                     wx.showLoading({
                         title: '没有更多了哦！',
                         success: function () {

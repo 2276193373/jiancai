@@ -25,7 +25,7 @@
 </view>
 
 <!--主体部分-->
-<view class="container">
+<view class="container" style="height: {{winHeight}}px">
     <view class="navbar-container">
         <view class="navbar">
             <view bindtap="activeNav" data-index="{{index}}" class="{{index===currentIndex?'active-font':''}}" wx:for="{{values}}" wx:key="{{index}}">
@@ -75,7 +75,7 @@
                 <view class="intro">{{item.desc}}</view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
                     <view class="production-img" style="{{item.atlas.length>=3?'height: 198rpx;':''}}">
-                        <image mode="{{item.atlas.length==1?'aspectFit':'aspectFill'}}" style="border: 1px solid red;{{item.atlas.length==1?('width: 340rpx;height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
+                        <image bindload="getImageWH" mode="{{item.atlas.length==1?'aspectFill':'aspectFill'}}" style="{{item.atlas.length==1?('width: 200rpx; height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
                         <view class="total-img" wx:if="{{item.atlas.length>3}}">共{{item.atlas.length}}张</view>
                     </view>
                 </view>
@@ -89,7 +89,6 @@
                 <div class="line"></div>
             </view>
 <!--这里是分割线-->
-
             <view class="block-shadow down-level">
                 <view class="position">
                     <view>
@@ -103,7 +102,7 @@
     </view>
     </view>
     <view wx:if="{{productionInfo==0}}">
-        <view class="empty" style="height:{{winHeight-190}}px">
+        <view class="empty" style="height:{{winHeight-90}}px; padding-top: {{120}}rpx">
             <image src="/imgs/empty1.png" style="width: 242rpx; height: 284rpx;"></image>
             <text class="empty-text">暂无供求动态哦</text>
             <text class="empty-text">点击创建你的第一条供求吧</text>

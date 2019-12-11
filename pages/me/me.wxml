@@ -26,11 +26,10 @@
             </view>
         </view>
     </view>
-
 <!--供应与需求列表-->
+    <view style="" class="type-container">
 
-    <view class="type-container">
-        <view class="body-container" wx:for="{{currentIndex==0?supplyCollection:demandCollection}}" wx:key="{{index}}">
+        <view  class="body-container" wx:for="{{currentIndex==0?supplyCollection:demandCollection}}" wx:key="{{index}}">
             <view class="body-part"  bindtap="gotoDetail" data-index="{{index > minuend ? (1+(index-minuend-1)*2) : index*2}}">
                 <!--【index>minuend】判断是第一列还是第二列，如果是第一列，则将当前索引乘2,(index*2),
                     如果是第二列，可知其第1项是1，第二项是3，第三项是5，...，形成了公差为2的等差数列，于是当前索引可这样计算：【1+(index-minuend-1)*2】-->
@@ -54,6 +53,19 @@
             </view>
         </view>
     </view>
-
-
+    <!--<view class="me-empty" wx:if="{{!demandCollection}}">
+        <image src="/imgs/mySupply.png"></image>
+        <view>暂无需求，去广场逛逛吧！</view>
+        <button class="me-btn">去广场</button>
+    </view>-->
+    <view class="me-empty" wx:if="{{currentIndex==1&&demandCollection.length==0}}">
+        <image src="/imgs/myDemand.png"></image>
+        <view>暂无需求，去广场逛逛吧！</view>
+        <button class="me-btn" bindtap="gotoSquare">去广场</button>
+    </view>
+    <view class="me-empty" wx:if="{{currentIndex==0&&supplyCollection.length==0}}">
+        <image src="/imgs/mySupply.png"></image>
+        <view>暂无供应，快去发布吧！</view>
+        <button class="me-btn" bindtap="gotoPublish">立即发布</button>
+    </view>
 </view>

@@ -19,7 +19,7 @@
             <text>{{title}}</text>
             <view class="intro">{{desc}}</view>
             <view wx:if="{{atlas!=''}}"class="production-img">
-                <image  mode="{{atlas.length==1?'aspectFit':'aspectFill'}}"  class="{{(index==1||index==4||index==7)?'second-img':''}}" style="{{atlas.length==1?('width: 100%;height: 360rpx;'):(atlas.length==2?'width: 300rpx;height: 300rpx;':'width: 198rpx;height: 198rpx;')}}"
+                <image  mode="{{atlas.length==1?'widthFix':'aspectFill'}}"  class="{{(index==1||index==4||index==7)?'second-img':''}}" style="{{atlas.length==1?('width: 360rpx;height: 360rpx;'):(atlas.length==2?'width: 300rpx;height: 300rpx;':'width: 198rpx;height: 198rpx;')}}"
                      wx:for="{{atlas}}" wx:key="{{index}}" src="{{item}}" bindtap="previewImage" data-index="{{index}}">{{index}}
                 </image>
             </view>
@@ -44,7 +44,7 @@
                 <image class="icon" src="/imgs/location/location.png"></image>
                 <text class="location-detail">{{location}}</text>
             </view>
-            <text wx:if="{{loc!='undefined'}}">距离{{distance}}千米</text>
+            <text wx:if="{{loc!=false}}">距离{{distance}}千米</text>
         </view>
     </view>
     <view style="width: 0px;display: inline-block; height: {{getHeight-50}}px"></view>

@@ -1,11 +1,11 @@
 {
   "pages": [
     "pages/square/square",
+    "pages/me/me",
     "pages/test/test",
     "pages/login/unit",
     "pages/publish/publish",
     "pages/modify/modify",
-    "pages/me/me",
     "pages/submodify/company/company",
     "pages/detail/detail",
     "pages/published/published",

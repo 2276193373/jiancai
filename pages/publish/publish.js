@@ -15,6 +15,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    hideAddIcon: true,
     typeArr: ['demand','supply'],
     index: '',
     imgList: [],
@@ -152,6 +153,10 @@ Page({
       }
     });
     if (this.data.atlas.length < 9) {
+
+      this.setData({
+        hideAddIcon: true
+      })
       wx.chooseImage({
         //如果count为0
         count: 9-that.data.atlas.length,
@@ -192,6 +197,9 @@ Page({
         }
       });
     } else {
+      this.setData({
+        hideAddIcon: false
+      })
       console.log('图片选择已达上限');
     }
 

@@ -16,7 +16,7 @@
                     <image src="/imgs/delete.png"></image>
                 </view>
             </image>
-            <view class="add-icon" bindtap="uploadImage"><image src="/imgs/add-img.png"></image></view>
+            <view class="add-icon" bindtap="uploadImage" wx:if="{{atlas.length<9}}"><image src="/imgs/add-img.png"></image></view>
         </view>
         <!--    供求选择-->
         <view class="content content-selection" bindtap="showModal">

@@ -6,11 +6,11 @@
     /*break-inside: avoid;!*避免在元素内部插入分页符*!*/
 }
 .body-container {
-    background-color: #fff;
+    background-color: transparent;
     break-inside: avoid;/*避免在元素内部插入分页符*/
     box-sizing: border-box;
     /*padding: 20rpx;*/
-    /*margin-bottom:20rpx;*/
+    /*margin-bottom:20px;*/
 }
 .profile {
     width: 686rpx;
@@ -101,9 +101,10 @@
     margin: 0 auto 11px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, .23);
     background-color: white;
+    /*background-color: green;*/
     padding: 14px 0 14px 0;
     position: relative;
-    top: 4px;
+    top: 10px;
     border-radius: 20rpx;
     /*border: 1px solid red;*/
 }
@@ -161,4 +162,43 @@
 }
 .avatar-me > text {
     margin-left: 40rpx;
+}
+.me-btn {
+    margin: 0 auto;
+    width:171px;
+    height:35px;
+    background:linear-gradient(90deg,rgba(24,170,174,1) 0%,rgba(84,223,210,1) 100%);
+    box-shadow:2px 3px 6px 0px rgba(20,122,123,0.14);
+    border-radius:18px;
+    color: #ffffff;
+    font-size: 15px;
+    /*border: 1px solid red;*/
+    display: inline-block;
+}
+.me-empty {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50rpx;
+    /*border: 1px solid green;*/
+}
+.me-empty > view {
+    /*border: 1px solid red;*/
+    /*height:17px;*/
+    display: inline-block;
+    text-align: center;
+    font-size:12px;
+    font-weight:400;
+    color:rgba(0,0,0,0.48);
+    line-height:17px;
+    margin-bottom: 30px;
+    margin-top: 7px;
+}
+.me-empty > image {
+    width: 194px;
+    height: 197px;
+    margin: 0 auto;
+    transform: translateX(24rpx);
+    /*border: 1px solid red;*/
 }
