@@ -10,7 +10,7 @@
         </view>
         <view class="personal-info" wx:for="{{personalInfo}}" wx:key="{{index}}">
             <view>
-                <image src="{{item.imgUrl}}" mode="scaleToFill" class="me-icon"></image>
+                <image src="{{item.imgUrl}}" class="me-icon"></image>
             </view>
             <text>{{item.info}}</text>
         </view>
@@ -28,7 +28,6 @@
     </view>
 <!--供应与需求列表-->
     <view style="" class="type-container">
-
         <view  class="body-container" wx:for="{{currentIndex==0?supplyCollection:demandCollection}}" wx:key="{{index}}">
             <view class="body-part"  bindtap="gotoDetail" data-index="{{index > minuend ? (1+(index-minuend-1)*2) : index*2}}">
                 <!--【index>minuend】判断是第一列还是第二列，如果是第一列，则将当前索引乘2,(index*2),
@@ -42,10 +41,7 @@
                 </view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
                     <view class="production-img">
-                        <!--  todo 此处需要修改!!!!!!!!!!!!!!!!!!!!   -->
-                        <!--  修改已完成 -->
-                        <image  src="{{item.atlas[0]}}" wx:for="{{1}}" wx:for-item="item1" wx:key="idx" style="height:334rpx;height: {{314}}rpx;"></image>
-
+                        <image mode="aspectFill" src="{{item.atlas[0]}}" wx:for="{{1}}" wx:for-item="item1" wx:key="idx" style="height:334rpx;height: {{314}}rpx;"></image>
                     </view>
                 </view>
                 <text class="title-me">{{item.title}}</text>
@@ -53,11 +49,6 @@
             </view>
         </view>
     </view>
-    <!--<view class="me-empty" wx:if="{{!demandCollection}}">
-        <image src="/imgs/mySupply.png"></image>
-        <view>暂无需求，去广场逛逛吧！</view>
-        <button class="me-btn">去广场</button>
-    </view>-->
     <view class="me-empty" wx:if="{{currentIndex==1&&demandCollection.length==0}}">
         <image src="/imgs/myDemand.png"></image>
         <view>暂无需求，去广场逛逛吧！</view>
@@ -66,6 +57,6 @@
     <view class="me-empty" wx:if="{{currentIndex==0&&supplyCollection.length==0}}">
         <image src="/imgs/mySupply.png"></image>
         <view>暂无供应，快去发布吧！</view>
-        <button class="me-btn" bindtap="gotoPublish">立即发布</button>
+        <button class="me-btn" bindtap="gotoPublish">去广场</button>
     </view>
 </view>

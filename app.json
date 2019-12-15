@@ -2,12 +2,12 @@
   "pages": [
     "pages/square/square",
     "pages/me/me",
+    "pages/detail/detail",
+    "pages/publish/publish",
     "pages/test/test",
     "pages/login/unit",
-    "pages/publish/publish",
     "pages/modify/modify",
     "pages/submodify/company/company",
-    "pages/detail/detail",
     "pages/published/published",
     "pages/interested/interested",
     "pages/submodify/position/position",
@@ -17,10 +17,10 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "index1",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "white",
+    "backgroundColor": "#ffffff",
     "enablePullDownRefresh": true
   },
   "tabBar": {

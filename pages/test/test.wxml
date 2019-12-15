@@ -1,5 +1,1 @@
-<button class="form-option" bindtap='getSetting'>
-    测试地理位置授权
-</button>
-
-
+<image mode="aspectFit" bindload="imageLoad" style="width:{{imageWidth}}px;height:{{imageHeight}}px; border: 1px solid red;" src="/imgs/test/222.jpg"/>

@@ -1,4 +1,5 @@
 import wxRequest from '../../utils/request'
+import Util from "../../utils/getImageZoom";
 
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min');
 var qqmapsdk = new QQMapWX({
@@ -9,6 +10,8 @@ Page({
      * 页面的初始数据
      */
     data: {
+        imageWidth: 0,
+        imageHeight: 0,
         company: '',
         timestamp: 0,
         pop_published: false,
@@ -40,13 +43,34 @@ Page({
         loc: '',
         type: 'supply'
     },
+    imageLoad: function (e) {
+        //获取图片的原始宽度和高度
+        let originalWidth = e.detail.width;
+        let originalHeight = e.detail.height;
+        console.log('宽高长度: ',originalWidth, originalHeight);
+        //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight);
+        //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight,375);
+        if (originalHeight > originalWidth) {
+            var imageSize = Util.imageZoomWidthUtil(originalWidth, originalHeight, 170);
+            console.log('竖图', imageSize);
+        } else {
+            var imageSize = Util.imageZoomHeightUtil(originalWidth, originalHeight, 170);
+            console.log('长图', imageSize);
+        }
+         this.setData({
+             imageWidth: imageSize.imageWidth,
+             imageHeight: imageSize.imageHeight
+         });
+        console.log(this.data.imageWidth);
+        console.log(this.data.imageHeight)
+    },
     tip: function () {
         wx.getSetting({
             success: (res) => {
                 // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
                 // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
                 // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
-                if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {
+                if (!res.authSetting['scope.userLocation']) {
                     //未授权
                     wx.showModal({
                         title: '请求授权当前位置',
@@ -66,7 +90,7 @@ Page({
                                         if (res.authSetting["scope.userLocation"] == true) {
                                             wx.showToast({
                                                 title: '授权成功，可以发布信息了',
-                                                icon: 'success',
+                                                icon: 'none',
                                                 duration: 1000
                                             })
                                             //再次授权，调用wx.getLocation的API
@@ -82,16 +106,7 @@ Page({
                             }
                         }
                     })
-                } else if (res.authSetting['scope.userLocation'] == undefined) {
-                    //用户首次进入页面,调用wx.getLocation的API
-                    // _this.goAddress();
-                    // wx.getLocation({
-                    //     success: res => {
-                    //         console.log(1111)
-                    //     }
-                    // })
-                    console.log(111)
-                } else {
+                }  else {
                     console.log(222)
                     // wx.navigateTo({
                     //     url: '/pages/publish/publish'
@@ -100,39 +115,7 @@ Page({
                 }
             }
         })
-        /* let that = this;
-         wx.showToast({
-             title: '发布信息需要获取您当前的地理位置！',
-             icon: 'none',
-             duration: 1500,
-             success: function (res) {
-                 wx.showModal({
-                     title: '提示！',
-                     confirmText: '去设置',
-                     content: '需要您授权地理位置！',
-                     showCancel: false,
-                     success: function(res) {
-                         if (res.confirm) {
-                             wx.navigateTo({
-                                 url: '/pages/setting/setting'
-                             })
-                             wx.getLocation({
-                                 success: res => {
-                                     const latitude = res.latitude;
-                                     const longitude = res.longitude;
-                                     wx.setStorageSync('currentLatitude', latitude);
-                                     wx.setStorageSync('currentLongitude', longitude);
-                                     that.setData({
-                                         loc: wx.getStorageSync('currentLatitude')
-                                     });
 
-                                 }
-                             });
-                         }
-                     }
-                 })
-             }
-         })*/
     },
     gotoDetail(e) {
         //获取当前点击的元素的索引,并缓存
@@ -149,6 +132,7 @@ Page({
                         '&title=' + prodInfo.title + '&desc=' + prodInfo.desc + '&distance=' + prodInfo.distance +
                         '&location=' + prodInfo.location + '&atlas=' + prodInfo.atlas + '&createdAt=' + prodInfo.createdAt +
                         '&loc=' + this.data.loc + '&type=' + this.data.type + '&company=' + prodInfo.company
+
                 });
             } else {
                 console.log('====错误！!====\n错误码：', res.data.code);
@@ -175,7 +159,7 @@ Page({
                 currentPage: 1
             })
         }
-        //重新封装wx.request
+        //获取信息流列表
         wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, this.data.currentPage).then((res) => {
             if (res.data.code === 20000) {
                 this.setData({
@@ -241,8 +225,24 @@ Page({
         });
     },
     gotoPublish: function () {
-        wx.navigateTo({
-            url: '/pages/publish/publish'
+        let _this = this;
+        wx.getSetting({
+            success:  (res)=> {
+                if (res.authSetting['scope.userLocation']) {
+                    this.setData({
+                        loc: true
+                    });
+                    wx.navigateTo({
+                        url: '/pages/publish/publish'
+                    })
+                } else {
+                    this.setData({
+                        loc: false
+                    })
+                    console.log('auth location failed!');
+                    _this.tip();
+                }
+            }
         })
     },
     close: function () {
@@ -333,23 +333,41 @@ Page({
             success: res => {
                 if (res.code) {
                     wxRequest.login(res.code).then(res => {
-                        console.log('++++++', res);
                         if (!res.data.data) {
-                            wx.redirectTo({
-                                url: '/pages/login/unit'
+                            wx.showToast({
+                              title: '您当前尚未登录，即将跳转到登录页面！',
+                              icon: 'none',
+                              duration: 2000
                             });
-                        } else {
-                            if (!res.data.data.user.phoneNumber) {
+                            setTimeout(function () {
                                 wx.redirectTo({
                                     url: '/pages/login/unit'
                                 });
+                            }, 2000)
+                        } else {
+                            wx.setStorageSync('token', res.data.data.token);
+                            if (!res.data.data.user.phoneNumber) {
+                                wx.showToast({
+                                    title: '您当前尚未授权手机号，即将跳转到授权手机号页面！',
+                                    icon: 'none',
+                                    duration: 2000
+                                });
+                                setTimeout(function () {
+                                    wx.redirectTo({
+                                        url: '/pages/login/unit'
+                                    });
+                                }, 2000)
                             }
                             if (!res.data.data.user.realName) {
+                                wx.showToast({
+                                    title: '您当前尚未填写完整信息，即将跳转到授权手机号页面！',
+                                    icon: 'none',
+                                    duration: 2000
+                                });
                                 wx.redirectTo({
                                     url: '/pages/login/unit'
                                 })
                             }
-                            wx.setStorageSync('token', res.data.data.token);
                         }
                     });
                 }
@@ -425,7 +443,6 @@ Page({
                         }
                     })
                 }
-                // console.log('res.data.data.list: 列表',res.data.data.list);
             } else {
                 console.log("出错！\n");
                 console.log(`错误码：${res.data.code}`);
@@ -438,17 +455,15 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
-        return {
-            title: '我发布了一则信息，快来围观~~',
-            path: `/pages/detail/detail?
-            title=${wx.getStorageSync('publish_info').title}
-            &desc=${wx.getStorageSync('publish_info').desc}
-            &avatar=${wx.getStorageSync('publish_info').creatorAvatar}
-            &atlas=${wx.getStorageSync('publish_info').atlas}
-            &name=${wx.getStorageSync('publish_info').creatorNickname}
+        let _url = `/pages/detail/detail?desc=${wx.getStorageSync('publish_info').desc}
+            &title=${wx.getStorageSync('publish_info').title}&creatorAvatar=${wx.getStorageSync('publish_info').creatorAvatar}&atlas=${wx.getStorageSync('publish_info').atlas}
+            &creatorNickname=${wx.getStorageSync('publish_info').creatorNickname}
             &location=${wx.getStorageSync('publish_info').location}
             &createdAt=${wx.getStorageSync('publish_info').createdAt}
             &company=${wx.getStorageSync('publish_info').company}`
+        return {
+            title: '我发布了一则信息，快来围观~~',
+            path: _url
         }
     }
 })

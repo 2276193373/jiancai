@@ -1,7 +1,6 @@
 // pages/me/me.js
 import wxRequest from '../../utils/request'
 Page({
-
 /**
    * 页面的初始数据
    */
@@ -134,7 +133,10 @@ Page({
     });
   },
   gotoPublish: function () {
-    wx.getSetting({
+      wx.switchTab({
+        url: '/pages/square/square'
+      })
+   /* wx.getSetting({
       success: (res) => {
         // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
         // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
@@ -187,7 +189,7 @@ Page({
 
         }
       }
-    })
+    })*/
 
   },
   /**
@@ -256,7 +258,7 @@ Page({
             },
             {
               imgUrl: '/imgs/phone-me.png',
-              info: '18759770340'
+              info: info.phoneNumber
             },
             {
               imgUrl: '/imgs/workbench.png',

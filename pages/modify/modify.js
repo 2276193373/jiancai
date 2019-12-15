@@ -97,12 +97,9 @@ Page({
             }
         });
     },
-
-
     onShow() {
         wxRequest.relogin().then(res => {
             this.setData({
-                //性别，temp与后台相关，temp1与前台显示相关
                 gender: res.data.data.user.gender,
             });
             wx.request({

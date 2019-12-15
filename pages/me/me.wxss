@@ -2,15 +2,34 @@
     padding: 32rpx;
 }
 .type-container {
+    /*border: 1px solid yellow;*/
     column-count: 2;
     /*break-inside: avoid;!*避免在元素内部插入分页符*!*/
+    column-gap: 0px;
 }
 .body-container {
+    /*position: relative;*/
+    /*top: 8rpx;*/
     background-color: transparent;
     break-inside: avoid;/*避免在元素内部插入分页符*/
     box-sizing: border-box;
-    /*padding: 20rpx;*/
-    /*margin-bottom:20px;*/
+    padding: 10rpx;
+    padding-bottom: 7px;
+    border-radius: 20rpx;
+    /*border: 1px solid red;*/
+}
+.body-part {
+    width: 100%;
+    /*height: 548rpx;*/
+    margin: 0px auto 0rpx;
+    background-color: transparent;
+    /*background-color: green;*/
+    padding: 28rpx 0;
+    position: relative;
+    box-shadow: 0 2px 7px 0px rgba(0, 0, 0, .16), 0 3px 7px 0 rgba(0, 0, 0, .14);
+    border-radius: 20rpx;
+    /*top: 10px;*/
+    /*border: 1px solid red;*/
 }
 .profile {
     width: 686rpx;
@@ -20,8 +39,6 @@
     box-shadow: 0 4rpx 12rpx 0 rgba(0,0,0,.24);
     border-radius: 8rpx;
     color: #888;
-    /*border: 1px solid red;*/
-
 }
 .avatar-bar {
     display: flex;
@@ -29,7 +46,6 @@
     font-size:18px 36rpx;
     color: #000;
     margin: 0 0 30rpx 16rpx;
-    /*border: 1px solid red;*/
     position: relative;
 }
 .avatar-bar > image, .personal-info > image {
@@ -56,7 +72,6 @@
     line-height: 42rpx;
     position: absolute;
     right: 4rpx;
-    /*border: 1px solid red;*/
 }
 .arrow-left {
     width: 16rpx;
@@ -95,19 +110,7 @@
     border-bottom: 4rpx solid #FF4B49;
     color: #FF4B49;
 }
-.body-part {
-    width: 100%;
-    /*height: 548rpx;*/
-    margin: 0 auto 11px;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, .23);
-    background-color: white;
-    /*background-color: green;*/
-    padding: 14px 0 14px 0;
-    position: relative;
-    top: 10px;
-    border-radius: 20rpx;
-    /*border: 1px solid red;*/
-}
+
 .type {
     width: 78rpx;
     height: 63rpx;
@@ -154,6 +157,7 @@
     font-family: "PingFangSC-Regular";
 }
 .avatar-me {
+    margin: 0;
 }
 .avatar-me > image {
     border-radius: unset !important;

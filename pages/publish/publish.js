@@ -15,6 +15,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    leftCount: 0,
     hideAddIcon: true,
     typeArr: ['demand','supply'],
     index: '',
@@ -82,9 +83,11 @@ Page({
     let title = dataset.title;
     that.data[title] = value;
     that.setData({
-      title: that.data[title]
+      title: that.data[title],
+      leftCount: that.data[title].length
     });
-    // console.log('title: ' + that.data[title]);
+    // console.log('title: ', that.data[title].length)
+    console.log('剩作可输入字数: ', 19-that.data[title].length);
   },
   //描述信息输入框
   inputDesc: function(e) {

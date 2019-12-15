@@ -3,15 +3,17 @@
     <view class="container">
         <view class="title">标题输入</view>
         <view class="content">
-            <input type="text" data-title="title" maxlength="19" bindinput="inputTitle" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:17px" value="{{title}}" />
+            <input type="text" data-title="title" maxlength="19" bindinput="inputTitle" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" value="{{title}}" />
+            <text wx:if="{{leftCount>14}}" id="leftCount">{{leftCount}}/19</text>
         </view>
         <view class="title">内容文字输入</view>
-        <view class="content content-tra">
-            <textarea type="text" data-desc="desc" maxlength="100" bindinput="inputDesc" placeholder="请输入产品描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
+        <view class="textarea-content">
+            <textarea type="text" auto-height maxlength="-1" data-desc="desc" bindinput="inputDesc" placeholder="请输入产品描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
+            <view class="height-60"></view>
         </view>
         <view class="title">图片添加</view>
         <view class="content content-imgAdd">
-            <image bindtap="previewImg" data-index="{{index}}" class="images-style" wx:for="{{atlas}}" wx:key="index"  src="{{atlas[index]}}">
+            <image mode="aspectFill" bindtap="previewImg" data-index="{{index}}" class="images-style" wx:for="{{atlas}}" wx:key="index"  src="{{atlas[index]}}">
                 <view catchtap="deleteImg" data-index="{{index}}" class="pub-close">
                     <image src="/imgs/delete.png"></image>
                 </view>
@@ -29,7 +31,6 @@
             </picker>
             <image src="/imgs/arrow-right-active.png"></image>
         </view>
-
         <!--    遮罩层     -->
         <view class="mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
         <!-- 弹出层 -->
@@ -42,20 +43,18 @@
         <view class="published" wx:if="{{show_}}">
             <view class="close" bindtap="close"></view>
         </view>
-
-
         <view bindtap="setPosition" class="content content-position">
             <image src="/imgs/location/location.png" class="location"></image>
             <text>{{address.location?address.location:_location}}</text>
             <image src="/imgs/arrow-right-active.png"></image>
         </view>
-        <!--    todo  -->
-
     </view>
 </view>
 
-<view style="width: 0px;display: inline-block; height: {{winHeight-10}}px"></view>
-<button class="contact {{imgList && title && desc && type && address.location ? 'active':'disable'}}"
-        bindtap="{{imgList && title && desc && type && address.location ? 'publish':'todo'}}">
-    发布
-</button>
+<!--<view class="zhizhu" style="height: {{winHeight-120}}px"></view>-->
+<view class="btn-container">
+    <button class="contact {{imgList && title && desc && type && address.location ? 'active':'disable'}}"
+            bindtap="{{imgList && title && desc && type && address.location ? 'publish':'todo'}}">
+        发布
+    </button>
+</view>

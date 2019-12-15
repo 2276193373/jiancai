@@ -198,21 +198,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-   /* wxRequest.relogin().then(res => {
-      try {
-        this.setData({
-          avatarUrl: res.data.data.user.avatarUrl,
-          phoneNumber: res.data.data.user.phoneNumber==0?'':res.data.data.user.phoneNumber,
-          realName: res.data.data.user.phoneNumber
-        });
-      } catch (e) {
-        console.log('这是预料中的异常，不必理会！\n异常信息：【',e+'】');
-      }
-      console.log('avatarUrl: ', this.data.avatarUrl);
-      console.log('phone: ', this.data.phoneNumber);
-      console.log('realName: ', this.data.realName);
-      console.log('res.data1: ',res.data.data.user);
-    });*/
     wx.setNavigationBarTitle({
       title: '我的'
     });
@@ -225,11 +210,6 @@ Page({
         wx.setStorageSync('currentLongitude', longitude);
       }
     });
-    // ？？？？
-   /* this.setData({
-      token: wx.getStorageSync('token'),
-      phoneNumber: wx.getStorageSync('phoneNumber'),
-    });*/
   },
   onShow: function () {
     wx.login({
@@ -248,6 +228,5 @@ Page({
         }
       }
     });
-
   }
 })

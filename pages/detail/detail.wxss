@@ -1,14 +1,19 @@
 page {
     overflow-y: visible!important;
+    /*background-color: #EFEFF4;*/
+    padding: 16px;
+    box-sizing: border-box;
+    padding-bottom: 100px;
 }
 .container {
-    width: 686rpx;
+    /*width: 686rpx;*/
     /*border: 1px solid red;*/
-    margin: 42rpx auto 0;
-    border-radius: 4rpx;
+    /*margin: 42rpx auto 0;*/
+    border-radius: 2px;
     /*padding-bottom: 76rpx;*/
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
     position: relative;
+    background-color: white;
 }
 .container-padding {
     position: relative;
@@ -142,7 +147,17 @@ page {
     /*width: 200px;*/
     float: right;
 }
-
+.btn-container {
+    padding: 11px 20px 12px;
+    background-color: #ffffff;
+    margin-top: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 90%;
+    z-index: 100;
+    box-shadow: 0 0 7px 0 rgba(0,0,0, .33);
+}
 .contact {
     width: 100%;
     height: 47px;
@@ -159,7 +174,7 @@ page {
     /*position: absolute;
     bottom: 20px;*/
     padding: 20px;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 .contact-btn {
     width: 36rpx;

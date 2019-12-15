@@ -75,7 +75,7 @@
                 <view class="intro">{{item.desc}}</view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
                     <view class="production-img" style="{{item.atlas.length>=3?'height: 198rpx;':''}}">
-                        <image bindload="getImageWH" mode="{{item.atlas.length==1?'aspectFill':'aspectFill'}}" style="{{item.atlas.length==1?('width: 200rpx; height: 340rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
+                        <image bindload="imageLoad" mode="{{item.atlas.length==1?'aspectFill':'aspectFill'}}" style="{{item.atlas.length==1?('width:'+ 340+'rpx; height:'+ 340+'rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
                         <view class="total-img" wx:if="{{item.atlas.length>3}}">共{{item.atlas.length}}张</view>
                     </view>
                 </view>
