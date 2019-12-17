@@ -47,12 +47,12 @@
         </view>
     </view>
 </view>
-
-<view class="btn-container">
-    <button class="contact" bindtap="contact">
+<view style="height: 70px;" class="{{isIpx?'ipx':''}}"></view>
+<view class="btn-container {{isIpx?'ipx':''}}">
+    <button class="contact" bindtap="{{owner?'':'contact'}}" open-type="{{owner?'share':''}}">
     <view>
-        <image src="/imgs/telephone.png" class="contact-btn"></image>
+        <image src="{{owner?'/imgs/share.png':'/imgs/telephone.png'}}" class="contact-btn"></image>
     </view>
-    立即联系
+    {{owner?'分享到微信群':'立即联系'}}
 </button>
 </view>

@@ -8,12 +8,33 @@
                 <image src="/imgs/arrow-right.png" class="arrow-left"></image>
             </view>
         </view>
-        <view class="personal-info" wx:for="{{personalInfo}}" wx:key="{{index}}">
+        <view class="profile-display">
+            <view class="personal-info">
+                <view>
+                    <image src="{{personalInfo[0].imgUrl}}" class="me-icon"></image>
+                </view>
+                <text>{{personalInfo[0].info}}</text>
+            </view>
+            <view class="personal-info">
+                <view>
+                    <image src="{{personalInfo[1].imgUrl}}" class="me-icon"></image>
+                </view>
+                <text>{{personalInfo[1].info}}</text>
+            </view>
+            <view class="personal-info" wx:if="{{personalInfo[2].info}}">
+                <view>
+                    <image src="{{personalInfo[2].imgUrl}}" class="me-icon"></image>
+                </view>
+                <text style="{{personalInfo[2].info?'':'color: rgba(0,0,0, .2)'}}">{{personalInfo[2].info?personalInfo[2].info:'职位信息未填写!'}}</text>
+            </view>
+        </view>
+
+        <!--<view class="personal-info" wx:for="{{personalInfo}}" wx:key="{{index}}">
             <view>
                 <image src="{{item.imgUrl}}" class="me-icon"></image>
             </view>
             <text>{{item.info}}</text>
-        </view>
+        </view>-->
     </view>
 <!--供应与需求导航栏-->
     <view class="navbar-container">

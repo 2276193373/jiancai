@@ -8,6 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        owner: false,
         //获取屏幕高高
         getHeight: wx.getSystemInfoSync().windowHeight,
         loc: '',
@@ -29,7 +30,8 @@ Page({
         interestedCount: '',
         _id: '',
         infoId: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        isIpx: getApp().globalData.isIpx
     },
     //授权地理位置
     authLocation: function () {
@@ -101,15 +103,25 @@ Page({
     },
     todo: function () {
         wx.showToast({
-            title: '没有人感兴趣哦！'
+            title: '还没有人感兴趣！',
+            icon: 'none'
         })
     },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
+        // console.log('this.data.isIpx: ', this.data.isIpx)
+        wxRequest.getUserInfo().then(res => {
+            if (options.creatorNickname === res.data.data.nickName) {
+                this.setData({
+                    owner: true
+                })
+            }
+        });
         wx.getSetting({
             success: (res) => {
+                //查看地理位置授权
                 if (res.authSetting['scope.userLocation']) {
                     this.setData({
                         loc: true
@@ -154,7 +166,6 @@ Page({
             createdAt: options.createdAt,
             company: options.company
         })
-
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
@@ -198,8 +209,6 @@ Page({
         await wxRequest.getBrowseringHistory(options._id).then((res) => {
             if (res.data.code === 20000) {
                 console.log("请求感兴趣成功！");
-                console.log('有n个人感兴趣，看list长度')
-                console.log(res.data.data.list)
                 let list = res.data.data.list;
                 //遍历感兴趣列表
                 for (let i = 0; i < list.length; i++) {
@@ -210,11 +219,15 @@ Page({
                         })
                     }
                 }
-                this.setData({
-                    list: list,
-                    interestedCount: list.length,
-                    infoId: list[0].infoId
-                });
+                try {
+                    this.setData({
+                        list: list,
+                        interestedCount: list.length,
+                        infoId: list[0].infoId
+                    });
+                } catch (e) {
+                    console.log('捕抓到的异常:', e)
+                }
             } else {
                 console.log('====错误！!====\n错误码：', res.data.code);
                 console.log(res.errMsg);
@@ -225,10 +238,16 @@ Page({
 
     //todo 12/10
     contact: function () {
+        console.log(111)
         wxRequest.relogin().then(res => {
-            console.log('user', res.data.data.user)
+            console.log('this.data: ', this.data)
             let phoneNumber = this.data.phoneNumber
-            myUtils.phoneCall(phoneNumber);
+            console.log('phone: ', typeof phoneNumber)
+            // myUtils.phoneCall(phoneNumber);
+            wx.makePhoneCall({
+                //电话号码为字符串，并非数字
+              phoneNumber: phoneNumber.toString()
+            })
         });
     },
 })

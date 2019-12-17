@@ -19,7 +19,7 @@ Page({
   contact: function (e) {
     let index = e.currentTarget.dataset.index
     wx.makePhoneCall({
-      phoneNumber: this.data.list[index].phoneNumber //仅为示例，并非真实的电话号码
+      phoneNumber: this.data.list[index].phoneNumber.toString()
     })
   },
   onLoad: function (options) {

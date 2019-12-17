@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/square/square",
+    "pages/publish/publish",
     "pages/me/me",
     "pages/detail/detail",
-    "pages/publish/publish",
     "pages/test/test",
     "pages/login/unit",
     "pages/modify/modify",
@@ -20,8 +20,7 @@
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "index1",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#ffffff",
-    "enablePullDownRefresh": true
+    "backgroundColor": "#ffffff"
   },
   "tabBar": {
     "selectedColor": "#FF4B49",

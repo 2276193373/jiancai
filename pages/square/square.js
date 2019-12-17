@@ -43,7 +43,7 @@ Page({
         loc: '',
         type: 'supply'
     },
-    imageLoad: function (e) {
+    /*imageLoad: function (e) {
         //获取图片的原始宽度和高度
         let originalWidth = e.detail.width;
         let originalHeight = e.detail.height;
@@ -63,7 +63,7 @@ Page({
          });
         console.log(this.data.imageWidth);
         console.log(this.data.imageHeight)
-    },
+    },*/
     tip: function () {
         wx.getSetting({
             success: (res) => {
@@ -276,6 +276,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        // console.log('isIpx: 全局变量',getApp().globalData.isIpx);
         //设置标题栏内容
         wx.setNavigationBarTitle({
             title: '建材供应圏'
@@ -294,7 +295,8 @@ Page({
                 wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
                     if (res.data.code === 20000) {
                         this.setData({
-                            productionInfo: res.data.data.list
+                            productionInfo: res.data.data.list,
+                            __show: true
                         });
                         console.log('productionInfo: ', this.data.productionInfo);
                     } else {
@@ -337,26 +339,26 @@ Page({
                             wx.showToast({
                               title: '您当前尚未登录，即将跳转到登录页面！',
                               icon: 'none',
-                              duration: 2000
+                              duration: 1000,
+                              success: function () {
+                                  wx.redirectTo({
+                                      url: '/pages/login/unit'
+                                  });
+                              }
                             });
-                            setTimeout(function () {
-                                wx.redirectTo({
-                                    url: '/pages/login/unit'
-                                });
-                            }, 2000)
                         } else {
                             wx.setStorageSync('token', res.data.data.token);
                             if (!res.data.data.user.phoneNumber) {
                                 wx.showToast({
                                     title: '您当前尚未授权手机号，即将跳转到授权手机号页面！',
                                     icon: 'none',
-                                    duration: 2000
+                                    duration: 2000,
+                                    success: function () {
+                                        wx.redirectTo({
+                                            url: '/pages/login/unit'
+                                        });
+                                    }
                                 });
-                                setTimeout(function () {
-                                    wx.redirectTo({
-                                        url: '/pages/login/unit'
-                                    });
-                                }, 2000)
                             }
                             if (!res.data.data.user.realName) {
                                 wx.showToast({
@@ -374,7 +376,6 @@ Page({
             }
         })
         this.getLocation();
-        console.log('onShow');
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
@@ -455,14 +456,9 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
-        let _url = `/pages/detail/detail?desc=${wx.getStorageSync('publish_info').desc}
-            &title=${wx.getStorageSync('publish_info').title}&creatorAvatar=${wx.getStorageSync('publish_info').creatorAvatar}&atlas=${wx.getStorageSync('publish_info').atlas}
-            &creatorNickname=${wx.getStorageSync('publish_info').creatorNickname}
-            &location=${wx.getStorageSync('publish_info').location}
-            &createdAt=${wx.getStorageSync('publish_info').createdAt}
-            &company=${wx.getStorageSync('publish_info').company}`
+        let _url = `/pages/detail/detail?desc=${wx.getStorageSync('publish_info').desc} &title=${wx.getStorageSync('publish_info').title}&creatorAvatar=${wx.getStorageSync('publish_info').creatorAvatar}&atlas=${wx.getStorageSync('publish_info').atlas}&creatorNickname=${wx.getStorageSync('publish_info').creatorNickname}&location=${wx.getStorageSync('publish_info').location}&createdAt=${wx.getStorageSync('publish_info').createdAt}&company=${wx.getStorageSync('publish_info').company}`
         return {
-            title: '我发布了一则信息，快来围观~~',
+            title: '我发布了一则信息，快来看看吧！',
             path: _url
         }
     }

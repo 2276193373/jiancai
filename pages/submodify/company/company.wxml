@@ -3,4 +3,6 @@
     <text>当前公司</text>
     <input type="text" value="{{company}}" bindinput="inputedit" data-name="company"/>
 </view>
-<button class="contact {{company?'':'disable'}}" bindtap="save">保存</button>
+<view>
+    <button class="contact {{company?'':'disable'}}" bindtap="save">保存</button>
+</view>

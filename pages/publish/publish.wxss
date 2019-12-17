@@ -360,3 +360,6 @@ page {
     width: 0;
     display: inline-block;
 }
+.ipx {
+    padding-bottom: 68rpx!important;
+}

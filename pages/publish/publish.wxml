@@ -3,7 +3,7 @@
     <view class="container">
         <view class="title">标题输入</view>
         <view class="content">
-            <input type="text" data-title="title" maxlength="19" bindinput="inputTitle" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" value="{{title}}" />
+            <input value="{{title}}" type="text" maxlength="19" bindinput="inputTitle" data-title="title" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" />
             <text wx:if="{{leftCount>14}}" id="leftCount">{{leftCount}}/19</text>
         </view>
         <view class="title">内容文字输入</view>
@@ -50,9 +50,7 @@
         </view>
     </view>
 </view>
-
-<!--<view class="zhizhu" style="height: {{winHeight-120}}px"></view>-->
-<view class="btn-container">
+<view class="btn-container {{isIpx?'ipx':''}}">
     <button class="contact {{imgList && title && desc && type && address.location ? 'active':'disable'}}"
             bindtap="{{imgList && title && desc && type && address.location ? 'publish':'todo'}}">
         发布

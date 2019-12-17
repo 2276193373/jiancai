@@ -53,7 +53,7 @@
         </view>
     </view>
     <!--    列表部分  ---------->
-    <view class="body-container" wx:for="{{productionInfo}}" wx:key="{{index}}" wx:if="{{productionInfo.length}}">
+    <view class="body-container" wx:for="{{productionInfo}}" wx:key="{{index}}" wx:if="{{productionInfo.length>0}}">
 <!--        只看供应 -->
         <view class="body-part"  bindtap="gotoDetail" data-index="{{index}}">
             <view class="block-shadow">
@@ -75,7 +75,7 @@
                 <view class="intro">{{item.desc}}</view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
                     <view class="production-img" style="{{item.atlas.length>=3?'height: 198rpx;':''}}">
-                        <image bindload="imageLoad" mode="{{item.atlas.length==1?'aspectFill':'aspectFill'}}" style="{{item.atlas.length==1?('width:'+ 340+'rpx; height:'+ 340+'rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
+                        <image  mode="{{item.atlas.length==1?'aspectFill':'aspectFill'}}" style="{{item.atlas.length==1?('width:'+ 340+'rpx; height:'+ 340+'rpx;'):(item.atlas.length==2?'width: 300rpx;height: 300rpx;':'')}}"   src="{{item.atlas[index]}}" wx:for="{{item.atlas}}" wx:for-item="item1" wx:key="idx"></image>
                         <view class="total-img" wx:if="{{item.atlas.length>3}}">共{{item.atlas.length}}张</view>
                     </view>
                 </view>
@@ -98,10 +98,9 @@
                     <text wx:if="{{loc}}">距离{{distance.getDistance(item.distance)}}千米</text>
                 </view>
             </view>
-
+        </view>
     </view>
-    </view>
-    <view wx:if="{{productionInfo==0}}">
+    <view wx:if="{{productionInfo.length==0&&__show}}">
         <view class="empty" style="height:{{winHeight-90}}px; padding-top: {{120}}rpx">
             <image src="/imgs/empty1.png" style="width: 242rpx; height: 284rpx;"></image>
             <text class="empty-text">暂无供求动态哦</text>

@@ -30,7 +30,6 @@ module.exports = {
 
 export default {
     async apiCalls(endpointer, method, header, data) {
-        // let baseUrl = 'http://118.25.21.169:2000/' + endpointer;
         let baseUrl = 'https://ceramic.lindingtechnology.com/' + endpointer;
         if (header === 'defaultHeader') {
             header =  {

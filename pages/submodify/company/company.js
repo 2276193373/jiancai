@@ -1,5 +1,6 @@
 // pages/submodify/gender.js
 import wxRequest from '../../../utils/request'
+import myUtils from "../../../utils/myUtils";
 
 Page({
 
@@ -45,7 +46,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        myUtils.wxSetNavbarTitle('公司')
         wxRequest.relogin().then((res) => {
             this.setData({
                 company: res.data.data.user.company

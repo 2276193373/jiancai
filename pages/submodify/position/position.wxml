@@ -3,4 +3,4 @@
     <text>当前职位</text>
     <input value="{{position}}" bindinput="inputedit" data-name="position"/>
 </view>
-<button class="contact {{position?'':'disable'}}" bindtap="save">保存</button>
+<button class="contact {{position?'':''}}" bindtap="save">保存</button>

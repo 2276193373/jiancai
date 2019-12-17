@@ -15,6 +15,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isDisable: false,
+    isIpx: getApp().globalData.isIpx,
     leftCount: 0,
     hideAddIcon: true,
     typeArr: ['demand','supply'],
@@ -42,21 +44,37 @@ Page({
     //发布传入data
     wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
       if (res.data.code === 20000) {
+        wxRequest.getUserInfo().then(res => {
+          console.log(res.data)
+          wx.setStorageSync('publish_info', {
+              title: this.data.title,
+              desc: this.data.desc,
+              atlas: this.data.atlas,
+              type: this.data.type,
+              location: this.data.address.location,
+              creatorNickname: res.data.data.nickName,
+              company: res.data.data.company,
+              creatorAvatar: res.data.data.avatarUrl,
+              createdAt: res.data.data.createdAt
+          });
+        });
+
         console.log('发布成功！');
         wx.setStorageSync('pop', true);
-        wx.switchTab({
+        wx.reLaunch({
           url: '/pages/square/square',
           success: res => {
           }
         });
         console.log('发布后返回的信息数据：',res.data.data);
-        wx.setStorageSync('publish_info', res.data.data);
+        // wx.setStorageSync('publish_info', res.data.data);
         wx.setStorageSync('timeSort', 'time');
         wx.setStorageSync('type', this.data.type);
       } else {
+        console.log('res.data: ',res.data)
         console.log('发布出错！\n')
-        console.log('====错误！!====\n错误码：',res.data.code)
-        console.log('\n====错误信息：', res.data.msg)
+        console.log('---错误！!---\n错误码：',res.data.code)
+        console.log('\n错误信息：', res.data.msg)
       }
     });
   },
@@ -82,12 +100,12 @@ Page({
     let value = e.detail.value;
     let title = dataset.title;
     that.data[title] = value;
+    // console.log('value: ',value)
     that.setData({
-      title: that.data[title],
-      leftCount: that.data[title].length
+      title: that.data[title].slice(0, 19),
+      leftCount: that.data[title].length,
     });
-    // console.log('title: ', that.data[title].length)
-    console.log('剩作可输入字数: ', 19-that.data[title].length);
+    console.log(this.data.title)
   },
   //描述信息输入框
   inputDesc: function(e) {
