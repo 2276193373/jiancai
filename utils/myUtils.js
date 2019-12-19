@@ -21,5 +21,25 @@ export default {
         wx.makePhoneCall({
           phoneNumber: phoneNumber
         });
+    },
+    //注册提示
+    registerTip(content='完成注册后才可发布', url='login/unit', title='提示') {
+        return new Promise((resolve, reject) => {
+            wx.showModal({
+                title: title,
+                content: content,
+                success: function (res) {
+                    if (res.confirm === true) {
+                        wx.redirectTo({
+                            url: `/pages/${url}`
+                        })
+                        resolve('confirm')
+                    } else {
+                        resolve('cancel')
+                    }
+                }
+            });
+        })
+
     }
 } 

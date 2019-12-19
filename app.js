@@ -3,8 +3,10 @@ App({
   onLaunch: function () {
       wx.getSystemInfo({
           success:res=>{
-              // console.log('我是全局变量：',res.model)
-              this.globalData.isIpx = res.model.search('iPhone X') !== -1
+              // this.globalData.isIpx = res.model.search('iPhone12') !== -1
+              // this.globalData.isIpx = res.model.search(/iPhone1./) !== -1
+              //匹配iPhone10,iPhone11,iPhone12
+              this.globalData.isIpx = /iPhone1./.test(res.model.toString())
           }
       })
   },

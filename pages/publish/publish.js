@@ -11,9 +11,6 @@ var qqmapsdk = new QQMapWX({
   key: '52TBZ-3CXEF-MDMJK-NYPO7-AI3FF-EPF64' // 必填
 });
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
     isDisable: false,
     isIpx: getApp().globalData.isIpx,
@@ -25,8 +22,8 @@ Page({
     winHeight: (wx.getSystemInfoSync().windowHeight),
     showModal: false,
     show_: false,
-      //todo 以下有关位置信息做测试用
-    _location: '',
+     //todo 以下有关位置信息做测试用
+      _location: '',
       title: '',
       desc: '',
       atlas: [],
@@ -36,33 +33,27 @@ Page({
         longitude: 0, //值为数字
         latitude: 0, //值为数字
       },
+    phoneNumber: ''
   },
 
   //发布信息
   publish: function () {
-    let that = this;
+    wxRequest.relogin().then(res => {
+      console.log('data of relogin:', res.data.data.user.phoneNumber)
+      console.log('typeof phoneNumber: ',typeof res.data.data.user.phoneNumber)
+      this.setData({
+        phoneNumber: res.data.data.user.phoneNumber
+      })
+    });
     //发布传入data
     wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
+      let infoOfPublish = res.data.data;
       if (res.data.code === 20000) {
-        wxRequest.getUserInfo().then(res => {
-          console.log(res.data)
-          wx.setStorageSync('publish_info', {
-              title: this.data.title,
-              desc: this.data.desc,
-              atlas: this.data.atlas,
-              type: this.data.type,
-              location: this.data.address.location,
-              creatorNickname: res.data.data.nickName,
-              company: res.data.data.company,
-              creatorAvatar: res.data.data.avatarUrl,
-              createdAt: res.data.data.createdAt
-          });
-        });
-
+        console.log('res.data of publish---->',res.data)
         console.log('发布成功！');
         wx.setStorageSync('pop', true);
-        wx.reLaunch({
-          url: '/pages/square/square',
+        wx.redirectTo({
+          url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
           success: res => {
           }
         });
@@ -147,7 +138,6 @@ Page({
             [longitude]: res.longitude,
             [latitude]: res.latitude
           });
-
           console.log("输出选中的地址信息: ");
           console.log(this.data.address);
 

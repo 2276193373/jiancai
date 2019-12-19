@@ -1,14 +1,12 @@
 import wxRequest from '../../utils/request'
 import Util from "../../utils/getImageZoom";
+import myUtils from "../../utils/myUtils";
 
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min');
 var qqmapsdk = new QQMapWX({
     key: '52TBZ-3CXEF-MDMJK-NYPO7-AI3FF-EPF64'
 });
 Page({
-    /**
-     * 页面的初始数据
-     */
     data: {
         imageWidth: 0,
         imageHeight: 0,
@@ -43,27 +41,6 @@ Page({
         loc: '',
         type: 'supply'
     },
-    /*imageLoad: function (e) {
-        //获取图片的原始宽度和高度
-        let originalWidth = e.detail.width;
-        let originalHeight = e.detail.height;
-        console.log('宽高长度: ',originalWidth, originalHeight);
-        //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight);
-        //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight,375);
-        if (originalHeight > originalWidth) {
-            var imageSize = Util.imageZoomWidthUtil(originalWidth, originalHeight, 170);
-            console.log('竖图', imageSize);
-        } else {
-            var imageSize = Util.imageZoomHeightUtil(originalWidth, originalHeight, 170);
-            console.log('长图', imageSize);
-        }
-         this.setData({
-             imageWidth: imageSize.imageWidth,
-             imageHeight: imageSize.imageHeight
-         });
-        console.log(this.data.imageWidth);
-        console.log(this.data.imageHeight)
-    },*/
     tip: function () {
         wx.getSetting({
             success: (res) => {
@@ -111,35 +88,33 @@ Page({
                     // wx.navigateTo({
                     //     url: '/pages/publish/publish'
                     // })
-
                 }
             }
         })
 
     },
+    authTip: function() {
+        wx.showToast({
+          title: '按距离排序需要授权位置信息！',
+          icon: 'none'
+        })
+    },
     gotoDetail(e) {
         //获取当前点击的元素的索引,并缓存
         wx.setStorageSync('itemIndex', e.currentTarget.dataset.index);
-
-        //重新封装wx.request()
         //获取信息列表
         wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
             if (res.data.code === 20000) {
                 let prodInfo = res.data.data.list[e.currentTarget.dataset.index];
+                console.log('prodInfo: ',prodInfo)
                 wx.navigateTo({
-                    url: "/pages/detail/detail?_id=" + prodInfo._id + '&creatorId=' + prodInfo.creatorId +
-                        '&creatorAvatar=' + prodInfo.creatorAvatar + '&creatorNickname=' + prodInfo.creatorNickname +
-                        '&title=' + prodInfo.title + '&desc=' + prodInfo.desc + '&distance=' + prodInfo.distance +
-                        '&location=' + prodInfo.location + '&atlas=' + prodInfo.atlas + '&createdAt=' + prodInfo.createdAt +
-                        '&loc=' + this.data.loc + '&type=' + this.data.type + '&company=' + prodInfo.company
-
+                    url: `/pages/detail/detail?_id=${prodInfo._id}&creatorPhoneNumber=${prodInfo.creatorPhoneNumber}`
                 });
             } else {
                 console.log('====错误！!====\n错误码：', res.data.code);
                 console.log(res.errMsg);
             }
         });
-
     },
 //点击首页导航栏按钮
     activeNav(e) {
@@ -225,25 +200,45 @@ Page({
         });
     },
     gotoPublish: function () {
-        let _this = this;
-        wx.getSetting({
-            success:  (res)=> {
-                if (res.authSetting['scope.userLocation']) {
-                    this.setData({
-                        loc: true
+        wx.login({
+            success: res => {
+                if (res.code) {
+                    wxRequest.login(res.code).then(res => {
+                        if (!res.data.data) {
+                            myUtils.registerTip();
+                        } else {
+                            wx.setStorageSync('token', res.data.data.token);
+                            if (!res.data.data.user.phoneNumber) {
+                                myUtils.registerTip()
+                            }
+                            else if (!res.data.data.user.realName) {
+                                myUtils.registerTip()
+                            } else {
+                                wx.getSetting({
+                                    success:  (res)=> {
+                                        if (res.authSetting['scope.userLocation']) {
+                                            this.setData({
+                                                loc: true
+                                            });
+                                            wx.navigateTo({
+                                                url: '/pages/publish/publish'
+                                            })
+                                        } else {
+                                            this.setData({
+                                                loc: false
+                                            })
+                                            console.log('auth location failed!');
+                                            this.tip();
+                                        }
+                                    }
+                                })
+                            }
+                        }
                     });
-                    wx.navigateTo({
-                        url: '/pages/publish/publish'
-                    })
-                } else {
-                    this.setData({
-                        loc: false
-                    })
-                    console.log('auth location failed!');
-                    _this.tip();
                 }
             }
         })
+
     },
     close: function () {
         this.setData({
@@ -276,7 +271,17 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        // console.log('isIpx: 全局变量',getApp().globalData.isIpx);
+        if (!wx.getStorageSync('token')) {
+            wx.login({
+                success: res => {
+                    if (res.code) {
+                        wxRequest.login(res.code).then(res => {
+                            wx.setStorageSync('token', res.data.data.token);
+                        })
+                    }
+                }
+            })
+        }
         //设置标题栏内容
         wx.setNavigationBarTitle({
             title: '建材供应圏'
@@ -331,50 +336,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        wx.login({
-            success: res => {
-                if (res.code) {
-                    wxRequest.login(res.code).then(res => {
-                        if (!res.data.data) {
-                            wx.showToast({
-                              title: '您当前尚未登录，即将跳转到登录页面！',
-                              icon: 'none',
-                              duration: 1000,
-                              success: function () {
-                                  wx.redirectTo({
-                                      url: '/pages/login/unit'
-                                  });
-                              }
-                            });
-                        } else {
-                            wx.setStorageSync('token', res.data.data.token);
-                            if (!res.data.data.user.phoneNumber) {
-                                wx.showToast({
-                                    title: '您当前尚未授权手机号，即将跳转到授权手机号页面！',
-                                    icon: 'none',
-                                    duration: 2000,
-                                    success: function () {
-                                        wx.redirectTo({
-                                            url: '/pages/login/unit'
-                                        });
-                                    }
-                                });
-                            }
-                            if (!res.data.data.user.realName) {
-                                wx.showToast({
-                                    title: '您当前尚未填写完整信息，即将跳转到授权手机号页面！',
-                                    icon: 'none',
-                                    duration: 2000
-                                });
-                                wx.redirectTo({
-                                    url: '/pages/login/unit'
-                                })
-                            }
-                        }
-                    });
-                }
-            }
-        })
+        //获取地理位置信息并获取列表
         this.getLocation();
         let timestamp = Date.parse(new Date());
         this.setData({

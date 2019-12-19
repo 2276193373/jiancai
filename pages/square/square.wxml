@@ -6,23 +6,23 @@
     module.exports.getDistance = distance;
 </wxs>
 <!--发布成功界面-->
-<view class="published_container_wrap" wx:if="{{pop_published}}">
+<!--<view class="published_container_wrap" wx:if="{{pop_published}}">
     <view class="published_container" style="height: {{(winHeight)+50}}px;">
-        <!--    遮罩层     -->
+        &lt;!&ndash;    遮罩层     &ndash;&gt;
         <view class="mask" catchtouchmove="preventTouchMove">
         </view>
-        <!--    弹出框  -->
+        &lt;!&ndash;    弹出框  &ndash;&gt;
         <view class="pop-window" catchtouchmove="false">
             <view class="top">
                 <image src="/imgs/published.png"></image>
             </view>
             <text>发布成功啦</text>
             <text>快将的建材供求发给你的好友吧！</text>
-            <button class="share" bindtap="share" open-type="share">分享到微信群</button>
+            <button class="share" open-type="share">分享到微信群</button>
             <view class="close" bindtap="close"></view>
         </view>
     </view>
-</view>
+</view>-->
 
 <!--主体部分-->
 <view class="container" style="height: {{winHeight}}px">
@@ -32,7 +32,6 @@
                 {{item.value}}
                 <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 70%; margin-top: 10px; border-radius: 8px" class="{{index===currentIndex?'active':''}}"></view>
             </view>
-
         </view>
         <view class="split-line"></view>
         <!--    排序（按时间排序，按距离排序）-->

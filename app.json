@@ -18,7 +18,7 @@
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "index1",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#ffffff"
   },

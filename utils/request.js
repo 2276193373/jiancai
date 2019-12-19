@@ -96,6 +96,10 @@ export default {
     async getUserInfoList(type) {
         return await this.apiCalls(`weapp/users/me/infos?type=${type}`, 'GET', 'headerNoType')
     },
+    //获取信息详情
+    async getDetail(_id, longitude, latitude) {
+        return this.apiCalls(`weapp/infos/${_id}?longitude=${longitude}&latitude=${latitude}`, 'GET', 'defaultHeader')
+    },
     //浏览记录
     async browseringHistory(_id, infoId) {
         return await this.apiCalls(`weapp/infos/${_id}/interest`, 'POST', 'headerNoType', {

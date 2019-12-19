@@ -1,6 +1,7 @@
 // pages/detail/detail.js
 import wxRequest from '../../utils/request'
 import myUtils from "../../utils/myUtils";
+const phone = ''
 
 Page({
 
@@ -8,9 +9,11 @@ Page({
      * 页面的初始数据
      */
     data: {
+        pop_published: false,
         owner: false,
         //获取屏幕高高
         getHeight: wx.getSystemInfoSync().windowHeight,
+        winHeight: wx.getSystemInfoSync().windowHeight,
         loc: '',
         creatorId: '',
         avatar: "",
@@ -30,16 +33,27 @@ Page({
         interestedCount: '',
         _id: '',
         infoId: '',
-        phoneNumber: '',
-        isIpx: getApp().globalData.isIpx
+        isIpx: getApp().globalData.isIpx,
+        creatorPhoneNumber: ''
+    },
+    close: function () {
+        wx.setStorageSync('pop', false);
+        this.setData({
+            published_showModal: false,
+            published_show_: false,
+            pop_published: wx.getStorageSync('pop')
+        })
+    },
+    share: function () {
+        wx.setStorageSync('pop', false);
+        this.setData({
+            pop_published: wx.getStorageSync('pop')
+        })
     },
     //授权地理位置
     authLocation: function () {
         wx.getSetting({
             success: (res) => {
-                // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
-                // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
-                // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
                 //当拒绝地理位置授权
                 if (!res.authSetting['scope.userLocation']) {
                     //未授权
@@ -82,7 +96,6 @@ Page({
                     // wx.navigateTo({
                     //     url: '/pages/publish/publish'
                     // })
-
                 }
             }
         })
@@ -111,7 +124,40 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
-        // console.log('this.data.isIpx: ', this.data.isIpx)
+        console.log('options._id: ',options._id, options.creatorPhoneNumber)
+        this.setData({
+            creatorPhoneNumber: options.creatorPhoneNumber
+        })
+        //获取详细信息接口
+        wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then(res => {
+            console.log('res of detail: ', res.data)
+            let userInfo = res.data.data
+            this.setData({
+                avatar: userInfo.creatorAvatar,
+                name: userInfo.creatorNickname,
+                title: userInfo.title,
+                desc: userInfo.desc,
+                location: userInfo.location,
+                atlas: userInfo.atlas,
+                distance: (parseFloat(userInfo.distance) / 1000).toFixed(2),
+                creatorId: userInfo.creatorId,
+                _id: userInfo._id,
+                createdAt: userInfo.createdAt,
+                company: userInfo.company
+            })
+            wxRequest.getUserInfo().then(res => {
+                if (userInfo.creatorNickname === res.data.data.nickName) {
+                    this.setData({
+                        owner: true
+                    })
+                }
+            });
+        });
+        //设置遮罩层状态
+        this.setData({
+            pop_published: wx.getStorageSync('pop')
+        })
+        //判断当前用户是否是自己
         wxRequest.getUserInfo().then(res => {
             if (options.creatorNickname === res.data.data.nickName) {
                 this.setData({
@@ -134,8 +180,7 @@ Page({
                     })
                 }
             }
-        })
-        let _this = this;
+        });
         wx.login({
             success: res => {
                 if (res.code) {
@@ -143,28 +188,11 @@ Page({
                         //如果该用户还没有登录
                         if (!res.data.data) {
                             //看有没有授权地理位置
-                            _this.authLocation()
+                            this.authLocation()
                         }
                     });
                 }
             }
-        })
-        console.log('options: ', options);
-        let strAtlas = options.atlas.toString();
-        //options传过来的是字符串，要转为数组
-        let atlas = strAtlas.split(',');
-        this.setData({
-            avatar: options.creatorAvatar,
-            name: options.creatorNickname,
-            title: options.title,
-            desc: options.desc,
-            location: options.location,
-            atlas: atlas,
-            distance: (parseFloat(options.distance) / 1000).toFixed(2),
-            creatorId: options.creatorId,
-            _id: options._id,
-            createdAt: options.createdAt,
-            company: options.company
         })
         let timestamp = Date.parse(new Date());
         this.setData({
@@ -173,29 +201,6 @@ Page({
         wx.setNavigationBarTitle({
             title: '供求详情'
         });
-        /*await wxRequest.getInfoList('', '', wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
-            if (res.data.code === 20000) {
-                let strAtlas = options.atlas.toString();
-                //options传过来的是字符串，要转为数组
-                let atlas = strAtlas.split(',');
-                this.setData({
-                    // avatar: options.creatorAvatar,
-                    // name: options.creatorNickname,
-                    // title: options.title,
-                    // desc: options.desc,
-                    // location: options.location,
-                    // atlas: atlas,
-                    // distance: (parseFloat(options.distance) / 1000).toFixed(2),
-                    // creatorId: options.creatorId,
-                    // _id: options._id,
-                    // createdAt: options.createdAt
-                });
-            } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
-            }
-        });
-        */
         await wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
             if (res.data.code === 20000) {
                 console.log("感兴趣!");
@@ -238,16 +243,33 @@ Page({
 
     //todo 12/10
     contact: function () {
-        console.log(111)
-        wxRequest.relogin().then(res => {
-            console.log('this.data: ', this.data)
-            let phoneNumber = this.data.phoneNumber
-            console.log('phone: ', typeof phoneNumber)
-            // myUtils.phoneCall(phoneNumber);
-            wx.makePhoneCall({
-                //电话号码为字符串，并非数字
-              phoneNumber: phoneNumber.toString()
-            })
-        });
+        wx.login({
+            success: res => {
+                if (res.code) {
+                    wxRequest.login(res.code).then(res => {
+                        if (!res.data.data) {
+                            myUtils.registerTip('注册后即可联系')
+                        } else {
+                            if (!res.data.data.user.phoneNumber) {
+                                myUtils.registerTip()
+                            }
+                            else if (!res.data.data.user.realName) {
+                                myUtils.registerTip()
+                            } else {
+                                wxRequest.relogin().then(res => {
+                                    console.log('this.data: ', this.data)
+                                    let phoneNumber = this.data.phoneNumber
+                                    wx.makePhoneCall({
+                                        //电话号码为字符串，并非数字
+                                        phoneNumber: this.data.creatorPhoneNumber
+                                    })
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        })
+
     },
 })

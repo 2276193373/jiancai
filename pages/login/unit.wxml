@@ -49,7 +49,7 @@
     </view>
 <!--完善个人信息-->
     <view wx:else>
-        <!--    logo   -->
+        <!--  logo   -->
         <image class="login-img" src="/imgs/logo.png"></image>
         <view class="title">建材供求圏</view>
         <view class="title-introduction">聚焦建材行业的供求信息发布的平台</view>

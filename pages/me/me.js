@@ -1,5 +1,6 @@
 // pages/me/me.js
 import wxRequest from '../../utils/request'
+import myUtils from "../../utils/myUtils";
 Page({
 /**
    * 页面的初始数据
@@ -43,15 +44,11 @@ Page({
 
     //获取用户信息列表
     wxRequest.getUserInfoList(this.data.type, 'time', wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
+      console.log('res.data of getUserInfo： ',res.data)
       if (res.data.code === 20000) {
         let prodInfo = res.data.data.list[e.currentTarget.dataset.index];
-        console.log('距离：', prodInfo.distance, prodInfo);
-        console.log('createdAt: ' + prodInfo.createdAt);
         wx.navigateTo({
-          url: "/pages/detail/detail?_id=" + prodInfo._id + '&creatorId=' + prodInfo.creatorId +
-              '&creatorAvatar=' + prodInfo.creatorAvatar + '&creatorNickname=' + prodInfo.creatorNickname +
-              '&title=' + prodInfo.title + '&desc=' + prodInfo.desc + '&distance=' + prodInfo.distance +
-              '&location=' + prodInfo.location + '&atlas=' + prodInfo.atlas + '&createdAt=' + prodInfo.createdAt
+          url: `/pages/detail/detail?_id=${prodInfo._id}`
         });
       } else {
         console.log('====错误！!====\n错误码：', res.data.code);
@@ -120,12 +117,9 @@ Page({
           demandCollection:newDemandCollection
         })
       } else {
-        console.log('====错误！!====\n错误码：', res.data.code);
-        console.log(res.errMsg);
+        console.log('====me:120:错误！!====', res.data);
       }
     });
-
-
   },
   modify: function () {
     wx.navigateTo({
@@ -136,61 +130,6 @@ Page({
       wx.switchTab({
         url: '/pages/square/square'
       })
-   /* wx.getSetting({
-      success: (res) => {
-        // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
-        // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
-        // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
-        if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {
-          //未授权
-          wx.showModal({
-            title: '请求授权当前位置',
-            content: '需要获取您的地理位置，请确认授权',
-            success: function (res) {
-              if (res.cancel) {
-                //取消授权
-                wx.showToast({
-                  title: '发布信息需要授权地理位置！',
-                  icon: 'none',
-                  duration: 1500
-                })
-              } else if (res.confirm) {
-                //确定授权，通过wx.openSetting发起授权请求
-                wx.openSetting({
-                  success: function (res) {
-                    if (res.authSetting["scope.userLocation"] == true) {
-                      wx.showToast({
-                        title: '授权成功，可以发布信息了',
-                        icon: 'success',
-                        duration: 1000
-                      })
-                      //再次授权，调用wx.getLocation的API
-                    } else {
-                      wx.showToast({
-                        title: '发布信息需要授权地理位置！',
-                        icon: 'none',
-                        duration: 1500
-                      })
-                    }
-                  }
-                })
-              }
-            }
-          })
-        } else if (res.authSetting['scope.userLocation'] == undefined) {
-          console.log('地理位置没授权(第一次进入)');
-        } else {
-          console.log(222)
-          //已授权地理位置
-          console.log('跳转到发布页面')
-          wx.navigateTo({
-              url: '/pages/publish/publish'
-          })
-
-        }
-      }
-    })*/
-
   },
   /**
    * 生命周期函数--监听页面加载
@@ -200,7 +139,6 @@ Page({
       title: '我的'
     });
     this.reSortBySupply();
-    let that = this;
     wxRequest.getUserInfo().then(res => {
       console.log('res.data: 000000', res.data);
     });
@@ -228,8 +166,7 @@ Page({
         this.reSortBySupply();
 
       } else {
-        console.log('====错误！!====\n错误码：', res.data);
-        console.log(res.errMsg);
+        console.log('==== me:170:错误！!====', res.data);
       }
     });
 
@@ -245,32 +182,72 @@ Page({
     if (this.data.currentIndex == 1) {
       this.reSortByDemand()
     }
-    wxRequest.relogin().then((res) => {
-      if (res.data.code === 20000) {
-        let info = res.data.data.user;
-        this.setData({
-          avatar: info.avatarUrl,
-          name: info.realName,
-          personalInfo: [
-            {
-              imgUrl: '/imgs/company.png',
-              info: info.company
-            },
-            {
-              imgUrl: '/imgs/phone-me.png',
-              info: info.phoneNumber
-            },
-            {
-              imgUrl: '/imgs/workbench.png',
-              info: info.position
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wxRequest.login(res.code).then(res => {
+            if (!res.data.data) {
+              myUtils.registerTip('您当前未完成注册，是否去注册？').then(value => {
+                if (value === 'cancel') {
+                  wx.switchTab({
+                    url: '/pages/square/square'
+                  })
+                }
+              })
+
+            } else {
+              wx.setStorageSync('token', res.data.data.token);
+              if (!res.data.data.user.phoneNumber) {
+                myUtils.registerTip('您当前未注册，是否去注册？').then((value) => {
+                  if (value === 'cancel') {
+                    wx.switchTab({
+                      url: '/pages/square/square'
+                    })
+                  }
+                });
+              }
+              else if (!res.data.data.user.realName) {
+                myUtils.registerTip('您当前未注册，是否去注册？').then(value => {
+                  if (value === 'cancel') {
+                    wx.switchTab({
+                      url: '/pages/square/square'
+                    })
+                  }
+                })
+              } else {
+                wxRequest.relogin().then((res) => {
+                  if (res.data.code === 20000) {
+                    let info = res.data.data.user;
+                    this.setData({
+                      avatar: info.avatarUrl,
+                      name: info.realName,
+                      personalInfo: [
+                        {
+                          imgUrl: '/imgs/company.png',
+                          info: info.company
+                        },
+                        {
+                          imgUrl: '/imgs/phone-me.png',
+                          info: info.phoneNumber
+                        },
+                        {
+                          imgUrl: '/imgs/workbench.png',
+                          info: info.position
+                        }
+                      ]
+                    })
+                  } else {
+                    console.log('====错误！!====\n错误码：', res.data.code);
+                    console.log(res.errMsg);
+                  }
+                });
+              }
             }
-          ]
-        })
-      } else {
-        console.log('====错误！!====\n错误码：', res.data.code);
-        console.log(res.errMsg);
+          });
+        }
       }
-    });
+    })
+
 
   },
 
