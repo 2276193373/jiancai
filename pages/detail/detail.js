@@ -93,9 +93,6 @@ Page({
 
                 }else {//已授权
                     console.log('地理位置已授权!');
-                    // wx.navigateTo({
-                    //     url: '/pages/publish/publish'
-                    // })
                 }
             }
         })
@@ -129,7 +126,7 @@ Page({
             creatorPhoneNumber: options.creatorPhoneNumber
         })
         //获取详细信息接口
-        wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then(res => {
+        wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude')||0, wx.getStorageSync('currentLatitude')||0).then(res => {
             console.log('res of detail: ', res.data)
             let userInfo = res.data.data
             this.setData({

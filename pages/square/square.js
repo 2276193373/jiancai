@@ -1,5 +1,4 @@
 import wxRequest from '../../utils/request'
-import Util from "../../utils/getImageZoom";
 import myUtils from "../../utils/myUtils";
 
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min');
@@ -44,9 +43,6 @@ Page({
     tip: function () {
         wx.getSetting({
             success: (res) => {
-                // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
-                // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
-                // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
                 if (!res.authSetting['scope.userLocation']) {
                     //未授权
                     wx.showModal({
@@ -85,9 +81,6 @@ Page({
                     })
                 }  else {
                     console.log(222)
-                    // wx.navigateTo({
-                    //     url: '/pages/publish/publish'
-                    // })
                 }
             }
         })
@@ -200,7 +193,30 @@ Page({
         });
     },
     gotoPublish: function () {
-        wx.login({
+        console.log(111)
+        if (wx.getStorageSync('loginState')) {
+            wx.getSetting({
+                success:  (res)=> {
+                    if (res.authSetting['scope.userLocation']) {
+                        this.setData({
+                            loc: true
+                        });
+                        wx.navigateTo({
+                            url: '/pages/publish/publish'
+                        })
+                    } else {
+                        this.setData({
+                            loc: false
+                        })
+                        console.log('auth location failed!');
+                        this.tip();
+                    }
+                }
+            })
+        } else {
+            myUtils.registerTip()
+        }
+        /*wx.login({
             success: res => {
                 if (res.code) {
                     wxRequest.login(res.code).then(res => {
@@ -237,8 +253,7 @@ Page({
                     });
                 }
             }
-        })
-
+        })*/
     },
     close: function () {
         this.setData({
@@ -271,22 +286,44 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        console.log('有加载onload')
         if (!wx.getStorageSync('token')) {
             wx.login({
                 success: res => {
                     if (res.code) {
                         wxRequest.login(res.code).then(res => {
                             wx.setStorageSync('token', res.data.data.token);
+                            wxRequest.getUserInfo().then(res => {
+                                console.log('res of me:===>',res.data)
+                            });
+                            wxRequest.getUserInfo().then(res => {
+                                console.log('res of me :', res.data)
+                                if (res.data.data.realName) {
+                                    wx.setStorageSync('loginState', true);
+                                } else {
+                                    wx.setStorageSync('loginState', false);
+                                }
+                            });
                         })
                     }
                 }
             })
+        }  else {
+            wxRequest.getUserInfo().then(res => {
+                console.log('res of me :', res.data)
+                if (res.data.data.realName) {
+                    wx.setStorageSync('loginState', true);
+                } else {
+                    wx.setStorageSync('loginState', false);
+                }
+            });
         }
         //设置标题栏内容
         wx.setNavigationBarTitle({
             title: '建材供应圏'
         });
     },
+    //获取地理位置信息并获取列表
     getLocation() {
         wx.getLocation({
             success: res => {

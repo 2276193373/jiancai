@@ -1,33 +1,3 @@
-import config from "../config/config";
-/*
-var sendRequest = function (url, method, data = {}, header = {}) {
-    var promise = new Promise(function (resolve, reject) {
-        wx.request({
-            url: config.baseUrl+url,
-            data: data,
-            method: method,
-            header: header,
-            success: function (data) {
-                //resolve用于具体调用中
-                resolve(data);
-            },
-            fail: function (data) {
-                reject(data);
-            }
-        })
-    });
-    return promise
-};
-
-var wxRequest = async function (url, method, data, header) {
-    return sendRequest(url, method, data, header);
-}
-
-//导出
-module.exports = {
-    sendRequest:wxRequest
-}*/
-
 export default {
     async apiCalls(endpointer, method, header, data) {
         let baseUrl = 'https://ceramic.lindingtechnology.com/' + endpointer;
@@ -131,7 +101,7 @@ export default {
         })
     },
     //登录
-    async login(code, iv, encryptedData) {
+    async login(code, iv='', encryptedData='') {
         return await this.apiCalls('weapp/users/login', 'POST', 'header', {
             code: code,
             iv: iv, //通过getUserInfo拿到,下同

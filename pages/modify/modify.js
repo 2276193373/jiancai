@@ -102,7 +102,18 @@ Page({
             this.setData({
                 gender: res.data.data.user.gender,
             });
-            wx.request({
+            wxRequest.relogin().then(res => {
+                this.setData({
+                    realName: res.data.data.user.realName,
+                    company: res.data.data.user.company,
+                    position: res.data.data.user.position,
+                    gender: res.data.data.user.gender,
+                    avatarUrl: res.data.data.user.avatarUrl,
+                    phoneNumber: res.data.data.user.phoneNumber
+                })
+                console.log('手机号：', res.data.data.user.phoneNumber);
+            });
+           /* wx.request({
                 url: "http://118.25.21.169:2000/weapp/users/relogin",
                 method: 'POST',
                 header: {
@@ -120,7 +131,7 @@ Page({
                     })
                     console.log('手机号：', res.data.data.user.phoneNumber);
                 }
-            })
+            })*/
         });
     },
     onLoad(options) {

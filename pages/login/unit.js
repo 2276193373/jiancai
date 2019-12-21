@@ -39,10 +39,8 @@ Page({
             if (res.data.code === 20000) {
               wx.setStorageSync('token', res.data.data.token);
               console.log('微信号授权成功！');
-              // wxRequest.relogin();
-              //获取用户头像地址，说明微信已授权
               wxRequest.getUserInfo().then(res => {
-                console.log('res.data: ----', res.data)
+                console.log('res.data of getUserInfo: ----', res.data)
                 this.setData({
                   nickName:res.data.data.nickName
                 });
@@ -108,7 +106,6 @@ Page({
   },
   inputedit2: function(e) {
     let that = this;
-    //dataset为{name: 'peopleNumber'}
     let dataset = e.currentTarget.dataset;
     let value = e.detail.value;
     //name为peopleNumber
@@ -120,7 +117,6 @@ Page({
   },
   inputedit3: function(e) {
     let that = this;
-    //dataset为{name: 'peopleNumber'}
     let dataset = e.currentTarget.dataset;
     let value = e.detail.value;
     //name为peopleNumber
@@ -146,8 +142,6 @@ Page({
         this.data.position,
         this.data.avatarUrl,
         this.data.gender
-        // wx.getStorageSync('userInformation').avatarUrl,
-        // wx.getStorageSync('userInformation').gender
     ).then((res) => {
       if (res.data.code === 20000) {
         wx.setStorageSync('personalInfo', {
@@ -182,7 +176,7 @@ Page({
       mask: true
     });
     //跳转到广场
-    wx.switchTab({
+    wx.reLaunch({
       url: '/pages/square/square'
     })
   },

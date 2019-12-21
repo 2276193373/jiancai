@@ -71,12 +71,6 @@ Page({
   },
   //信息待完整
   todo: function () {
-    console.error('地址信息： ',this.data.address)
-    /*wx.switchTab({
-      url: '/pages/square/square',
-      success: res => {
-      }
-    });*/
     wx.showToast({
       title: '请填写完整！',
       icon: 'loading'
@@ -109,7 +103,6 @@ Page({
     that.setData({
       desc: that.data[desc]
     });
-    // console.log('desc: ' + that.data[desc]);
   },
   published: function () {
     console.log("published");
@@ -151,7 +144,6 @@ Page({
       show_: false
     })
   },
-
    //上传图片
   uploadImage: function () {
       var that = this;
@@ -232,7 +224,6 @@ Page({
       atlas: this.data.atlas
     });
   },
-
   bindPickerChange: function (e) {
     const val = e.detail.value;
     this.setData({
@@ -240,7 +231,6 @@ Page({
       type: this.data.typeArr[val]
     })
   },
-
   onLoad: function (options) {
       myUtils.wxSetNavbarTitle('发布');
       wx.getLocation({
@@ -255,7 +245,6 @@ Page({
           })
         }
       });
-
       //调用腾讯地图api，获取当前经纬度
       qqmapsdk.reverseGeocoder({
         success: (res) => {

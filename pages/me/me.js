@@ -175,14 +175,28 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('index: ',this.data.currentIndex)
+    if (!wx.getStorageSync('loginState')) {
+      myUtils.registerTip('您当前未完成注册，是否去注册？').then(value => {
+        if (value === 'cancel') {
+          wx.switchTab({
+            url: '/pages/square/square'
+          })
+          return
+        }
+      });
+    } else {
+      wxRequest.getUserInfo().then(res => {
+        console.log('res of me: ', res.data.data)
+      });
+    }
+    console.log('index: ',this.data.currentIndex);
     if (this.data.currentIndex == 0) {
       this.reSortBySupply()
     }
     if (this.data.currentIndex == 1) {
       this.reSortByDemand()
     }
-    wx.login({
+   /* wx.login({
       success: res => {
         if (res.code) {
           wxRequest.login(res.code).then(res => {
@@ -194,7 +208,6 @@ Page({
                   })
                 }
               })
-
             } else {
               wx.setStorageSync('token', res.data.data.token);
               if (!res.data.data.user.phoneNumber) {
@@ -246,28 +259,8 @@ Page({
           });
         }
       }
-    })
-
-
+    })*/
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
   onPullDownRefresh: function () {
     wxRequest.relogin().then((res) => {
       if (res.data.code === 20000) {
@@ -299,18 +292,4 @@ Page({
       }
     });
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
