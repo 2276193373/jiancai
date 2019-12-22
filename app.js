@@ -1,4 +1,5 @@
 //app.js
+import wxRequest from './utils/request'
 App({
   onLaunch: function () {
       wx.getSystemInfo({
@@ -9,6 +10,8 @@ App({
               this.globalData.isIpx = /iPhone1./.test(res.model.toString())
           }
       })
+
+
   },
     globalData: {
 

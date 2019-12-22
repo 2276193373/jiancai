@@ -99,13 +99,11 @@ Page({
         wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
             if (res.data.code === 20000) {
                 let prodInfo = res.data.data.list[e.currentTarget.dataset.index];
-                console.log('prodInfo: ',prodInfo)
                 wx.navigateTo({
                     url: `/pages/detail/detail?_id=${prodInfo._id}&creatorPhoneNumber=${prodInfo.creatorPhoneNumber}`
                 });
             } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
+                console.error('square-107-error:',res.data)
             }
         });
     },
@@ -135,8 +133,7 @@ Page({
                 });
                 //获得当前时间戳
             } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
+                console.error('square-138-error:',res.data)
             }
         });
     },
@@ -165,8 +162,7 @@ Page({
                     productionInfo: res.data.data.list
                 });
             } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
+                console.error('square-168-error:',res.data)
             }
         });
     },
@@ -187,13 +183,11 @@ Page({
                     productionInfo: res.data.data.list
                 });
             } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
+                console.error('square-187-error:',res.data)
             }
         });
     },
     gotoPublish: function () {
-        console.log(111)
         if (wx.getStorageSync('loginState')) {
             wx.getSetting({
                 success:  (res)=> {
@@ -286,18 +280,29 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        console.log('有加载onload')
+        let timestamp = Date.parse(new Date());
+        this.setData({
+            timestamp: timestamp
+        });
+        if (wx.getStorageSync('pop') == true) {
+            //发布成功滑到顶部
+            wx.pageScrollTo({
+                scrollTop: 0,
+                duration: 100
+            })
+        }
+        this.setData({
+            pop_published: wx.getStorageSync('pop')
+        });
+        let _this = this
         if (!wx.getStorageSync('token')) {
             wx.login({
                 success: res => {
                     if (res.code) {
                         wxRequest.login(res.code).then(res => {
                             wx.setStorageSync('token', res.data.data.token);
+                            _this.getLocation()
                             wxRequest.getUserInfo().then(res => {
-                                console.log('res of me:===>',res.data)
-                            });
-                            wxRequest.getUserInfo().then(res => {
-                                console.log('res of me :', res.data)
                                 if (res.data.data.realName) {
                                     wx.setStorageSync('loginState', true);
                                 } else {
@@ -310,12 +315,12 @@ Page({
             })
         }  else {
             wxRequest.getUserInfo().then(res => {
-                console.log('res of me :', res.data)
                 if (res.data.data.realName) {
                     wx.setStorageSync('loginState', true);
                 } else {
                     wx.setStorageSync('loginState', false);
                 }
+                this.getLocation()
             });
         }
         //设置标题栏内容
@@ -340,13 +345,8 @@ Page({
                             productionInfo: res.data.data.list,
                             __show: true
                         });
-                        console.log('productionInfo: ', this.data.productionInfo);
                     } else {
-                        console.log('===================');
-                        console.log("出错！\n");
-                        console.log(`错误码：${res.data.code}`);
-                        console.log(`错误信息：${res.data.data}`);
-                        console.log('===================');
+                        console.error('square-351-error:',res.data)
                     }
                 });
             },
@@ -356,13 +356,8 @@ Page({
                         this.setData({
                             productionInfo: res.data.data.list
                         });
-                        console.log('productionInfo: ', this.data.productionInfo);
                     } else {
-                        console.log('===================');
-                        console.log("出错！\n");
-                        console.log(`错误码：${res.data.code}`);
-                        console.log(`错误信息：${res.data.data}`);
-                        console.log('===================');
+                        console.error('square-370-error:',res.data)
                     }
                 });
 
@@ -373,9 +368,13 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        //获取地理位置信息并获取列表
-        this.getLocation();
         let timestamp = Date.parse(new Date());
+        this.setData({
+            timestamp: timestamp
+        });
+        //获取地理位置信息并获取列表
+        // this.getLocation();
+       /* let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
         });
@@ -388,7 +387,7 @@ Page({
         }
         this.setData({
             pop_published: wx.getStorageSync('pop')
-        });
+        });*/
     },
     onPullDownRefresh: function () {
         let timestamp = Date.parse(new Date());
@@ -403,13 +402,8 @@ Page({
                 setTimeout(function () {
                     wx.stopPullDownRefresh();
                 }, 500);
-                console.log('广场productionInfo: ', this.data.productionInfo);
             } else {
-                console.log('===================');
-                console.log("出错！\n");
-                console.log(`错误码：${res.data.code}`);
-                console.log(`错误信息：${res.data.data}`);
-                console.log('===================');
+                console.error('square-420-error:',res.data)
             }
         });
     },
@@ -444,9 +438,7 @@ Page({
                     })
                 }
             } else {
-                console.log("出错！\n");
-                console.log(`错误码：${res.data.code}`);
-                console.log(`错误信息：${res.data.msg}`)
+                console.error('square-456-error:',res.data)
             }
         });
     },

@@ -53,7 +53,8 @@ Page({
         console.log('发布成功！');
         wx.setStorageSync('pop', true);
         wx.redirectTo({
-          url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
+          // url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
+          url: `/pages/detail/detail?_id=${infoOfPublish._id}`,
           success: res => {
           }
         });
