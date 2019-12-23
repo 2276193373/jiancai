@@ -135,16 +135,57 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wxRequest.getUserInfo().then(res => {
+      console.log('res.data of me', res.data)
+      let info = res.data.data
+      wx.setStorageSync('myInfo', {
+        realName: info.realName,
+        company: info.company,
+        position: info.position,
+        gender: info.gender,
+        avatarUrl: info.avatarUrl,
+        phoneNumber: info.phoneNumber
+      });
+
+    });
+    if (this.data.currentIndex == 0) {
+      this.reSortBySupply()
+    }
+    if (this.data.currentIndex == 1) {
+      this.reSortByDemand()
+    }
     wx.setNavigationBarTitle({
       title: '我的'
     });
-    this.reSortBySupply();
-    wxRequest.getUserInfo().then(res => {
+    /*let info = wx.getStorageSync('personalInfo');
+    this.setData({
+      avatar: info.avatarUrl,
+      name: info.realName,
+      personalInfo: [
+        {
+          imgUrl: '/imgs/company.png',
+          info: info.company
+        },
+        {
+          imgUrl: '/imgs/phone-me.png',
+          info: info.phoneNumber
+        },
+        {
+          imgUrl: '/imgs/workbench.png',
+          info: info.position
+        }
+      ]
+    });*/
+    // this.reSortBySupply();
+    // this.reSortBySupply();
+   /* wxRequest.getUserInfo().then(res => {
       console.log('res.data: 000000', res.data);
-    });
-    wxRequest.relogin().then((res) => {
+    });*/
+    /*wxRequest.relogin().then((res) => {
       if (res.data.code === 20000) {
         let info = res.data.data.user;
+          // let info = wx.getStorageSync('personalInfo');
+        console.log('info of me：',info)
         this.setData({
           avatar: info.avatarUrl,
           name: info.realName,
@@ -168,7 +209,7 @@ Page({
       } else {
         console.log('==== me:170:错误！!====', res.data);
       }
-    });
+    });*/
 
   },
   /**
@@ -184,82 +225,62 @@ Page({
           return
         }
       });
-    } else {
-      wxRequest.getUserInfo().then(res => {
-        console.log('res of me: ', res.data.data)
-      });
+      // let info = res.data.data.user;
+
     }
-    console.log('index: ',this.data.currentIndex);
-    if (this.data.currentIndex == 0) {
-      this.reSortBySupply()
-    }
-    if (this.data.currentIndex == 1) {
-      this.reSortByDemand()
-    }
-   /* wx.login({
-      success: res => {
-        if (res.code) {
-          wxRequest.login(res.code).then(res => {
-            if (!res.data.data) {
-              myUtils.registerTip('您当前未完成注册，是否去注册？').then(value => {
-                if (value === 'cancel') {
-                  wx.switchTab({
-                    url: '/pages/square/square'
-                  })
-                }
-              })
-            } else {
-              wx.setStorageSync('token', res.data.data.token);
-              if (!res.data.data.user.phoneNumber) {
-                myUtils.registerTip('您当前未注册，是否去注册？').then((value) => {
-                  if (value === 'cancel') {
-                    wx.switchTab({
-                      url: '/pages/square/square'
-                    })
-                  }
-                });
-              }
-              else if (!res.data.data.user.realName) {
-                myUtils.registerTip('您当前未注册，是否去注册？').then(value => {
-                  if (value === 'cancel') {
-                    wx.switchTab({
-                      url: '/pages/square/square'
-                    })
-                  }
-                })
-              } else {
-                wxRequest.relogin().then((res) => {
-                  if (res.data.code === 20000) {
-                    let info = res.data.data.user;
-                    this.setData({
-                      avatar: info.avatarUrl,
-                      name: info.realName,
-                      personalInfo: [
-                        {
-                          imgUrl: '/imgs/company.png',
-                          info: info.company
-                        },
-                        {
-                          imgUrl: '/imgs/phone-me.png',
-                          info: info.phoneNumber
-                        },
-                        {
-                          imgUrl: '/imgs/workbench.png',
-                          info: info.position
-                        }
-                      ]
-                    })
-                  } else {
-                    console.log('====错误！!====\n错误码：', res.data.code);
-                    console.log(res.errMsg);
-                  }
-                });
-              }
+    /*wxRequest.relogin().then((res) => {
+      if (res.data.code === 20000) {
+        let info = res.data.data.user;
+        // let info = wx.getStorageSync('personalInfo');
+        console.log('info of me：',info)
+        this.setData({
+          avatar: info.avatarUrl,
+          name: info.realName,
+          personalInfo: [
+            {
+              imgUrl: '/imgs/company.png',
+              info: info.company
+            },
+            {
+              imgUrl: '/imgs/phone-me.png',
+              info: info.phoneNumber
+            },
+            {
+              imgUrl: '/imgs/workbench.png',
+              info: info.position
             }
-          });
-        }
+          ]
+        });
+        // this.reSortBySupply();
+
+      } else {
+        console.log('==== me:170:错误！!====', res.data);
       }
-    })*/
+    });*/
+
+    setTimeout(() => {
+      let info = wx.getStorageSync('myInfo');
+      console.log('info of me：',info)
+      this.setData({
+        avatar: info.avatarUrl,
+        name: info.realName,
+        personalInfo: [
+          {
+            imgUrl: '/imgs/company.png',
+            info: info.company
+          },
+          {
+            imgUrl: '/imgs/phone-me.png',
+            info: info.phoneNumber
+          },
+          {
+            imgUrl: '/imgs/workbench.png',
+            info: info.position
+          }
+        ]
+      });
+    }, 600);
+
   },
   onPullDownRefresh: function () {
     wxRequest.relogin().then((res) => {
@@ -275,7 +296,7 @@ Page({
             },
             {
               imgUrl: '/imgs/phone-me.png',
-              info: '18759770340'
+              info: info.phoneNumber
             },
             {
               imgUrl: '/imgs/workbench.png',

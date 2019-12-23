@@ -38,18 +38,15 @@ Page({
 
   //发布信息
   publish: function () {
-    wxRequest.relogin().then(res => {
-      console.log('data of relogin:', res.data.data.user.phoneNumber)
-      console.log('typeof phoneNumber: ',typeof res.data.data.user.phoneNumber)
+    wxRequest.getUserInfo().then(res => {
       this.setData({
-        phoneNumber: res.data.data.user.phoneNumber
+        phoneNumber: res.data.data.phoneNumber
       })
     });
     //发布传入data
     wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
       let infoOfPublish = res.data.data;
       if (res.data.code === 20000) {
-        console.log('res.data of publish---->',res.data)
         console.log('发布成功！');
         wx.setStorageSync('pop', true);
         wx.redirectTo({
@@ -63,10 +60,8 @@ Page({
         wx.setStorageSync('timeSort', 'time');
         wx.setStorageSync('type', this.data.type);
       } else {
-        console.log('res.data: ',res.data)
         console.log('发布出错！\n')
-        console.log('---错误！!---\n错误码：',res.data.code)
-        console.log('\n错误信息：', res.data.msg)
+        console.log('publish-64-error: ', res.data)
       }
     });
   },
@@ -246,7 +241,7 @@ Page({
           })
         }
       });
-      //调用腾讯地图api，获取当前经纬度
+      //调用腾讯地图api，获取当前经纬度,从而获取当前所在城市
       qqmapsdk.reverseGeocoder({
         success: (res) => {
           let city = res.result.address_component.province + res.result.address_component.city;

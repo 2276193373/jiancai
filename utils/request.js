@@ -98,7 +98,7 @@ export default {
         }, {
             iv: iv,
             encryptedData: encryptedData
-        })
+        });
     },
     //登录
     async login(code, iv='', encryptedData='') {
@@ -117,10 +117,22 @@ export default {
                 position: res.data.data.position,
                 gender: res.data.data.gender,
                 avatarUrl: res.data.data.avatarUrl
-            }).then((res) => {
+            }).then((r) => {
                 this.relogin().then((res) => {
+                    let info = res.data.data.user
                     let token = res.data.data.token;
                     wx.setStorageSync('token', token);
+                    wx.setStorageSync('myInfo', {
+                        realName: info.realName,
+                        company: info.company,
+                        position: info.position,
+                        gender: info.gender,
+                        avatarUrl: info.avatarUrl,
+                        phoneNumber: info.phoneNumber
+                    })
+                    wx.navigateBack({
+                        url: '/pages/modify/modify'
+                    });
                     console.log('relogin提示：更新信息成功！')
                 });
             });
@@ -138,8 +150,20 @@ export default {
             }).then((res) => {
                 console.log('修改名字后返回的信息：',res.data)
                 this.relogin().then((res) => {
+                    let info = res.data.data.user
                     let token = res.data.data.token;
                     wx.setStorageSync('token', token);
+                    wx.setStorageSync('myInfo', {
+                        realName: info.realName,
+                        company: info.company,
+                        position: info.position,
+                        gender: info.gender,
+                        avatarUrl: info.avatarUrl,
+                        phoneNumber: info.phoneNumber
+                    })
+                    wx.navigateBack({
+                        url: '/pages/modify/modify'
+                    });
                     console.log('relogin提示：更新信息成功！')
                 });
             });
@@ -156,8 +180,20 @@ export default {
                 avatarUrl: res.data.data.avatarUrl
             }).then((res) => {
                 this.relogin().then((res) => {
+                    let info = res.data.data.user
                     let token = res.data.data.token;
                     wx.setStorageSync('token', token);
+                    wx.setStorageSync('myInfo', {
+                        realName: info.realName,
+                        company: info.company,
+                        position: info.position,
+                        gender: info.gender,
+                        avatarUrl: info.avatarUrl,
+                        phoneNumber: info.phoneNumber
+                    })
+                    wx.navigateBack({
+                        url: '/pages/modify/modify'
+                    });
                     console.log('relogin提示：更新信息成功！')
                 });
             });
@@ -174,8 +210,17 @@ export default {
                 avatarUrl: res.data.data.avatarUrl
             }).then((res) => {
                 this.relogin().then((res) => {
+                    let info = res.data.data.user
                     let token = res.data.data.token;
                     wx.setStorageSync('token', token);
+                    wx.setStorageSync('myInfo', {
+                        realName: info.realName,
+                        company: info.company,
+                        position: info.position,
+                        gender: info.gender,
+                        avatarUrl: info.avatarUrl,
+                        phoneNumber: info.phoneNumber
+                    })
                     console.log('relogin提示：更新信息成功！')
                 });
             });
@@ -192,8 +237,18 @@ export default {
                 company: res.data.data.company,
             }).then((res) => {
                 this.relogin().then((res) => {
+                    let info = res.data.data.user
                     let token = res.data.data.token;
                     wx.setStorageSync('token', token);
+                    wx.setStorageSync('myInfo', {
+                        realName: info.realName,
+                        company: info.company,
+                        position: info.position,
+                        gender: info.gender,
+                        avatarUrl: info.avatarUrl,
+                        phoneNumber: info.phoneNumber
+                    })
+
                     console.log('relogin提示：更新信息成功！')
                 });
             });

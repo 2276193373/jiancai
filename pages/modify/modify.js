@@ -97,11 +97,26 @@ Page({
             }
         });
     },
+    onLoad(options) {
+        myUtils.wxSetNavbarTitle('我的')
+    },
     onShow() {
-        wxRequest.relogin().then(res => {
+        // setTimeout(()=> {
+            let myInfo = wx.getStorageSync('myInfo');
             this.setData({
+                realName: myInfo.realName,
+                company: myInfo.company,
+                position: myInfo.position,
+                gender: myInfo.gender,
+                avatarUrl: myInfo.avatarUrl,
+                phoneNumber: myInfo.phoneNumber
+            })
+        // }, 600)
+
+       /* wxRequest.relogin().then(res => {
+            /!*this.setData({
                 gender: res.data.data.user.gender,
-            });
+            });*!/
             wxRequest.relogin().then(res => {
                 this.setData({
                     realName: res.data.data.user.realName,
@@ -111,32 +126,10 @@ Page({
                     avatarUrl: res.data.data.user.avatarUrl,
                     phoneNumber: res.data.data.user.phoneNumber
                 })
-                console.log('手机号：', res.data.data.user.phoneNumber);
             });
-           /* wx.request({
-                url: "http://118.25.21.169:2000/weapp/users/relogin",
-                method: 'POST',
-                header: {
-                    "content-type": "application/x-www-form-urlencoded",
-                    "Authorization": "Bearer " + wx.getStorageSync('token')
-                },
-                success: res => {
-                    this.setData({
-                        realName: res.data.data.user.realName,
-                        company: res.data.data.user.company,
-                        position: res.data.data.user.position,
-                        gender: res.data.data.user.gender,
-                        avatarUrl: res.data.data.user.avatarUrl,
-                        phoneNumber: res.data.data.user.phoneNumber
-                    })
-                    console.log('手机号：', res.data.data.user.phoneNumber);
-                }
-            })*/
-        });
+        });*/
     },
-    onLoad(options) {
-        myUtils.wxSetNavbarTitle('我的')
-    },
+
     onUnload: function () {
         wx.redirectTo({
             url: '/pages/me/me'

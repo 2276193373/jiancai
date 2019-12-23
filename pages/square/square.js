@@ -1,5 +1,6 @@
 import wxRequest from '../../utils/request'
 import myUtils from "../../utils/myUtils";
+var app = getApp()
 
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min');
 var qqmapsdk = new QQMapWX({
@@ -210,44 +211,7 @@ Page({
         } else {
             myUtils.registerTip()
         }
-        /*wx.login({
-            success: res => {
-                if (res.code) {
-                    wxRequest.login(res.code).then(res => {
-                        if (!res.data.data) {
-                            myUtils.registerTip();
-                        } else {
-                            wx.setStorageSync('token', res.data.data.token);
-                            if (!res.data.data.user.phoneNumber) {
-                                myUtils.registerTip()
-                            }
-                            else if (!res.data.data.user.realName) {
-                                myUtils.registerTip()
-                            } else {
-                                wx.getSetting({
-                                    success:  (res)=> {
-                                        if (res.authSetting['scope.userLocation']) {
-                                            this.setData({
-                                                loc: true
-                                            });
-                                            wx.navigateTo({
-                                                url: '/pages/publish/publish'
-                                            })
-                                        } else {
-                                            this.setData({
-                                                loc: false
-                                            })
-                                            console.log('auth location failed!');
-                                            this.tip();
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    });
-                }
-            }
-        })*/
+
     },
     close: function () {
         this.setData({
@@ -276,59 +240,6 @@ Page({
             pop_published: wx.getStorageSync('pop')
         })
     },
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function (options) {
-        let timestamp = Date.parse(new Date());
-        this.setData({
-            timestamp: timestamp
-        });
-        if (wx.getStorageSync('pop') == true) {
-            //发布成功滑到顶部
-            wx.pageScrollTo({
-                scrollTop: 0,
-                duration: 100
-            })
-        }
-        this.setData({
-            pop_published: wx.getStorageSync('pop')
-        });
-        let _this = this
-        if (!wx.getStorageSync('token')) {
-            wx.login({
-                success: res => {
-                    if (res.code) {
-                        wxRequest.login(res.code).then(res => {
-                            wx.setStorageSync('token', res.data.data.token);
-                            _this.getLocation()
-                            wxRequest.getUserInfo().then(res => {
-                                if (res.data.data.realName) {
-                                    wx.setStorageSync('loginState', true);
-                                } else {
-                                    wx.setStorageSync('loginState', false);
-                                }
-                            });
-                        })
-                    }
-                }
-            })
-        }  else {
-            wxRequest.getUserInfo().then(res => {
-                if (res.data.data.realName) {
-                    wx.setStorageSync('loginState', true);
-                } else {
-                    wx.setStorageSync('loginState', false);
-                }
-                this.getLocation()
-            });
-        }
-        //设置标题栏内容
-        wx.setNavigationBarTitle({
-            title: '建材供应圏'
-        });
-    },
-    //获取地理位置信息并获取列表
     getLocation() {
         wx.getLocation({
             success: res => {
@@ -365,16 +276,10 @@ Page({
         });
     },
     /**
-     * 生命周期函数--监听页面显示
+     * 生命周期函数--监听页面加载
      */
-    onShow: function () {
+    onLoad: function (options) {
         let timestamp = Date.parse(new Date());
-        this.setData({
-            timestamp: timestamp
-        });
-        //获取地理位置信息并获取列表
-        // this.getLocation();
-       /* let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
         });
@@ -387,9 +292,57 @@ Page({
         }
         this.setData({
             pop_published: wx.getStorageSync('pop')
-        });*/
+        });
+        let _this = this
+        if (!wx.getStorageSync('token')) {
+            wx.login({
+                success: res => {
+                    if (res.code) {
+                        wxRequest.login(res.code).then(res => {
+                            wx.setStorageSync('token', res.data.data.token);
+                            _this.getLocation()
+                                wxRequest.getUserInfo().then(res => {
+                                    console.log('res of getUesr: ', res.data)
+                                    if (res.data.data.realName) {
+                                        console.log('realName of square: ', res.data.data.realName)
+                                        wx.setStorageSync('loginState', true);
+                                    } else {
+                                        wx.setStorageSync('loginState', false);
+                                    }
+                                });
+
+                        })
+                    }
+                }
+            })
+        }  else {
+                wxRequest.getUserInfo().then(res => {
+                    console.log('res.data======',res.data)
+                    if (res.data.data.realName) {
+                        wx.setStorageSync('loginState', true);
+                    } else {
+                        wx.setStorageSync('loginState', false);
+                    }
+                });
+            this.getLocation()
+        }
+        //设置标题栏内容
+        wx.setNavigationBarTitle({
+            title: '建材供应圏'
+        });
+    },
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
+        let timestamp = Date.parse(new Date());
+        this.setData({
+            timestamp: timestamp
+        });
     },
     onPullDownRefresh: function () {
+        // this.getLocation()
+
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
@@ -442,7 +395,6 @@ Page({
             }
         });
     },
-
     /**
      * 用户点击右上角分享
      */

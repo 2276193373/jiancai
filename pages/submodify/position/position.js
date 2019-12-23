@@ -27,9 +27,9 @@ Page({
     save: function () {
         if (this.data.position !== '') {
             wxRequest.modifyPosition(this.data.position);
-            wx.navigateBack({
+           /* wx.navigateBack({
                 url: '/pages/modify/modify'
-            });
+            });*/
             wx.showToast({
                 title: '信息修改成功！',
                 icon: 'success'
