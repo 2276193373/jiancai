@@ -42,6 +42,7 @@ Page({
         type: 'supply'
     },
     tip: function () {
+        let _this = this
         wx.getSetting({
             success: (res) => {
                 if (!res.authSetting['scope.userLocation']) {
@@ -62,6 +63,24 @@ Page({
                                 wx.openSetting({
                                     success: function (res) {
                                         if (res.authSetting["scope.userLocation"] == true) {
+                                            wx.getLocation({
+                                                success: res => {
+                                                    wx.setStorageSync('currentLongitude', res.longitude);
+                                                    wx.setStorageSync('currentLatitude', res.latitude)
+                                                    wxRequest.getInfoList(_this.data.type, _this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then(res => {
+                                                        if (res.data.code === 20000) {
+                                                            _this.setData({
+                                                                productionInfo: res.data.data.list
+                                                            });
+                                                        } else {
+                                                            console.error('square-76-error:',res.data)
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                            _this.setData({
+                                                loc: true
+                                            })
                                             wx.showToast({
                                                 title: '授权成功，可以发布信息了',
                                                 icon: 'none',
@@ -310,7 +329,6 @@ Page({
                                         wx.setStorageSync('loginState', false);
                                     }
                                 });
-
                         })
                     }
                 }
@@ -341,13 +359,13 @@ Page({
         });
     },
     onPullDownRefresh: function () {
-        this.getLocation()
+        // this.getLocation()
 
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
         });
-        /*wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
+        wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
             if (res.data.code === 20000) {
                 this.setData({
                     productionInfo: res.data.data.list
@@ -358,7 +376,7 @@ Page({
             } else {
                 console.error('square-420-error:',res.data)
             }
-        });*/
+        });
     },
 
     /**
