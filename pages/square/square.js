@@ -341,13 +341,13 @@ Page({
         });
     },
     onPullDownRefresh: function () {
-        // this.getLocation()
+        this.getLocation()
 
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
         });
-        wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
+        /*wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then((res) => {
             if (res.data.code === 20000) {
                 this.setData({
                     productionInfo: res.data.data.list
@@ -358,7 +358,7 @@ Page({
             } else {
                 console.error('square-420-error:',res.data)
             }
-        });
+        });*/
     },
 
     /**
