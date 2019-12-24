@@ -33,18 +33,66 @@ Page({
         longitude: 0, //值为数字
         latitude: 0, //值为数字
       },
-    phoneNumber: ''
+    phoneNumber: '',
+    violation: true
   },
 
   //发布信息
-  publish: function () {
-    wxRequest.getUserInfo().then(res => {
+  publish:  function () {
+    let _this = this
+    //定义一个变量看有没有违规，true表示没有违规
+     wx.cloud.callFunction({
+      name: 'ContentCheck',
+      data: {
+        msg: this.data.title//"你，妈。死、了",//此段文字也违规
+      },
+      success(res) {
+        console.log('res of cloud\'s 文字: ', res.result)
+        if (res.result.errCode == 87014) {
+          console.log('文字违规！')
+          wx.showToast({
+            title: '文字违规',
+          })
+            _this.data.violation = false
+        } else {
+          console.log('文字没有违规！')
+          wx.showToast({
+            title: '文字没有违规！'
+          })
+        }
+      }
+    })
+     wx.cloud.callFunction({
+      name: 'ContentCheck',
+      data: {
+        img: '/imgs/sanguinary.jpg' //图片地址
+      },
+      success(res) {
+        console.log('res.result of 图片',res.result)
+        if(res.result.imageR.errCode == 87014){
+          wx.showToast({
+            title: '图片违规!!',
+          })
+          _this.data.violation = false
+        } else {
+          console.log('图片没有违规！')
+          wx.showToast({
+            title: '图片没有违规！'
+          })
+        }
+      }
+    })
+     wxRequest.getUserInfo().then(res => {
       this.setData({
         phoneNumber: res.data.data.phoneNumber
       })
     });
     //发布传入data
-    wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
+    if (!this.data.violation){
+
+      return
+    }
+     else wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
       let infoOfPublish = res.data.data;
       if (res.data.code === 20000) {
         console.log('发布成功！');
@@ -201,7 +249,6 @@ Page({
       })
       console.log('图片选择已达上限');
     }
-
     },
 
   previewImg: function (e) {
