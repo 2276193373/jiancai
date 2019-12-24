@@ -121,14 +121,18 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
+        let timestamp = Date.parse(new Date());
+        this.setData({
+            timestamp: timestamp
+        });
         console.log('options._id: ',options._id, options.creatorPhoneNumber)
         this.setData({
             creatorPhoneNumber: options.creatorPhoneNumber
         })
         //获取详细信息接口
         wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude')||0, wx.getStorageSync('currentLatitude')||0).then(res => {
-            console.log('res of detail: ', res.data)
             let userInfo = res.data.data
+            console.log('userInfo: ', res.data.data)
             this.setData({
                 avatar: userInfo.creatorAvatar,
                 name: userInfo.creatorNickname,
@@ -143,9 +147,16 @@ Page({
                 company: userInfo.company
             })
             wxRequest.getUserInfo().then(res => {
-                if (userInfo.creatorNickname === res.data.data.nickName) {
+                console.log('res.data of getUser', res.data.data)
+                if (userInfo.creatorPhoneNumber === res.data.data.phoneNumber) {
+                    console.log('onwer: ',true)
                     this.setData({
                         owner: true
+                    })
+                } else {
+                    console.log('onwer: ',false)
+                    this.setData({
+                        owner: false
                     })
                 }
             });
@@ -154,14 +165,6 @@ Page({
         this.setData({
             pop_published: wx.getStorageSync('pop')
         })
-        //判断当前用户是否是自己
-        wxRequest.getUserInfo().then(res => {
-            if (options.creatorNickname === res.data.data.nickName) {
-                this.setData({
-                    owner: true
-                })
-            }
-        });
         wx.getSetting({
             success: (res) => {
                 //查看地理位置授权
@@ -191,10 +194,10 @@ Page({
                 }
             }
         })
-        let timestamp = Date.parse(new Date());
+        /*let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
-        });
+        });*/
         wx.setNavigationBarTitle({
             title: '供求详情'
         });
@@ -237,6 +240,12 @@ Page({
             }
         });
     },
+    onShow: function(){
+        let timestamp = Date.parse(new Date());
+        this.setData({
+            timestamp: timestamp
+        });
+    },
 
     //todo 12/10
     contact: function () {
@@ -248,10 +257,10 @@ Page({
                             myUtils.registerTip('注册后即可联系')
                         } else {
                             if (!res.data.data.user.phoneNumber) {
-                                myUtils.registerTip()
+                                myUtils.registerTip('注册后即可联系')
                             }
                             else if (!res.data.data.user.realName) {
-                                myUtils.registerTip()
+                                myUtils.registerTip('注册后即可联系')
                             } else {
                                 wxRequest.relogin().then(res => {
                                     console.log('this.data: ', this.data)

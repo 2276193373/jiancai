@@ -5,25 +5,6 @@
     }
     module.exports.getDistance = distance;
 </wxs>
-<!--发布成功界面-->
-<!--<view class="published_container_wrap" wx:if="{{pop_published}}">
-    <view class="published_container" style="height: {{(winHeight)+50}}px;">
-        &lt;!&ndash;    遮罩层     &ndash;&gt;
-        <view class="mask" catchtouchmove="preventTouchMove">
-        </view>
-        &lt;!&ndash;    弹出框  &ndash;&gt;
-        <view class="pop-window" catchtouchmove="false">
-            <view class="top">
-                <image src="/imgs/published.png"></image>
-            </view>
-            <text>发布成功啦</text>
-            <text>快将的建材供求发给你的好友吧！</text>
-            <button class="share" open-type="share">分享到微信群</button>
-            <view class="close" bindtap="close"></view>
-        </view>
-    </view>
-</view>-->
-
 <!--主体部分-->
 <view class="container" style="height: {{winHeight}}px">
     <view class="navbar-container">

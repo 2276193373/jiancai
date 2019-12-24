@@ -1,6 +1,6 @@
 <!--pages/submodify/gender.wxml-->
 <view class="info-part">
     <text>当前职位</text>
-    <input value="{{position}}" bindinput="inputedit" data-name="position"/>
+    <input value="{{position}}" bindinput="inputedit" data-name="position" maxlength="20"/>
 </view>
 <button class="contact {{position?'':''}}" bindtap="save">保存</button>

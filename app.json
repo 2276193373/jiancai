@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/square/square",
     "pages/test/test",
+    "pages/square/square",
     "pages/login/unit",
     "pages/publish/publish",
     "pages/me/me",
@@ -44,6 +44,9 @@
   "permission": {
     "scope.userLocation": {
       "desc": "你的信息将用于小程序位置接口的展示"
-    }
+    },
+    "openapi": [
+      "templateMessage.send"
+    ]
   }
 }

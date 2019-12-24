@@ -24,9 +24,9 @@ Page({
     save: function () {
         if (this.data.realName !== '') {
             wxRequest.modifyRealName(this.data.realName);
-            wx.navigateBack({
+           /* wx.navigateBack({
                 url: '/pages/modify/modify'
-            });
+            });*/
             wx.showToast({
                 title: '信息修改成功！',
                 icon: 'success'

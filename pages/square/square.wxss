@@ -262,13 +262,13 @@ page {
     background-color: white;
 }
 .active-font{
-    background: linear-gradient(to right, rgba(255, 0, 0, 0.5), red);
+    background: red;
     -webkit-background-clip: text;
     color: transparent;
 }
 .active {
     color: #FF4B49;
-    background: linear-gradient(to right, rgba(255, 0, 0, 0.5), red);
+    background: red;
 }
 .active-sort {
     color: #FF4B49 !important;

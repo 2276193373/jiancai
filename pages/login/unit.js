@@ -1,4 +1,5 @@
 // pages/login/unit/unit.js
+var app = getApp()
 import wxRequest from '../../utils/request'
 Page({
   /**
@@ -144,30 +145,42 @@ Page({
         this.data.gender
     ).then((res) => {
       if (res.data.code === 20000) {
-        wx.setStorageSync('personalInfo', {
-          realName: this.data.name1,
-          company: this.data.name2,
-          position: this.data.position,
-          avatarUrl: this.data.avatarUrl,
-          gender: this.data.gender
-        });
         wxRequest.relogin().then((res) => {
+          console.log('res.data of relogin: ',res.data.data)
+          let personalInfo = res.data.data.user
           if (res.data.code === 20000) {
-            console.log('1234:', res.data.data.token)
-              wx.setStorageSync('token', res.data.data.token);
+            wx.setStorageSync('token', res.data.data.token);
+            wx.setStorageSync('personalInfo', {
+              realName: personalInfo.realName,
+              company: personalInfo.company,
+              position: personalInfo.position,
+              avatarUrl: personalInfo.avatarUrl,
+              gender: personalInfo.gender,
+              phoneNumber: personalInfo.phoneNumber
+            });
+            wx.reLaunch({
+              url: '/pages/square/square',
+              success: function (res) {
+                wx.setStorageSync('loginState', true);
+              }
+            })
           } else {
-            console.log('重新登录失败!(input_info.js)');
+            console.log('重新登录失败!-159-unit.js');
           }
         });
+       /* wxRequest.relogin().then((res) => {
+          console.log('res.data of relogin: ',res.data)
+          if (res.data.code === 20000) {
+              wx.setStorageSync('token', res.data.data.token);
+          } else {
+            console.log('重新登录失败!-159-unit.js');
+          }
+        });*/
       } else {
-        console.log('填写信息上传失败！错误码：', res.errMsg.code);
-        console.log('====错误！!====\n错误码：',res.data.code);
-        console.log('\n====错误信息：', res.data.msg);
+        console.error('error-168-unit.js');
       }
 
     });
-
-
 
     wx.showToast({
       title: '注册成功！',
@@ -176,9 +189,12 @@ Page({
       mask: true
     });
     //跳转到广场
-    wx.reLaunch({
-      url: '/pages/square/square'
-    })
+    /*wx.reLaunch({
+      url: '/pages/square/square',
+      success: function (res) {
+          wx.setStorageSync('loginState', true);
+      }
+    })*/
   },
   todoFun: function() {
     wx.showToast({

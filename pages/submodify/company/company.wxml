@@ -1,7 +1,7 @@
 <!--pages/submodify/gender.wxml-->
 <view class="info-part">
     <text>当前公司</text>
-    <input type="text" value="{{company}}" bindinput="inputedit" data-name="company"/>
+    <input type="text" value="{{company}}" bindinput="inputedit" data-name="company" maxlength="20"/>
 </view>
 <view>
     <button class="contact {{company?'':'disable'}}" bindtap="save">保存</button>

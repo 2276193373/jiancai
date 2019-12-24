@@ -33,42 +33,143 @@ Page({
         longitude: 0, //值为数字
         latitude: 0, //值为数字
       },
-    phoneNumber: ''
+    phoneNumber: '',
+    violation: true
+  },
+
+  descViolation: function() {
+    wx.cloud.callFunction({
+      name: 'ContentCheck',
+      data: {
+        msg: this.data.desc
+      },
+      success: res => {
+        console.log('res of 标题内容：', res.result)
+        if (res.result.errCode === 87014) {
+          this.setData({
+            violation: false
+          })
+          console.log('描述包含敏感信息！')
+          wx.showToast({
+            title: '描述包含敏感信息！',
+              icon: 'none'
+          })
+        } else {
+          this.setData({
+            violation: true
+          })
+        }
+      }
+    })
+  },
+  titleViolation: function(){
+    let _this = this
+      wx.cloud.callFunction({
+        name: 'ContentCheck',
+        data: {
+          msg: this.data.title
+        },
+        success: res => {
+          console.log('res of cloud\'s文字：', res.result)
+          if (res.result.errCode == 87014) {
+              this.setData({
+                violation: false
+              })
+            console.log('标题包含敏感信息！')
+            wx.showToast({
+              title: '标题包含敏感信息！',
+              icon: 'none'
+            })
+          } else {
+            this.setData({
+              violation: true
+            })
+          }
+        }
+      })
   },
 
   //发布信息
-  publish: function () {
-    wxRequest.relogin().then(res => {
-      console.log('data of relogin:', res.data.data.user.phoneNumber)
-      console.log('typeof phoneNumber: ',typeof res.data.data.user.phoneNumber)
+  publish:  function () {
+    let _this = this
+    //定义一个变量看有没有违规，true表示没有违规
+     /* wx.cloud.callFunction({
+      name: 'ContentCheck',
+      data: {
+        msg: this.data.title//"你，妈。死、了",//此段文字也违规
+      },
+      success(res) {
+        console.log('res of cloud\'s 文字: ', res.result)
+        if (res.result.errCode == 87014) {
+          console.log('文字违规！')
+          wx.showToast({
+            title: '文字违规',
+          })
+            _this.setData({
+              violation: false
+            })
+        } else {
+          console.log('文字没有违规！')
+          wx.showToast({
+            title: '文字没有违规！'
+          })
+        }
+      }
+    })
+      wx.cloud.callFunction({
+      name: 'ContentCheck',
+      data: {
+        img: '/imgs/sanguinary.jpg' //图片地址
+      },
+      success(res) {
+        console.log('res.result of 图片',res.result)
+        if(res.result.imageR.errCode == 87014){
+          wx.showToast({
+            title: '图片违规!!',
+          })
+          _this.data.violation = false
+        } else {
+          console.log('图片没有违规！')
+          wx.showToast({
+            title: '图片没有违规！'
+          })
+        }
+      }
+    })*/
+      wxRequest.getUserInfo().then(res => {
       this.setData({
-        phoneNumber: res.data.data.user.phoneNumber
+        phoneNumber: res.data.data.phoneNumber
       })
     });
     //发布传入data
-    wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
-      let infoOfPublish = res.data.data;
-      if (res.data.code === 20000) {
-        console.log('res.data of publish---->',res.data)
-        console.log('发布成功！');
-        wx.setStorageSync('pop', true);
-        wx.redirectTo({
-          // url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
-          url: `/pages/detail/detail?_id=${infoOfPublish._id}`,
-          success: res => {
-          }
-        });
-        console.log('发布后返回的信息数据：',res.data.data);
-        // wx.setStorageSync('publish_info', res.data.data);
-        wx.setStorageSync('timeSort', 'time');
-        wx.setStorageSync('type', this.data.type);
-      } else {
-        console.log('res.data: ',res.data)
-        console.log('发布出错！\n')
-        console.log('---错误！!---\n错误码：',res.data.code)
-        console.log('\n错误信息：', res.data.msg)
-      }
-    });
+      setTimeout( ()=> {
+        if (this.data.violation){
+          wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
+            let infoOfPublish = res.data.data;
+            if (res.data.code === 20000) {
+              console.log('发布成功！');
+              wx.setStorageSync('pop', true);
+              wx.redirectTo({
+                // url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
+                url: `/pages/detail/detail?_id=${infoOfPublish._id}`,
+                success: res => {
+                }
+              });
+              console.log('发布后返回的信息数据：',res.data.data);
+              // wx.setStorageSync('publish_info', res.data.data);
+              wx.setStorageSync('timeSort', 'time');
+              wx.setStorageSync('type', this.data.type);
+            } else {
+              console.log('发布出错！\n')
+              console.log('publish-64-error: ', res.data)
+            }
+          })
+        } else {
+          console.log('内容包含敏感信息！')
+        }
+
+      },1000)
+
   },
   //信息待完整
   todo: function () {
@@ -206,7 +307,6 @@ Page({
       })
       console.log('图片选择已达上限');
     }
-
     },
 
   previewImg: function (e) {
@@ -246,7 +346,7 @@ Page({
           })
         }
       });
-      //调用腾讯地图api，获取当前经纬度
+      //调用腾讯地图api，获取当前经纬度,从而获取当前所在城市
       qqmapsdk.reverseGeocoder({
         success: (res) => {
           let city = res.result.address_component.province + res.result.address_component.city;

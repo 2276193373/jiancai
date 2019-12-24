@@ -2,6 +2,10 @@
 import wxRequest from './utils/request'
 App({
   onLaunch: function () {
+      wx.cloud.init({
+          env: "chm666-8ln0u",
+          traceUser: true
+      })
       wx.getSystemInfo({
           success:res=>{
               // this.globalData.isIpx = res.model.search('iPhone12') !== -1
