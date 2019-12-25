@@ -36,7 +36,6 @@ Page({
     phoneNumber: '',
     violation: true
   },
-
   //发布信息
   publish:  function () {
     let _this = this
