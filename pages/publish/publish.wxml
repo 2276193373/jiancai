@@ -3,12 +3,12 @@
     <view class="container">
         <view class="title">标题输入</view>
         <view class="content">
-            <input value="{{title}}" type="text" maxlength="19" bindinput="inputTitle" data-title="title" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" />
+            <input value="{{title}}" type="text" maxlength="19" bindinput="inputTitle"  data-title="title" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" />
             <text wx:if="{{leftCount>14}}" id="leftCount">{{leftCount}}/19</text>
         </view>
         <view class="title">内容文字输入</view>
         <view class="textarea-content">
-            <textarea type="text" auto-height maxlength="-1" data-desc="desc" bindinput="inputDesc" placeholder="请输入产品描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
+            <textarea type="text" auto-height maxlength="-1" data-desc="desc" bindinput="inputDesc"  placeholder="请输入产品描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
             <view class="height-60"></view>
         </view>
         <view class="title">图片添加</view>

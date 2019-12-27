@@ -1,1 +1,3 @@
-<image mode="aspectFit" bindload="imageLoad" style="width:{{imageWidth}}px;height:{{imageHeight}}px; border: 1px solid red;" src="/imgs/test/222.jpg"/>
+<button bindtap="uploadImage">上传图片</button>
+<button bindtap="click">检测图片</button>
+<button bindtap="testWord">检测文字</button>

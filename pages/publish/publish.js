@@ -33,84 +33,43 @@ Page({
         longitude: 0, //值为数字
         latitude: 0, //值为数字
       },
-    phoneNumber: '',
-    violation: true
+    phoneNumber: ''
   },
+
+
   //发布信息
   publish:  function () {
     let _this = this
-    //定义一个变量看有没有违规，true表示没有违规
-     wx.cloud.callFunction({
-      name: 'ContentCheck',
-      data: {
-        msg: this.data.title//"你，妈。死、了",//此段文字也违规
-      },
-      success(res) {
-        console.log('res of cloud\'s 文字: ', res.result)
-        if (res.result.errCode == 87014) {
-          console.log('文字违规！')
-          wx.showToast({
-            title: '文字违规',
-          })
-            _this.data.violation = false
-        } else {
-          console.log('文字没有违规！')
-          wx.showToast({
-            title: '文字没有违规！'
-          })
-        }
-      }
-    })
-     wx.cloud.callFunction({
-      name: 'ContentCheck',
-      data: {
-        img: '/imgs/sanguinary.jpg' //图片地址
-      },
-      success(res) {
-        console.log('res.result of 图片',res.result)
-        if(res.result.imageR.errCode == 87014){
-          wx.showToast({
-            title: '图片违规!!',
-          })
-          _this.data.violation = false
-        } else {
-          console.log('图片没有违规！')
-          wx.showToast({
-            title: '图片没有违规！'
-          })
-        }
-      }
-    })
-     wxRequest.getUserInfo().then(res => {
+      wxRequest.getUserInfo().then(res => {
       this.setData({
         phoneNumber: res.data.data.phoneNumber
       })
     });
-    //发布传入data
-    if (!this.data.violation){
 
-      return
-    }
-     else wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
-      let infoOfPublish = res.data.data;
-      if (res.data.code === 20000) {
-        console.log('发布成功！');
-        wx.setStorageSync('pop', true);
-        wx.redirectTo({
-          // url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
-          url: `/pages/detail/detail?_id=${infoOfPublish._id}`,
-          success: res => {
-          }
-        });
-        console.log('发布后返回的信息数据：',res.data.data);
-        // wx.setStorageSync('publish_info', res.data.data);
-        wx.setStorageSync('timeSort', 'time');
-        wx.setStorageSync('type', this.data.type);
-      } else {
-        console.log('发布出错！\n')
-        console.log('publish-64-error: ', res.data)
-      }
-    });
+      wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
+        let infoOfPublish = res.data.data;
+        if (res.data.code === 20000) {
+          wx.setStorageSync('pop', true);
+          wx.redirectTo({
+            // url: `/pages/detail/detail?title=${infoOfPublish.title}&desc=${infoOfPublish.desc}&atlas=${infoOfPublish.atlas}&company=${infoOfPublish.company}&createdAt=${infoOfPublish.createdAt}&location=${infoOfPublish.location}&type=${infoOfPublish.type}&creatorNickname=${infoOfPublish.creatorNickname}&_id=${infoOfPublish._id}&creatorAvatar=${infoOfPublish.creatorAvatar}&creatorId=${infoOfPublish.creatorId}`,
+            url: `/pages/detail/detail?_id=${infoOfPublish._id}`,
+            success: res => {
+            }
+          });
+          // wx.setStorageSync('publish_info', res.data.data);
+          wx.setStorageSync('timeSort', 'time');
+          wx.setStorageSync('type', this.data.type);
+        } else {
+          console.log('发布出错！\n')
+          console.log('publish-64-error: ', res.data)
+          wx.showToast({
+            title: '发布的信息包含违规内容！',
+            icon: 'none'
+          })
+        }
+      })
+
+
   },
   //信息待完整
   todo: function () {
@@ -157,11 +116,6 @@ Page({
   setPosition: function () {
     wx.chooseLocation({
         success: (res) => {
-          console.log(res);
-          console.log(res.name);
-          console.log(res.latitude);
-          console.log(res.longitude);
-
           //设置经纬度缓存
           wx.setStorageSync("latitude", res.latitude);
           wx.setStorageSync("longitude", res.longitude);
@@ -216,7 +170,6 @@ Page({
           for (let i = 0; i < tempFilePaths.length; i++) {
             //七牛云上传图片
             qiniuUploader.upload(tempFilePaths[i], (res) => {
-                  console.log('-0000', res);
                   that.data.atlas.push(config.prefixQiniuImageURL + res.imageURL);
                   console.log('上传了几张图片：',that.data.atlas);
                   that.setData({

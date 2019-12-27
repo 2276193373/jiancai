@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>镂空测试</title>
@@ -74,20 +72,18 @@
     <div class="div3"></div>
 </div>
 <script>
-    function timeout(ms) {
-        return new Promise(resolve => {
-            setTimeout(resolve, ms)
-        })
+    function fun() {
+        let a = 3
+        function fun1() {
+            a++
+            console.log(a)
+        }
+        return fun1
     }
-    async function call(value, ms) {
-        await timeout(ms)
-        console.log(value)
-    }
-    call('hello world!', 3000)
+    fun()()
 </script>
 
 
 </body>
-
 
 </html>
