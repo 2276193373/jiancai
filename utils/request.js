@@ -1,6 +1,6 @@
 export default {
-    async apiCalls(endpointer, method, header, data) {
-        let baseUrl = 'https://ceramic.lindingtechnology.com/' + endpointer;
+    async apiCalls(url, method, header, data) {
+        let baseUrl = 'https://ceramic.lindingtechnology.com/' + url;
         if (header === 'defaultHeader') {
             header =  {
                 "content-type": "application/json",
@@ -32,9 +32,68 @@ export default {
                     reject(res)
                 }
             });
-        }))
+        }));
+        if (res.data.code === 40001 || res.data.code === 40002 || res.data.code === 40003) {
+             wx.login({
+                success: res => {
+                    if (res.code) {
+                        wx.request({
+                            url: 'https://ceramic.lindingtechnology.com/weapp/users/login',
+                            method: 'POST',
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded',
+                                // 'Authorization': 'Bearer ' + wx.getStorageSync('token')
+                            },
+                            data: {
+                                code: res.code,
+                                iv: '',
+                                encryptedData: ''
+                            },
+                            success: resp => {
+                                wx.setStorageSync('token', resp.data.data.token);
+                                // console.log('resp:', resp)
+                                wx.reLaunch({
+                                    url: '/pages/square/square'
+                                })
+                            }
+                        })
+                    }
+                }
+            })
+            console.log('错误吗：', res.data.code)
+          /*  wx.login({
+                success: resp => {
+                    let url = 'weapp/users/login'
+                    if (resp.code) {
+                        wx.request({
+                            url: baseUrl + url,
+                            method: 'POST',
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded',
+                                // 'Authorization': 'Bearer ' + wx.getStorageSync('token')
+                            },
+                            data: {
+                                code: resp.code,
+                                iv: '',
+                                encryptedData: ''
+                            },
+                            success: r => {
+                                wx.setStorageSync('token', r.data.data.token);
+                                console.log(r)
+                            }
+                        })
+                        /!* request.login(res.code).then(res => {
+                             wx.setStorageSync('token', res.data.data.token);
+                         })*!/
+                    }
+                }
+            })*/
+        }
+
         return res;
     },
+
+
     //重新登录
     async relogin() {
         let _relogin = await this.apiCalls('weapp/users/relogin', 'POST', 'header');

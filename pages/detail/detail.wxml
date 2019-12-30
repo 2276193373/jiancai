@@ -19,6 +19,7 @@
         </view>
     </view>
 </view>
+<!--信息详情部分-->
 <view class="page-padding">
     <view class="container">
         <view style="display: inline-block; vertical-align: top;width: 100%;">

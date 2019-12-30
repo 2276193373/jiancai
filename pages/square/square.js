@@ -21,7 +21,7 @@ Page({
         currentPage: 1,
         totalPage: 1,
         //排序方式
-        sortWay: '按距离排序',
+        sortWay: '按时间排序',
         //产品信息
         productionInfo: [],
         //公司
@@ -29,17 +29,17 @@ Page({
         winWidth: wx.getSystemInfoSync().windowWidth + 'rpx',
         winHeight: wx.getSystemInfoSync().windowHeight,
         values: [
-            {value: "只看供应"},
-            {value: "只看需求"}
+            {value: "只看需求"},
+            {value: "只看供应"}
         ],
         //被点击的导航菜单的索引
         currentIndex: 0,
         showModal: false,
-        sortType: 'sortByDistance',
+        sortType: 'sortByTime',
         //api中使用 排序方式
-        sortKind: 'distance',
+        sortKind: 'time',
         loc: '',
-        type: 'supply'
+        type: 'demand'
     },
     tip: function () {
         let _this = this
@@ -136,12 +136,12 @@ Page({
         }
         if (this.data.currentIndex == 0) {
             this.setData({
-                type: 'supply',
+                type: 'demand',
                 currentPage: 1
             });
         } else {
             this.setData({
-                type: 'demand',
+                type: 'supply',
                 currentPage: 1
             })
         }
@@ -276,7 +276,7 @@ Page({
                             __show: true
                         });
                     } else {
-                        console.error('square-351-error:',res.data)
+                        console.error('square-getLocation-error:',res.data)
                     }
                 });
             },
@@ -287,7 +287,7 @@ Page({
                             productionInfo: res.data.data.list
                         });
                     } else {
-                        console.error('square-370-error:',res.data)
+                        console.error('square-290-error:',res.data)
                     }
                 });
 
@@ -302,13 +302,6 @@ Page({
         this.setData({
             timestamp: timestamp
         });
-        if (wx.getStorageSync('pop') == true) {
-            //发布成功滑到顶部
-            wx.pageScrollTo({
-                scrollTop: 0,
-                duration: 100
-            })
-        }
         this.setData({
             pop_published: wx.getStorageSync('pop')
         });
@@ -335,14 +328,13 @@ Page({
             })
         }  else {
                 wxRequest.getUserInfo().then(res => {
-                    console.log('res.data======',res.data)
                     if (res.data.data.realName) {
                         wx.setStorageSync('loginState', true);
                     } else {
                         wx.setStorageSync('loginState', false);
                     }
                 });
-            this.getLocation()
+                this.getLocation()
         }
         //设置标题栏内容
         wx.setNavigationBarTitle({
@@ -353,6 +345,40 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        if (wx.getStorageSync('somename').afterPublish) {
+            wxRequest.getInfoList(wx.getStorageSync('somename').sortType, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then(res => {
+                if (res.data.code === 20000) {
+                    this.setData({
+                        productionInfo: res.data.data.list
+                    });
+                } else {
+                    console.error('square-356-error:',res.data)
+                }
+                console.log('type: ', wx.getStorageSync('somename').sortType)
+                if (wx.getStorageSync('somename').sortType == 'supply') {
+                    this.setData({
+                        currentIndex: 1,
+                        type: 'supply',
+                    })
+                } else {
+                    this.setData({
+                        currentIndex: 0,
+                        type: 'demand'
+                    })
+                }
+                console.log('这是发布后的信息');
+                wx.pageScrollTo({
+                    scrollTop: 0,
+                    duration: 100,
+                    success: () => {
+                        wx.setStorageSync('somename', {
+                            afterPublish: false
+                        });
+                    }
+                })
+            });
+
+        }
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp

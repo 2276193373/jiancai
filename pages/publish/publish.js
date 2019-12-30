@@ -47,6 +47,10 @@ Page({
     });
 
       wxRequest.publish(this.data.title, this.data.desc, this.data.atlas, this.data.type, this.data.address).then((res) => {
+        wx.setStorageSync('somename', {
+          afterPublish: true,
+          sortType: this.data.type
+        })
         let infoOfPublish = res.data.data;
         if (res.data.code === 20000) {
           wx.setStorageSync('pop', true);
@@ -68,8 +72,6 @@ Page({
           })
         }
       })
-
-
   },
   //信息待完整
   todo: function () {

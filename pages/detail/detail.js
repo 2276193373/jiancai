@@ -135,7 +135,7 @@ Page({
             console.log('userInfo: ', res.data.data)
             this.setData({
                 avatar: userInfo.creatorAvatar,
-                name: userInfo.creatorNickname,
+                name: userInfo.creatorRealNane,
                 title: userInfo.title,
                 desc: userInfo.desc,
                 location: userInfo.location,
@@ -144,7 +144,8 @@ Page({
                 creatorId: userInfo.creatorId,
                 _id: userInfo._id,
                 createdAt: userInfo.createdAt,
-                company: userInfo.company
+                company: userInfo.company,
+                type: userInfo.type
             })
             wxRequest.getUserInfo().then(res => {
                 console.log('res.data of getUser', res.data.data)

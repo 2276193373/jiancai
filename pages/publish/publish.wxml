@@ -1,17 +1,17 @@
 <!--pages/publish/publish.wxml-->
 <view style="display: inline-block; vertical-align: top;width: 100%;">
     <view class="container">
-        <view class="title">标题输入</view>
+        <view class="title">标题</view>
         <view class="content">
-            <input value="{{title}}" type="text" maxlength="19" bindinput="inputTitle"  data-title="title" placeholder="请输入产品名称"  placeholder-style="color: #B2B2B2; font-size:15px" />
+            <input value="{{title}}" type="text" maxlength="19" bindinput="inputTitle"  data-title="title" placeholder="简单概括"  placeholder-style="color: #B2B2B2; font-size:15px" />
             <text wx:if="{{leftCount>14}}" id="leftCount">{{leftCount}}/19</text>
         </view>
-        <view class="title">内容文字输入</view>
+        <view class="title">内容</view>
         <view class="textarea-content">
-            <textarea type="text" auto-height maxlength="-1" data-desc="desc" bindinput="inputDesc"  placeholder="请输入产品描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
+            <textarea type="text" auto-height maxlength="-1" data-desc="desc" bindinput="inputDesc"  placeholder="详细描述" placeholder-style="color: #B2B2B2; font-size:17px" value="{{desc}}"></textarea>
             <view class="height-60"></view>
         </view>
-        <view class="title">图片添加</view>
+        <view class="title">图片</view>
         <view class="content content-imgAdd">
             <image mode="aspectFill" bindtap="previewImg" data-index="{{index}}" class="images-style" wx:for="{{atlas}}" wx:key="index"  src="{{atlas[index]}}">
                 <view catchtap="deleteImg" data-index="{{index}}" class="pub-close">
@@ -24,9 +24,9 @@
         <view class="content content-selection" bindtap="showModal">
             <!--            判断 type 是否为空 -->
 <!--            {{type?(type=="supply"?"供应":"需求"):"供求选择"}}-->
-            <picker style="" class="picker-gender" bindchange="bindPickerChange" value="{{index}}" range="{{['需求', '供应']}}">
+            <picker style="" class="picker-gender" bindchange="bindPickerChange" value="{{index}}" range="{{['我要发布需求', '我要发布产品信息']}}">
                 <view class="name-arrow-container">
-                    <text>{{index==0?'需求':'供应'}}</text>
+                    <text>{{index==0?'我要发布需求':'我要发布产品信息'}}</text>
                 </view>
             </picker>
             <image src="/imgs/arrow-right-active.png"></image>

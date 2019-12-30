@@ -6,70 +6,36 @@ Page({
         imageHeight: 0,
         imgPath: ''
     },
-    uploadImage: function(){
-        wx.chooseImage({
-            count: 2,
-            sizeType: ['original', 'compressed'],
-            sourceType: ['album', 'camera'],
-            success: res =>{
-                //tempFilePath可以作为img标签的src属性显示图片
-                const tempFilePaths = res.tempFilePaths
-                console.log('图片路径：', tempFilePaths)
-                this.setData({
-                    imgPath: tempFilePaths[0]
-                })
-            }
-        });
-    },
-    click: function() {
-        wx.cloud.callFunction({
-            name: 'ContentCheck',
-            data: {
-                img: "/imgs/test/test.jpeg"
-            },
-            success(res) {
-                console.log(res.result)
-                if(res.result.imageR.errCode == 87014){
-                    wx.showToast({
-                        title: '图片违规',
-                    })
-                }else{
-                    wx.showToast({
-                        title:"图片安全"
-                    })
-                }
-            }
-        })
-    },
-    testWord: function(){
-        wx.cloud.callFunction({
-            name: 'ContentCheck',
-            data: {
-                msg: '傻逼'
-            },
-            success: res => {
-                console.log('res of 标题内容：', res.result)
-                if (res.result.errCode === 87014) {
-                    this.setData({
-                        violation: false
-                    })
-                    console.log('描述包含敏感信息！')
-                    wx.showToast({
-                        title: '描述包含敏感信息！',
-                        icon: 'none'
-                    })
-                } else {
-                    this.setData({
-                        violation: true
-                    })
-                }
-            }
-        })
-    },
+
     onLoad: function (opt) {
-        //文字违规
-
-        //图片违规
-
+        request.getUserInfo().then(res => {
+            // console.log('res.data: ', res.data)
+        });
+      /*  let baseUrl = 'https://ceramic.lindingtechnology.com/';
+        let url = 'weapp/users/login'
+        // request.getUserInfo()
+        wx.login({
+            success: res => {
+                if (res.code) {
+                    wx.request({
+                        url: baseUrl + url,
+                        method: 'POST',
+                        header: {
+                            'content-type': 'application/x-www-form-urlencoded',
+                            // 'Authorization': 'Bearer ' + wx.getStorageSync('token')
+                        },
+                        data: {
+                            code: res.code,
+                            iv: '',
+                            encryptedData: ''
+                        },
+                        success: resp => {
+                            wx.setStorageSync('token', resp.data.data.token);
+                            console.log('resp:', resp)
+                        }
+                    })
+                }
+            }
+        })*/
     }
 })

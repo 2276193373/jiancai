@@ -23,8 +23,8 @@ Page({
         }
       ],
       values: [
-        {value: "我的供应"},
-        {value: "我的需求"}
+        {value: "我的需求"},
+        {value: "我的供应"}
       ],
       currentIndex: 0,
       productionInfo: [],
@@ -136,7 +136,7 @@ Page({
    */
   onLoad: function (options) {
     wxRequest.getUserInfo().then(res => {
-      console.log('res.data of me', res.data)
+      // console.log('res.data of me', res.data)
       let info = res.data.data
       wx.setStorageSync('myInfo', {
         realName: info.realName,
@@ -148,10 +148,10 @@ Page({
       });
 
     });
-    if (this.data.currentIndex == 0) {
+    if (this.data.currentIndex == 1) {
       this.reSortBySupply()
     }
-    if (this.data.currentIndex == 1) {
+    if (this.data.currentIndex == 0) {
       this.reSortByDemand()
     }
     wx.setNavigationBarTitle({
@@ -260,7 +260,7 @@ Page({
 
     setTimeout(() => {
       let info = wx.getStorageSync('myInfo');
-      console.log('info of me：',info)
+      // console.log('info of me：',info)
       this.setData({
         avatar: info.avatarUrl,
         name: info.realName,
@@ -283,7 +283,43 @@ Page({
 
   },
   onPullDownRefresh: function () {
-    wxRequest.relogin().then((res) => {
+    wxRequest.getUserInfo().then(res => {
+      if (res.data.code === 20000) {
+        let info = res.data.data;
+        this.setData({
+          avatar: info.avatarUrl,
+          name: info.realName,
+          personalInfo: [
+            {
+              imgUrl: '/imgs/company.png',
+              info: info.company
+            },
+            {
+              imgUrl: '/imgs/phone-me.png',
+              info: info.phoneNumber
+            },
+            {
+              imgUrl: '/imgs/workbench.png',
+              info: info.position
+            }
+          ]
+        });
+        setTimeout(function () {
+          wx.stopPullDownRefresh();
+        }, 500);
+      } else {
+        console.log('====错误！!====\n错误码：', res.data.code);
+        console.log(res.errMsg);
+      }
+    });
+    if (this.data.type === 'demand') {
+      this.reSortByDemand()
+    } else if (this.data.type === 'supply') {
+      this.reSortBySupply()
+    } else {
+      console.error('下拉刷新时，类型出错！')
+    }
+    /*wxRequest.relogin().then((res) => {
       if (res.data.code === 20000) {
         let info = res.data.data.user;
         this.setData({
@@ -311,6 +347,6 @@ Page({
         console.log('====错误！!====\n错误码：', res.data.code);
         console.log(res.errMsg);
       }
-    });
+    });*/
   },
 })
