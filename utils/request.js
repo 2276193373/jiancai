@@ -312,5 +312,13 @@ export default {
                 });
             });
         });
+    },
+    //修改信息状态
+    modifyState(id, state) {
+        return this.apiCalls(`weapp/infos/${id}?state=${state}`, 'PUT', 'defaultHeader')
+    },
+    //删除信息
+    deleteInfo(id) {
+        return this.apiCalls(`weapp/infos/${id}`, 'DELETE', 'defaultHeader')
     }
 }

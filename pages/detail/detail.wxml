@@ -24,7 +24,7 @@
     <view class="container">
         <view style="display: inline-block; vertical-align: top;width: 100%;">
             <view  class="block-shadow container-padding">
-                <view class="type">{{type==="supply"?"供":"求"}}</view>
+                <view class="type" wx:if="{{}}">{{type==="supply"?"供":"求"}}</view>
                 <view class="avatar-bar">
                     <image src="{{avatar}}"></image>
                     <view>
@@ -62,21 +62,49 @@
             <!--这里是分割线-->
             <view class="position block-shadow">
                 <view>
-                    <image class="icon" src="/imgs/location/location.png"></image>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+                    <image class="icon" src="{{!state?'/imgs/location/location.png':'/imgs/location/disable-location.png'}}"></image>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
                     <text class="location-detail">{{location}}</text>
                 </view>
                 <text wx:if="{{loc!=false}}">距离{{distance}}千米</text>
             </view>
         </view>
     </view>
+    <view class="unsolved" wx:if="{{owner}}" bindtap="unsolved">
+        <image src="/imgs/detail/unsolved.png"></image>
+        <view>标记为未解决</view>
+    </view>
     <view style="height: 70px;" class="{{isIpx?'ipx':''}}"></view>
     <view class="btn-container {{isIpx?'ipx':''}}">
-        <button class="contact" bindtap="{{owner?'':'contact'}}" open-type="{{owner?'share':''}}">
-            <view>
-                <image src="{{owner?'/imgs/share.png':'/imgs/telephone.png'}}" class="contact-btn"></image>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+        <view wx:if="{{!state}}">
+            <view wx:if="{{!owner}}" class="btn-control">
+                <button class="contact btn-font" bindtap="contact">
+                    <image src="/imgs/detail/contact.png" class="contact-btn"></image>
+                    <text>立即联系</text>
+                </button>
+                <button class="contact btn-font" open-type="share">
+                    <image src="/imgs/detail/share.png" class="contact-btn"></image>
+                    <text>分享到微信群</text>
+                </button>
             </view>
-<!--            {{owner?'分享到微信群':'立即联系'}}-->
-            {{owner?'分享到微信群':'立即联系'}}
-        </button>
+            <view wx:else="{{owner}}" class="btn-control">
+                <button class="contact btn-font" open-type="share">
+                    <image src="/imgs/detail/share.png" class="contact-btn"></image>
+                    <text>分享到微信群</text>
+                </button>
+                <button class="contact btn-font" bindtap="solved">
+                    <image src="/imgs/detail/solved.png" class="contact-btn"></image>
+                    <text>标记为已解决</text>
+                </button>
+                <button class="contact btn-font" bindtap="cancelInfo">
+                    <image src="/imgs/detail/cancel.png" class="contact-btn"></image>
+                    <text>取消发布</text>
+                </button>
+            </view>
+        </view>
+        <view wx:if="{{state}}" class="solved">已解决</view>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
     </view>
 </view>

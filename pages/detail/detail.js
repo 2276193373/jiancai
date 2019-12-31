@@ -9,6 +9,9 @@ Page({
      * 页面的初始数据
      */
     data: {
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+//         state: 0,
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         pop_published: false,
         owner: false,
         //获取屏幕高高
@@ -35,6 +38,26 @@ Page({
         infoId: '',
         isIpx: getApp().globalData.isIpx,
         creatorPhoneNumber: ''
+    },
+    solved: function () {
+        wxRequest.modifyState(this.data._id, 1).then(res => {
+            console.log('res of solved: ', res.data.data)
+            this.setData({
+                state: res.data.data.state
+            })
+        });
+    },
+    unsolved: function () {
+        wxRequest.modifyState(this.data._id, 0).then(res => {
+            this.setData({
+                state: res.data.data.state
+            })
+        });
+    },
+    cancelInfo: function () {
+        wxRequest.deleteInfo(this.data._id).then(res => {
+            console.log('res of deleteInfo: ', res.data)
+        });
     },
     close: function () {
         wx.setStorageSync('pop', false);
@@ -125,10 +148,10 @@ Page({
         this.setData({
             timestamp: timestamp
         });
-        console.log('options._id: ',options._id, options.creatorPhoneNumber)
-        this.setData({
+        console.log('options._id: ',options._id)
+       /* this.setData({
             creatorPhoneNumber: options.creatorPhoneNumber
-        })
+        })*/
         //获取详细信息接口
         wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude')||0, wx.getStorageSync('currentLatitude')||0).then(res => {
             let userInfo = res.data.data
@@ -145,10 +168,11 @@ Page({
                 _id: userInfo._id,
                 createdAt: userInfo.createdAt,
                 company: userInfo.company,
-                type: userInfo.type
+                type: userInfo.type,
+                creatorPhoneNumber: userInfo.creatorPhoneNumber,
+                state: userInfo.state
             })
             wxRequest.getUserInfo().then(res => {
-                console.log('res.data of getUser', res.data.data)
                 if (userInfo.creatorPhoneNumber === res.data.data.phoneNumber) {
                     console.log('onwer: ',true)
                     this.setData({
@@ -182,7 +206,13 @@ Page({
                 }
             }
         });
-        wx.login({
+
+        //如果该用户还没有登录
+        if (!wx.getStorageSync('loginState')) {
+            //看有没有授权地理位置
+            this.authLocation()
+        }
+       /* wx.login({
             success: res => {
                 if (res.code) {
                     wxRequest.login(res.code).then(res => {
@@ -194,11 +224,8 @@ Page({
                     });
                 }
             }
-        })
-        /*let timestamp = Date.parse(new Date());
-        this.setData({
-            timestamp: timestamp
         });*/
+
         wx.setNavigationBarTitle({
             title: '供求详情'
         });
@@ -247,36 +274,39 @@ Page({
             timestamp: timestamp
         });
     },
-
     //todo 12/10
     contact: function () {
-        wx.login({
-            success: res => {
-                if (res.code) {
-                    wxRequest.login(res.code).then(res => {
-                        if (!res.data.data) {
-                            myUtils.registerTip('注册后即可联系')
-                        } else {
-                            if (!res.data.data.user.phoneNumber) {
-                                myUtils.registerTip('注册后即可联系')
-                            }
-                            else if (!res.data.data.user.realName) {
+        if (wx.getStorageSync('loginState')) {
+            wx.makePhoneCall({
+                phoneNumber: this.data.creatorPhoneNumber
+            })
+        } else {
+            wx.login({
+                success: res => {
+                    if (res.code) {
+                        wxRequest.login(res.code).then(res => {
+                            if (!res.data.data) {
                                 myUtils.registerTip('注册后即可联系')
                             } else {
-                                wxRequest.relogin().then(res => {
-                                    console.log('this.data: ', this.data)
-                                    let phoneNumber = this.data.phoneNumber
-                                    wx.makePhoneCall({
-                                        //电话号码为字符串，并非数字
-                                        phoneNumber: this.data.creatorPhoneNumber
-                                    })
-                                });
+                                if (!res.data.data.user.phoneNumber) {
+                                    myUtils.registerTip('注册后即可联系')
+                                }
+                                else if (!res.data.data.user.realName) {
+                                    myUtils.registerTip('注册后即可联系')
+                                } else {
+                                    console.log('detail页面: 出错！')
+                                    /*wxRequest.relogin().then(res => {
+                                        console.log('this.data: ', this.data)
+                                        let phoneNumber = this.data.phoneNumber
+                                    });*/
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
-            }
-        })
+            });
+        }
+
 
     },
 })

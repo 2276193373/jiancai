@@ -6,36 +6,18 @@ Page({
         imageHeight: 0,
         imgPath: ''
     },
-
+    test() {
+    },
     onLoad: function (opt) {
         request.getUserInfo().then(res => {
             // console.log('res.data: ', res.data)
         });
-      /*  let baseUrl = 'https://ceramic.lindingtechnology.com/';
-        let url = 'weapp/users/login'
-        // request.getUserInfo()
-        wx.login({
-            success: res => {
-                if (res.code) {
-                    wx.request({
-                        url: baseUrl + url,
-                        method: 'POST',
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded',
-                            // 'Authorization': 'Bearer ' + wx.getStorageSync('token')
-                        },
-                        data: {
-                            code: res.code,
-                            iv: '',
-                            encryptedData: ''
-                        },
-                        success: resp => {
-                            wx.setStorageSync('token', resp.data.data.token);
-                            console.log('resp:', resp)
-                        }
-                    })
-                }
-            }
-        })*/
+    },
+    onShareAppMessage: function () {
+        let _url = `/pages/detail/detail`
+        return {
+            title: '我发布了一则信息，快来看看吧！',
+            path: _url
+        }
     }
 })

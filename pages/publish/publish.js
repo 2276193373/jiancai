@@ -65,7 +65,7 @@ Page({
           wx.setStorageSync('type', this.data.type);
         } else {
           console.log('发布出错！\n')
-          console.log('publish-64-error: ', res.data)
+          console.log('publish-68-error: ', res.data)
           wx.showToast({
             title: '发布的信息包含违规内容！',
             icon: 'none'

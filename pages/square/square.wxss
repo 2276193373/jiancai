@@ -360,6 +360,35 @@ page {
     right: -17rpx;
     top: -20rpx;
 }
+.solved {
+    width: 25px;
+    height: 62px;
+    /*border: 1px solid red;*/
+    position: absolute;
+    right: 0;
+    top: 0;
+    writing-mode: vertical-lr;
+    color: #ffffff;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+.solved > image {
+    width: 25px;
+    height: 62px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+.solved > text {
+    position: absolute;
+    z-index: 1;
+    font-size: 12px;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    letter-spacing: 2px;
+}
 .total-img {
     /*width:58rpx;*/
     height:32rpx;

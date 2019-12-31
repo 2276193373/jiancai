@@ -114,18 +114,13 @@ Page({
     },
     gotoDetail(e) {
         //获取当前点击的元素的索引,并缓存
-        wx.setStorageSync('itemIndex', e.currentTarget.dataset.index);
-        //获取信息列表
-        wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude')).then((res) => {
-            if (res.data.code === 20000) {
-                let prodInfo = res.data.data.list[e.currentTarget.dataset.index];
-                wx.navigateTo({
-                    url: `/pages/detail/detail?_id=${prodInfo._id}&creatorPhoneNumber=${prodInfo.creatorPhoneNumber}`
-                });
-            } else {
-                console.error('square-107-error:',res.data)
-            }
+        // wx.setStorageSync('itemIndex', e.currentTarget.dataset.index);
+        console.log('e.item: ',e.currentTarget.dataset.item)
+        let productInfo = e.currentTarget.dataset.item
+        wx.navigateTo({
+            url: `/pages/detail/detail?_id=${productInfo._id}`
         });
+
     },
 //点击首页导航栏按钮
     activeNav(e) {

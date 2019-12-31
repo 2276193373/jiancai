@@ -35,9 +35,15 @@
     <!--    列表部分  ---------->
     <view class="body-container" wx:for="{{productionInfo}}" wx:key="{{index}}" wx:if="{{productionInfo.length>0}}">
 <!--        只看供应 -->
-        <view class="body-part"  bindtap="gotoDetail" data-index="{{index}}">
+        <view class="body-part"  bindtap="gotoDetail" data-index="{{index}}" data-item="{{item}}">
             <view class="block-shadow">
-                <view class="type">{{item.type==="supply"?"供":"求"}}</view>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+                <view class="type" wx:if="{{!item.state}}">{{item.type==="supply"?"供":"求"}}</view>
+                <view class="solved" wx:if="{{item.state}}">
+                    <text>已解决</text>
+                    <image src="/imgs/solved.png"></image>
+                </view>
+<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
                 <view class="avatar-bar">
                     <image src="{{item.creatorAvatar}}"></image>
                     <view>
@@ -72,7 +78,9 @@
             <view class="block-shadow down-level">
                 <view class="position">
                     <view>
-                        <image class="icon" src="/imgs/location/location.png"></image>
+<!--66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666-->
+                        <image class="icon" src="{{!item.state?'/imgs/location/location.png':'/imgs/location/disable-location.png'}}"></image>
+<!--66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666-->
                         <view class="location-display">{{item.location}}</view>
                     </view>
                     <text wx:if="{{loc}}">距离{{distance.getDistance(item.distance)}}千米</text>
