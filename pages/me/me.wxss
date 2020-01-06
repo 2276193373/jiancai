@@ -143,7 +143,10 @@
     margin: 0 0 20rpx 16rpx;
     color: #353535;
     font-size:14px;
-
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 294rpx;
 }
 .body-part .intro {
     margin-left: 16rpx;
@@ -153,6 +156,7 @@
     /*下面三行是文本超出省略*/
     white-space: nowrap;
     overflow: hidden;
+    /*border: 1px solid red;*/
     text-overflow: ellipsis;
     font-size:11px;
     font-family: "PingFangSC-Regular";

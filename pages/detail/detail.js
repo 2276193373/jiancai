@@ -41,7 +41,7 @@ Page({
     },
     solved: function () {
         wxRequest.modifyState(this.data._id, 1).then(res => {
-            console.log('res of solved: ', res.data.data)
+            // console.log('res of solved: ', res.data.data)
             this.setData({
                 state: res.data.data.state
             })
@@ -55,9 +55,24 @@ Page({
         });
     },
     cancelInfo: function () {
-        wxRequest.deleteInfo(this.data._id).then(res => {
-            console.log('res of deleteInfo: ', res.data)
-        });
+        wx.showModal({
+            title: '提示',
+            content: '是否删除该条发布信息',
+            success:  (res)=> {
+                if (res.confirm) {
+                    wxRequest.deleteInfo(this.data._id).then(r => {
+                        // console.log('res of deleteInfo: ', r.data)
+                    });
+                    wx.setStorageSync('fromDetail', true);
+                    wx.switchTab({
+                        url: '/pages/square/square'
+                    })
+                } else {
+                    console.log('你点击了取消')
+                }
+            }
+        })
+
     },
     close: function () {
         wx.setStorageSync('pop', false);
@@ -144,18 +159,20 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
+        console.log('detail: ', options)
         let timestamp = Date.parse(new Date());
         this.setData({
-            timestamp: timestamp
+            timestamp: timestamp,
+            _id: options._id
         });
-        console.log('options._id: ',options._id)
+        // console.log('options._id: ',options._id)
        /* this.setData({
             creatorPhoneNumber: options.creatorPhoneNumber
         })*/
         //获取详细信息接口
         wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude')||0, wx.getStorageSync('currentLatitude')||0).then(res => {
             let userInfo = res.data.data
-            console.log('userInfo: ', res.data.data)
+            // console.log('userInfo: ', res.data.data)
             this.setData({
                 avatar: userInfo.creatorAvatar,
                 name: userInfo.creatorRealNane,
@@ -174,12 +191,12 @@ Page({
             })
             wxRequest.getUserInfo().then(res => {
                 if (userInfo.creatorPhoneNumber === res.data.data.phoneNumber) {
-                    console.log('onwer: ',true)
+                    // console.log('onwer: ',true)
                     this.setData({
                         owner: true
                     })
                 } else {
-                    console.log('onwer: ',false)
+                    // console.log('onwer: ',false)
                     this.setData({
                         owner: false
                     })
@@ -212,27 +229,13 @@ Page({
             //看有没有授权地理位置
             this.authLocation()
         }
-       /* wx.login({
-            success: res => {
-                if (res.code) {
-                    wxRequest.login(res.code).then(res => {
-                        //如果该用户还没有登录
-                        if (!res.data.data) {
-                            //看有没有授权地理位置
-                            this.authLocation()
-                        }
-                    });
-                }
-            }
-        });*/
-
         wx.setNavigationBarTitle({
             title: '供求详情'
         });
         await wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
             if (res.data.code === 20000) {
-                console.log("感兴趣!");
-                console.log(res);
+                // console.log("感兴趣!");
+                // console.log(res);
             } else {
                 console.log('====错误！!====\n错误码：', res.data.code);
                 console.log(res.errMsg);
@@ -241,17 +244,17 @@ Page({
         //options._id是提交请求数据data中的infoId
         await wxRequest.getBrowseringHistory(options._id).then((res) => {
             if (res.data.code === 20000) {
-                console.log("请求感兴趣成功！");
+                // console.log("请求感兴趣成功！");
                 let list = res.data.data.list;
                 //遍历感兴趣列表
-                for (let i = 0; i < list.length; i++) {
-                    //如果当前列表中的用户id与当前信息创建者id一致，则将手机号设置为此人的手机号
-                    if (this.data.creatorId === list[i].userId) {
-                        this.setData({
-                            phoneNumber: list[i].phoneNumber
-                        })
-                    }
-                }
+                // for (let i = 0; i < list.length; i++) {
+                //     //如果当前列表中的用户id与当前信息创建者id一致，则将手机号设置为此人的手机号
+                //     if (this.data.creatorId === list[i].userId) {
+                //         this.setData({
+                //             phoneNumber: list[i].phoneNumber
+                //         })
+                //     }
+                // }
                 try {
                     this.setData({
                         list: list,
@@ -267,6 +270,7 @@ Page({
                 console.log('请求感兴趣失败！');
             }
         });
+        wx.setStorageSync('fromDetail', true);
     },
     onShow: function(){
         let timestamp = Date.parse(new Date());
@@ -309,4 +313,11 @@ Page({
 
 
     },
+
+    onShareAppMessage: function () {
+        return {
+            path: '/pages/square/square?_id=' + this.data._id,
+            title: '我发布了一则信息，快来围观吧！'
+        }
+    }
 })

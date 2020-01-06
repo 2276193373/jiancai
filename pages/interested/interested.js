@@ -24,10 +24,12 @@ Page({
   },
   onLoad: function (options) {
     myUtils.wxSetNavbarTitle('感兴趣的人');
-    wxRequest.relogin();
     wxRequest.getBrowseringHistory(options.infoId).then((res) => {
       if (res.data.code === 20000) {
         let list = res.data.data.list;
+        for (let i = 0; i < list.length; i++) {
+          list[i].userId = list[i].userId.substring(list[i].userId.length - 8)
+        }
         this.setData({
           list: list
         });

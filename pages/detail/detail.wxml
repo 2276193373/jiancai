@@ -2,7 +2,7 @@
 
 <!--发布成功界面-->
 <view class="published_container_wrap" wx:if="{{pop_published}}">
-                                                    <!---— +90是底部按钮的高度 -->
+    <!---— +90是底部按钮的高度 -->
     <view class="published_container" style="height: {{(winHeight+90)}}px;">
         <!--    遮罩层     -->
         <view class="mask" catchtouchmove="preventTouchMove">
@@ -23,26 +23,40 @@
 <view class="page-padding">
     <view class="container">
         <view style="display: inline-block; vertical-align: top;width: 100%;">
-            <view  class="block-shadow container-padding">
-                <view class="type" wx:if="{{}}">{{type==="supply"?"供":"求"}}</view>
+            <view class="block-shadow container-padding">
+                <view class="type" wx:if="{{!state}}">{{type==="supply"?"供":"求"}}</view>
+                <view class="solved-top-right" wx:if="{{state}}">
+                    <text>已解决</text>
+                    <image src="/imgs/solved.png"></image>
+                </view>
                 <view class="avatar-bar">
                     <image src="{{avatar}}"></image>
                     <view>
-                        <text>{{name}}</text>
+                        <text style="color:#353535;">{{name}}</text>
                         <text class="company">{{company}}</text>
-
+                    </view>
+                    <view class="publish-time" wx:if="{{(timestamp-createdAt)/1000/60/60/24|Int}}">
+                        {{(timestamp-createdAt)/1000/60/60/24|Int}}天前发布
+                    </view>
+                    <view class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60/60|Int}}">
+                        {{(timestamp-createdAt)/1000/60/60|Int}}小时前发布
+                    </view>
+                    <view class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60|Int}}">
+                        {{(timestamp-createdAt)/1000/60|Int}}分钟前发布
+                    </view>
+                    <view class="publish-time" wx:else="{{(timestamp-createdAt)/1000|Int}}">
+                        {{(timestamp-createdAt)/1000|Int}}秒钟前发布
                     </view>
                     <!--发布时间-->
-                    <text class="publish-time" wx:if="{{(timestamp-createdAt)/1000/60/60/24|Int}}">{{(timestamp-createdAt)/1000/60/60/24|Int}}天前发布</text>
-                    <text class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60/60|Int}}">{{(timestamp-createdAt)/1000/60/60|Int}}小时前发布</text>
-                    <text class="publish-time" wx:elif="{{(timestamp-createdAt)/1000/60|Int}}">{{(timestamp-createdAt)/1000/60|Int}}分钟前发布</text>
-                    <text class="publish-time" wx:else="{{(timestamp-createdAt)/1000|Int}}">{{(timestamp-createdAt)/1000|Int}}秒钟前发布</text>
                 </view>
                 <text>{{title}}</text>
                 <view class="intro">{{desc}}</view>
-                <view wx:if="{{atlas!=''}}"class="production-img">
-                    <image  mode="{{atlas.length==1?'widthFix':'aspectFill'}}"  class="{{(index==1||index==4||index==7)?'second-img':''}}" style="{{atlas.length==1?('width: 360rpx;height: 360rpx;'):(atlas.length==2?'width: 300rpx;height: 300rpx;':'width: 198rpx;height: 198rpx;')}}"
-                            wx:for="{{atlas}}" wx:key="{{index}}" src="{{item}}" bindtap="previewImage" data-index="{{index}}">{{index}}
+                <view wx:if="{{atlas!=''}}" class="production-img">
+                    <image mode="{{atlas.length==1?'widthFix':'aspectFill'}}"
+                           class="{{(index==1||index==4||index==7)?'second-img':''}}"
+                           style="{{atlas.length==1?('width: 360rpx;height: 360rpx;'):(atlas.length==2?'width: 300rpx;height: 300rpx;':'width: 198rpx;height: 198rpx;')}}"
+                           wx:for="{{atlas}}" wx:key="{{index}}" src="{{item}}" bindtap="previewImage"
+                           data-index="{{index}}">{{index}}
                     </image>
                 </view>
                 <view class="intro float-right" bindtap="{{interestedCount?'gotoInterested':'todo'}}">
@@ -62,23 +76,24 @@
             <!--这里是分割线-->
             <view class="position block-shadow">
                 <view>
-<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-                    <image class="icon" src="{{!state?'/imgs/location/location.png':'/imgs/location/disable-location.png'}}"></image>
-<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+                    <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+                    <image class="icon"
+                           src="{{!state?'/imgs/location/location.png':'/imgs/location/disable-location.png'}}"></image>
+                    <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
                     <text class="location-detail">{{location}}</text>
                 </view>
                 <text wx:if="{{loc!=false}}">距离{{distance}}千米</text>
             </view>
         </view>
     </view>
-    <view class="unsolved" wx:if="{{owner}}" bindtap="unsolved">
+   <!-- <view class="unsolved" wx:if="{{owner}}" bindtap="unsolved">
         <image src="/imgs/detail/unsolved.png"></image>
         <view>标记为未解决</view>
-    </view>
+    </view>-->
     <view style="height: 70px;" class="{{isIpx?'ipx':''}}"></view>
     <view class="btn-container {{isIpx?'ipx':''}}">
-<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
-        <view wx:if="{{!state}}">
+        <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+        <view wx:if="{{!state||owner}}">
             <view wx:if="{{!owner}}" class="btn-control">
                 <button class="contact btn-font" bindtap="contact">
                     <image src="/imgs/detail/contact.png" class="contact-btn"></image>
@@ -94,9 +109,10 @@
                     <image src="/imgs/detail/share.png" class="contact-btn"></image>
                     <text>分享到微信群</text>
                 </button>
-                <button class="contact btn-font" bindtap="solved">
-                    <image src="/imgs/detail/solved.png" class="contact-btn"></image>
-                    <text>标记为已解决</text>
+                <button wx:if="{{type==='demand'}}" class="contact btn-font" bindtap="{{!state?'solved':'unsolved'}}">
+                    <image src="{{!state?'/imgs/detail/solved.png':'/imgs/detail/unsolved.png'}}"
+                           class="contact-btn"></image>
+                    <text>{{!state?'标记为已解决':'标记为未解决'}}</text>
                 </button>
                 <button class="contact btn-font" bindtap="cancelInfo">
                     <image src="/imgs/detail/cancel.png" class="contact-btn"></image>
@@ -104,7 +120,8 @@
                 </button>
             </view>
         </view>
-        <view wx:if="{{state}}" class="solved">已解决</view>
-<!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
+
+        <view wx:if="{{state&&!owner}}" class="solved">已解决</view>
+        <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
     </view>
 </view>

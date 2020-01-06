@@ -51,7 +51,7 @@
                 <view class="avatar-bar">
                     <image src="{{item.creatorAvatar}}"></image>
                     <view>
-                        <text class="username-style">{{item.creatorNickname}}</text>
+                        <text class="username-style">{{name}}</text>
                     </view>
                 </view>
                 <view class="production-img-container" wx:if="{{item.atlas.length}}">
@@ -59,7 +59,7 @@
                         <image mode="aspectFill" src="{{item.atlas[0]}}" wx:for="{{1}}" wx:for-item="item1" wx:key="idx" style="height:334rpx;height: {{314}}rpx;"></image>
                     </view>
                 </view>
-                <text class="title-me">{{item.title}}</text>
+                <view class="title-me">{{item.title}}</view>
                 <view class="intro">{{item.desc}}</view>
             </view>
         </view>

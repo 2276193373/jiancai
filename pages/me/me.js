@@ -100,8 +100,6 @@ Page({
     }
     wxRequest.getUserInfoList('demand').then((res) => {
       if (res.data.code === 20000) {
-        // console.log('获取需求列表！');
-        console.log(res.data.data.list);
         this.setData({
           type: 'demand',
           demandCollection: res.data.data.list,
@@ -157,60 +155,6 @@ Page({
     wx.setNavigationBarTitle({
       title: '我的'
     });
-    /*let info = wx.getStorageSync('personalInfo');
-    this.setData({
-      avatar: info.avatarUrl,
-      name: info.realName,
-      personalInfo: [
-        {
-          imgUrl: '/imgs/company.png',
-          info: info.company
-        },
-        {
-          imgUrl: '/imgs/phone-me.png',
-          info: info.phoneNumber
-        },
-        {
-          imgUrl: '/imgs/workbench.png',
-          info: info.position
-        }
-      ]
-    });*/
-    // this.reSortBySupply();
-    // this.reSortBySupply();
-   /* wxRequest.getUserInfo().then(res => {
-      console.log('res.data: 000000', res.data);
-    });*/
-    /*wxRequest.relogin().then((res) => {
-      if (res.data.code === 20000) {
-        let info = res.data.data.user;
-          // let info = wx.getStorageSync('personalInfo');
-        console.log('info of me：',info)
-        this.setData({
-          avatar: info.avatarUrl,
-          name: info.realName,
-          personalInfo: [
-            {
-              imgUrl: '/imgs/company.png',
-              info: info.company
-            },
-            {
-              imgUrl: '/imgs/phone-me.png',
-              info: info.phoneNumber
-            },
-            {
-              imgUrl: '/imgs/workbench.png',
-              info: info.position
-            }
-          ]
-        });
-        this.reSortBySupply();
-
-      } else {
-        console.log('==== me:170:错误！!====', res.data);
-      }
-    });*/
-
   },
   /**
    * 生命周期函数--监听页面显示
@@ -228,36 +172,6 @@ Page({
       // let info = res.data.data.user;
 
     }
-    /*wxRequest.relogin().then((res) => {
-      if (res.data.code === 20000) {
-        let info = res.data.data.user;
-        // let info = wx.getStorageSync('personalInfo');
-        console.log('info of me：',info)
-        this.setData({
-          avatar: info.avatarUrl,
-          name: info.realName,
-          personalInfo: [
-            {
-              imgUrl: '/imgs/company.png',
-              info: info.company
-            },
-            {
-              imgUrl: '/imgs/phone-me.png',
-              info: info.phoneNumber
-            },
-            {
-              imgUrl: '/imgs/workbench.png',
-              info: info.position
-            }
-          ]
-        });
-        // this.reSortBySupply();
-
-      } else {
-        console.log('==== me:170:错误！!====', res.data);
-      }
-    });*/
-
     setTimeout(() => {
       let info = wx.getStorageSync('myInfo');
       // console.log('info of me：',info)
@@ -319,34 +233,15 @@ Page({
     } else {
       console.error('下拉刷新时，类型出错！')
     }
-    /*wxRequest.relogin().then((res) => {
-      if (res.data.code === 20000) {
-        let info = res.data.data.user;
-        this.setData({
-          avatar: info.avatarUrl,
-          name: info.realName,
-          personalInfo: [
-            {
-              imgUrl: '/imgs/company.png',
-              info: info.company
-            },
-            {
-              imgUrl: '/imgs/phone-me.png',
-              info: info.phoneNumber
-            },
-            {
-              imgUrl: '/imgs/workbench.png',
-              info: info.position
-            }
-          ]
-        });
-        setTimeout(function () {
-          wx.stopPullDownRefresh();
-        }, 500);
-      } else {
-        console.log('====错误！!====\n错误码：', res.data.code);
-        console.log(res.errMsg);
-      }
-    });*/
   },
+
+
+  onShareAppMessage: function () {
+    let _url = `/pages/square/square`
+    return {
+      title: '',
+      path: _url,
+      imageUrl: ''
+    }
+  }
 })
