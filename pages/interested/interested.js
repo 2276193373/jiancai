@@ -25,6 +25,7 @@ Page({
   onLoad: function (options) {
     myUtils.wxSetNavbarTitle('感兴趣的人');
     wxRequest.getBrowseringHistory(options.infoId).then((res) => {
+      console.log(options.infoId)
       if (res.data.code === 20000) {
         let list = res.data.data.list;
         for (let i = 0; i < list.length; i++) {

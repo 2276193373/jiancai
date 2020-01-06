@@ -243,22 +243,14 @@ Page({
         });
         //options._id是提交请求数据data中的infoId
         await wxRequest.getBrowseringHistory(options._id).then((res) => {
+            console.log('res.detail: ',res)
             if (res.data.code === 20000) {
                 // console.log("请求感兴趣成功！");
                 let list = res.data.data.list;
-                //遍历感兴趣列表
-                // for (let i = 0; i < list.length; i++) {
-                //     //如果当前列表中的用户id与当前信息创建者id一致，则将手机号设置为此人的手机号
-                //     if (this.data.creatorId === list[i].userId) {
-                //         this.setData({
-                //             phoneNumber: list[i].phoneNumber
-                //         })
-                //     }
-                // }
                 try {
                     this.setData({
                         list: list,
-                        interestedCount: list.length,
+                        interestedCount: res.data.data.pagination.total,
                         infoId: list[0].infoId
                     });
                 } catch (e) {
