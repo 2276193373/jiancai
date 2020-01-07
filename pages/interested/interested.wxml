@@ -5,7 +5,7 @@
             <image src="{{item.userInfo.avatarUrl ? item.userInfo.avatarUrl : '/imgs/defaultAvatar.png' }}"></image>
             <view>
                 <text>{{item.userInfo.realName ? item.userInfo.realName : (item.userInfo.nickName ? item.userInfo.nickName : 'user'+item.userId) }}</text>
-                <text>{{item.company}}</text>
+                <text>{{item.userInfo.company}}</text>
             </view>
         </view>
         <view class="contact" bindtap="contact" data-index="{{index}}" wx:if="{{item.userInfo.phoneNumber}}">

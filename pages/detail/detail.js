@@ -260,8 +260,8 @@ Page({
                         avatarUrls.unshift(item.userInfo.avatarUrl)
                     }
                 })
-                // 最多显示5个头像
-                avatarUrls = avatarUrls.slice(0, 5)
+                // 最多显示5个头像，并且把没有头像的去除
+                avatarUrls = avatarUrls.slice(0, 5).filter(item => item !== undefined)
                 console.log('avatarUrls: ',avatarUrls)
                 try {
                     this.setData({
@@ -308,10 +308,6 @@ Page({
                                     myUtils.registerTip('注册后即可联系')
                                 } else {
                                     console.log('detail页面: 出错！')
-                                    /*wxRequest.relogin().then(res => {
-                                        console.log('this.data: ', this.data)
-                                        let phoneNumber = this.data.phoneNumber
-                                    });*/
                                 }
                             }
                         });
