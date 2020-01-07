@@ -59,13 +59,19 @@
                            data-index="{{index}}">{{index}}
                     </image>
                 </view>
-                <view class="intro float-right" bindtap="{{interestedCount?'gotoInterested':'todo'}}">
-                    {{interestedCount?interestedCount:0}}人可能感兴趣
-                    <image src="/imgs/arrow-right-active.png" style="width: 16rpx; height: 26rpx;"></image>
+                <view class="browse">
+                    <image src="/imgs/browse.png"></image>
+                    人气 {{viewCount}}
+
+                    <view class="intro float-right" bindtap="{{interestedCount?'gotoInterested':'todo'}}">
+                        {{interestedCount?interestedCount:0}}人可能感兴趣
+                        <image src="{{item ? item : '/imgs/defaultAvatar.png'}}" wx:for="{{avatarUrls}}" class="interestedAvatar"></image>
+                        <image src="/imgs/arrow-right.png" style="width: 8px; height: 13px; margin-left: 16px"></image>
+                    </view>
                 </view>
+
                 <!--    清除浮动-->
                 <view style="clear: both"></view>
-
             </view>
             <!--镂空效果与虚线-->
             <view class="line-split">

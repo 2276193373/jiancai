@@ -169,6 +169,15 @@ Page({
        /* this.setData({
             creatorPhoneNumber: options.creatorPhoneNumber
         })*/
+        await wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
+            if (res.data.code === 20000) {
+                // console.log("感兴趣!");
+                // console.log(res);
+            } else {
+                console.log('====错误！!====\n错误码：', res.data.code);
+                console.log(res.errMsg);
+            }
+        });
         //获取详细信息接口
         wxRequest.getDetail(options._id, wx.getStorageSync('currentLongitude')||0, wx.getStorageSync('currentLatitude')||0).then(res => {
             let userInfo = res.data.data
@@ -187,7 +196,8 @@ Page({
                 company: userInfo.company,
                 type: userInfo.type,
                 creatorPhoneNumber: userInfo.creatorPhoneNumber,
-                state: userInfo.state
+                state: userInfo.state,
+                viewCount: userInfo.viewCount
             })
             wxRequest.getUserInfo().then(res => {
                 if (userInfo.creatorPhoneNumber === res.data.data.phoneNumber) {
@@ -232,26 +242,33 @@ Page({
         wx.setNavigationBarTitle({
             title: '供求详情'
         });
-        await wxRequest.browseringHistory(options._id, options.creatorId).then((res) => {
-            if (res.data.code === 20000) {
-                // console.log("感兴趣!");
-                // console.log(res);
-            } else {
-                console.log('====错误！!====\n错误码：', res.data.code);
-                console.log(res.errMsg);
-            }
-        });
+
         //options._id是提交请求数据data中的infoId
         await wxRequest.getBrowseringHistory(options._id).then((res) => {
-            console.log('res.detail: ',res)
+            console.log('res.detail: ',res.data.data.list)
             if (res.data.code === 20000) {
                 // console.log("请求感兴趣成功！");
                 let list = res.data.data.list;
+                let avatarUrls = []
+                list.map(item => {
+                    // 取得userId的后8位
+                    item.userId = item.userId.substring(item.userId.length - 8)
+                    // 当手机号为0时，让该项排在数组的后面，当有手机号时该项排前面
+                    if (item.userInfo.phoneNumber === 0 || Object.keys(item.userInfo).length == 0) {
+                        avatarUrls.push(item.userInfo.avatarUrl);
+                    } else {
+                        avatarUrls.unshift(item.userInfo.avatarUrl)
+                    }
+                })
+                // 最多显示5个头像
+                avatarUrls = avatarUrls.slice(0, 5)
+                console.log('avatarUrls: ',avatarUrls)
                 try {
                     this.setData({
                         list: list,
                         interestedCount: res.data.data.pagination.total,
-                        infoId: list[0].infoId
+                        infoId: list[0].infoId,
+                        avatarUrls: avatarUrls
                     });
                 } catch (e) {
                     console.log('捕抓到的异常:', e)

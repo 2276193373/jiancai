@@ -33,11 +33,13 @@
 <!--供应与需求导航栏-->
     <view class="navbar-container">
         <view class="navbar">
-                <view bindtap="reSortByDemand" data-index="0" class="{{0==currentIndex?'active':''}}" >
+                <view bindtap="reSortByDemand" data-index="0" class="{{0==currentIndex?'active-font':''}}" >
                     {{values[0].value}}
+                    <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 28px; margin-top: 3px; border-radius: 50px" class="{{0==currentIndex?'active':''}}"></view>
                 </view>
-            <view bindtap="reSortBySupply" data-index="1" class="{{1==currentIndex?'active':''}}">
+            <view bindtap="reSortBySupply" data-index="1" class="{{1==currentIndex?'active-font':''}}">
                 {{values[1].value}}
+                <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 28px; margin-top: 3px; border-radius: 50px" class="{{1==currentIndex?'active':''}}"></view>
             </view>
         </view>
     </view>

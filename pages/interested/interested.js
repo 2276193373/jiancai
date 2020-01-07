@@ -10,7 +10,9 @@ Page({
     avatar: '',
     name: '',
     company: '',
-    list: []
+    list: [],
+    currentPage: 0,
+    _id: ''
   },
 
   /**
@@ -18,21 +20,32 @@ Page({
    */
   contact: function (e) {
     let index = e.currentTarget.dataset.index
+    console.log(this.data.list, 'list.data')
     wx.makePhoneCall({
-      phoneNumber: this.data.list[index].phoneNumber.toString()
+      phoneNumber: this.data.list[index].userInfo.phoneNumber.toString()
     })
   },
   onLoad: function (options) {
     myUtils.wxSetNavbarTitle('感兴趣的人');
-    wxRequest.getBrowseringHistory(options.infoId).then((res) => {
+    wxRequest.getBrowseringHistory(options.infoId, 1).then((res) => {
       console.log(options.infoId)
       if (res.data.code === 20000) {
-        let list = res.data.data.list;
-        for (let i = 0; i < list.length; i++) {
-          list[i].userId = list[i].userId.substring(list[i].userId.length - 8)
-        }
+        let list = res.data.data.list
+        let listSort = []
+        list.map(item => {
+          // 取得userId的后8位
+          item.userId = item.userId.substring(item.userId.length - 8)
+          // 当手机号为0时，让该项排在数组的后面，当有手机号时该项排前面
+          if (item.userInfo.phoneNumber === 0 || Object.keys(item.userInfo).length === 0) {
+            listSort.push(item)
+          } else {
+            listSort.unshift(item)
+          }
+        })
+        console.log('listSort: ', listSort)
         this.setData({
-          list: list
+          list: listSort,
+          _id: options.infoId
         });
       } else {
         console.log('====错误！!====\n错误码：',res.data.code);
@@ -79,8 +92,39 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
 
+  // todo 2020/01/06
+  onReachBottom: function () {
+    this.data.currentPage = this.data.currentPage + 1;
+    wxRequest.getBrowseringHistory(this.data._id, this.data.currentPage, 20).then((res) => {
+      if (res.data.code === 20000) {
+        console.log('res of interested: ', res.data)
+        this.setData({
+          list: this.data.list.concat(res.data.data.list)
+        });
+        if (res.data.data.list.length === 0) {
+          wx.showLoading({
+            title: '没有更多了哦！',
+            success: function () {
+              setTimeout(function () {
+                wx.hideLoading()
+              }, 500)
+            }
+          })
+        } else {
+          wx.showLoading({
+            title: '加载中...',
+            success: res => {
+              setTimeout(function () {
+                wx.hideLoading()
+              }, 200)
+            }
+          })
+        }
+      } else {
+        console.error('interested-onReachBottom-error:',res.data)
+      }
+    });
   },
 
   /**
