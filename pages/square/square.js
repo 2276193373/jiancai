@@ -115,7 +115,7 @@ Page({
     gotoDetail(e) {
         //获取当前点击的元素的索引,并缓存
         // wx.setStorageSync('itemIndex', e.currentTarget.dataset.index);
-        console.log('e.item: ',e.currentTarget.dataset.item)
+        // console.log('e.item: ',e.currentTarget.dataset.item)
         let productInfo = e.currentTarget.dataset.item
         wx.navigateTo({
             url: `/pages/detail/detail?_id=${productInfo._id}`
@@ -124,20 +124,24 @@ Page({
     },
 //点击首页导航栏按钮
     activeNav(e) {
+        let timestamp = Date.parse(new Date());
         if (e) {
             this.setData({
                 currentIndex: e.target.dataset.index
             });
         }
         if (this.data.currentIndex == 0) {
+            let timestamp = Date.parse(new Date());
             this.setData({
                 type: 'demand',
-                currentPage: 1
+                currentPage: 1,
+                timestamp: timestamp
             });
         } else {
             this.setData({
                 type: 'supply',
-                currentPage: 1
+                currentPage: 1,
+                timestamp: timestamp
             })
         }
         //获取信息流列表
@@ -293,6 +297,17 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        if (Object.keys(options).length !== 0) {
+            console.error('options: ',options)
+            wx.navigateTo({
+              url: '/pages/detail/detail?_id=' + options._id,
+                success: function () {
+                    console.log('success')
+                }
+            })
+        } else {
+            console.log(options)
+        }
         let timestamp = Date.parse(new Date());
         this.setData({
             timestamp: timestamp
@@ -340,6 +355,19 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        //从详情页跳转来的
+        if (wx.getStorageSync('fromDetail')) {
+            wxRequest.getInfoList(this.data.type, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then(res => {
+                if (res.data.code === 20000) {
+                    this.setData({
+                        productionInfo: res.data.data.list
+                    });
+                    wx.setStorageSync('fromDetail', false);
+                } else {
+                    console.error('square-350-error:', res.data)
+                }
+            })
+        }
         if (wx.getStorageSync('somename').afterPublish) {
             wxRequest.getInfoList(wx.getStorageSync('somename').sortType, this.data.sortKind, wx.getStorageSync('currentLongitude'), wx.getStorageSync('currentLatitude'), 10, 1).then(res => {
                 if (res.data.code === 20000) {
@@ -347,7 +375,7 @@ Page({
                         productionInfo: res.data.data.list
                     });
                 } else {
-                    console.error('square-356-error:',res.data)
+                    console.error('square-361-error:',res.data)
                 }
                 console.log('type: ', wx.getStorageSync('somename').sortType)
                 if (wx.getStorageSync('somename').sortType == 'supply') {
@@ -438,10 +466,11 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage: function () {
-        let _url = `/pages/detail/detail?desc=${wx.getStorageSync('publish_info').desc} &title=${wx.getStorageSync('publish_info').title}&creatorAvatar=${wx.getStorageSync('publish_info').creatorAvatar}&atlas=${wx.getStorageSync('publish_info').atlas}&creatorNickname=${wx.getStorageSync('publish_info').creatorNickname}&location=${wx.getStorageSync('publish_info').location}&createdAt=${wx.getStorageSync('publish_info').createdAt}&company=${wx.getStorageSync('publish_info').company}`
+        let _url = `/pages/square/square`
         return {
-            title: '我发布了一则信息，快来看看吧！',
-            path: _url
+            title: '',
+            path: _url,
+            imageUrl: ''
         }
     }
 })

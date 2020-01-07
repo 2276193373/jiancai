@@ -40,9 +40,9 @@
     color: #353535;
     font-size: 18px;
     font-weight: 700;
-    line-height: 50rpx;
-    width: 180rpx;
-    height: 50rpx;
+    /*line-height: 50rpx;*/
+    width: 90px;
+    height: 25px;
     /*border: 1px solid red;*/
     position: absolute;
     left: 50%;

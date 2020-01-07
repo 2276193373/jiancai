@@ -11,7 +11,7 @@
         <view class="navbar">
             <view bindtap="activeNav" data-index="{{index}}" class="{{index===currentIndex?'active-font':''}}" wx:for="{{values}}" wx:key="{{index}}">
                 {{item.value}}
-                <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 70%; margin-top: 10px; border-radius: 8px" class="{{index===currentIndex?'active':''}}"></view>
+                <view style=";overflow: hidden;margin: 0 auto;height: 3px;width: 70%; margin-top: 10px; border-radius: 50px" class="{{index===currentIndex?'active':''}}"></view>
             </view>
         </view>
         <view class="split-line"></view>

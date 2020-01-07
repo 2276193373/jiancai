@@ -12,6 +12,7 @@
     position: relative;
     padding: 12px 16px;
     border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .block-shadow {
     padding-bottom: 10px;
@@ -31,6 +32,35 @@
     right: -17rpx;
     top: -20rpx;
 }
+.solved-top-right {
+    width: 25px;
+    height: 62px;
+    /*border: 1px solid red;*/
+    position: absolute;
+    right: 0;
+    top: 0;
+    writing-mode: vertical-lr;
+    color: #ffffff;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+.solved-top-right > image {
+    width: 25px;
+    height: 62px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+.solved-top-right > text {
+    position: absolute;
+    z-index: 1;
+    font-size: 12px;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    letter-spacing: 2px;
+}
 .solved {
     width: 95%;
     height: 47px;
@@ -47,7 +77,6 @@
     font-weight: 400;
     position: absolute;
     right: 30px;
-    line-height: 24px;
 }
 .avatar-bar {
     box-sizing: border-box;
@@ -55,7 +84,6 @@
     position: relative;
     margin-bottom: 13px;
 }
-
 
 .avatar-bar > image {
     width: 42px;
@@ -83,7 +111,7 @@
     width: 103%;
     display: flex;
     justify-content: start;
-    margin: 34rpx 0 20rpx;
+    margin: 0px 0 20rpx;
     flex-wrap: wrap;
 }
 .production-img > image {
@@ -92,14 +120,26 @@
     margin-bottom: 14rpx;
 }
 .intro {
-    font-size: 14px;
-    color: rgba(0,0,0,.65);
-    line-height: 24px;
+    /*font-size: 14px;*/
+    color: rgba(0,0,0,.45);
+    /*line-height: 24px;*/
     width: 100%;
     word-break: break-word;
+    margin-bottom: 18px;
 }
 .intro > image {
     margin-left: 14rpx;
+}
+.intro > .interestedAvatar {
+    border: 1px solid white;
+    border-radius: 50px;
+    width: 22px;
+    height: 22px;
+    margin-left: 0px;
+    margin-right: -12px;
+}
+.intro > .interestedAvatar:first-child {
+    margin-left: 8px;
 }
 .float-right {
     float: right;
@@ -359,4 +399,13 @@
     position: absolute;
     right: 15rpx;
     top: 20rpx;
+}
+.browse {
+    font-size: 11px;
+    color: rgba(0,0,0, .45);
+    /*border: 1px solid red;*/
+}
+.browse image {
+    width: 16px;
+    height: 10px;
 }

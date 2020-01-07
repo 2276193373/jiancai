@@ -51,12 +51,13 @@
     margin-left: 28rpx;
 }
 .avatar-bar > view > text:first-child {
-    color: #888888;
-    font-size: 14px;
+    color: #353535;
+    font-size: 16px;
     margin-bottom: 8rpx;
+    font-weight: 500;
 }
 .avatar-bar > view > text:last-child {
-    color: #353535;
+    color: #888888;
     font-size: 14px;
     line-height: 48rpx;
 }
