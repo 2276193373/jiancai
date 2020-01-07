@@ -26,10 +26,20 @@ Page({
     myUtils.wxSetNavbarTitle('感兴趣的人');
     wxRequest.relogin();
     wxRequest.getBrowseringHistory(options.infoId).then((res) => {
+      console.log(res.data.data.list)
       if (res.data.code === 20000) {
         let list = res.data.data.list;
+        let listSort = []
+        list.map(item => {
+          if (item.phoneNumber == 0) {
+            listSort.push(item)
+          } else {
+            listSort.unshift(item)
+          }
+        })
+        console.log('listSort: ', listSort);
         this.setData({
-          list: list
+          list: listSort
         });
       } else {
         console.log('====错误！!====\n错误码：',res.data.code);
