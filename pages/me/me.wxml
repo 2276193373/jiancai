@@ -1,6 +1,7 @@
 <view class="container">
     <view class="profile" bindtap="modify">
-<!--        名字 -==============-->
+        <image src="/imgs/me-background.png"></image>
+        <!--        名字 -==============-->
         <view class="avatar-bar avatar-me">
             <image src="{{avatar}}"></image>
             <text>{{name}}</text>

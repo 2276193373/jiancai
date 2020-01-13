@@ -44,6 +44,7 @@
     height: 84rpx;
     /*border: 1px solid red;*/
     margin-left: 36rpx;
+    border-radius: 50px;
 }
 .avatar-bar > view:first-of-type {
     display: flex;

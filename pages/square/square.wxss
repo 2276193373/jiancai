@@ -243,9 +243,11 @@ page {
     background-color: white;
 }
 .active-font{
-    background: red;
-    -webkit-background-clip: text;
-    color: transparent;
+    color: #ff0000;
+    /*background: red;*/
+    /*background-clip: text;*/
+    /*-webkit-background-clip: text;*/
+    /*color: transparent;*/
 }
 .active {
     color: #FF4B49;

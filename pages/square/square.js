@@ -29,8 +29,8 @@ Page({
         winWidth: wx.getSystemInfoSync().windowWidth + 'rpx',
         winHeight: wx.getSystemInfoSync().windowHeight,
         values: [
-            {value: "只看需求"},
-            {value: "只看供应"}
+            {value: "需求广场"},
+            {value: "供应广场"}
         ],
         //被点击的导航菜单的索引
         currentIndex: 0,
@@ -298,7 +298,7 @@ Page({
      */
     onLoad: function (options) {
         if (Object.keys(options).length !== 0) {
-            console.error('options: ',options)
+            // console.error('options: ',options)
             wx.navigateTo({
               url: '/pages/detail/detail?_id=' + options._id,
                 success: function () {
@@ -306,7 +306,7 @@ Page({
                 }
             })
         } else {
-            console.log(options)
+            // console.log(options)
         }
         let timestamp = Date.parse(new Date());
         this.setData({
@@ -470,7 +470,7 @@ Page({
         return {
             title: '',
             path: _url,
-            imageUrl: ''
+            imageUrl: 'https://qn-ceramic.lindingtechnology.com/ceramicShareApp.png'
         }
     }
 })

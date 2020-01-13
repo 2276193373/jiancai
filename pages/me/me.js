@@ -241,7 +241,7 @@ Page({
     return {
       title: '',
       path: _url,
-      imageUrl: ''
+      imageUrl: 'https://qn-ceramic.lindingtechnology.com/ceramicShareApp.png'
     }
   }
 })

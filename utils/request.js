@@ -136,7 +136,7 @@ export default {
         })
     },
     //获取浏览记录列表
-    async getBrowseringHistory(_id, page=1, perPage=10) {
+    async getBrowseringHistory(_id, page=1, perPage=20) {
         return await this.apiCalls(`weapp/infos/${_id}/interest?perPage=${perPage}&page=${page}`, 'GET', 'headerNoType')
     },
     //完善用户信息

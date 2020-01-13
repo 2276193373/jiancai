@@ -60,9 +60,10 @@
                     </image>
                 </view>
                 <view class="browse">
-                    <image src="/imgs/browse.png"></image>
-                    人气 {{viewCount}}
-
+                    <view>
+                        <image src="/imgs/browse.png"></image>
+                        人气 {{viewCount}}
+                    </view>
                     <view class="intro float-right" bindtap="{{interestedCount?'gotoInterested':'todo'}}">
                         {{interestedCount?interestedCount:0}}人可能感兴趣
                         <image src="{{item ? item : '/imgs/defaultAvatar.png'}}" wx:for="{{avatarUrls}}" class="interestedAvatar"></image>

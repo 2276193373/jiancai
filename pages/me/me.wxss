@@ -36,9 +36,19 @@
     height: 352rpx;
     padding: 32rpx;
     box-sizing: border-box;
-    box-shadow: 0 4rpx 12rpx 0 rgba(0,0,0,.24);
-    border-radius: 8rpx;
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,.24), 0 0 2px 0 rgba(0,0,0, .12);
+    border-radius: 4px;
     color: #888;
+    position: relative;
+}
+.profile > image {
+    position: absolute;
+    width: 686rpx;
+    height: 352rpx;
+    z-index: -1;
+    /*border: 1px solid red;*/
+    right: 0;
+    top: 0;
 }
 .avatar-bar {
     display: flex;
@@ -224,7 +234,8 @@
     justify-content: space-evenly;
 }
 .active-font{
-    background: red;
-    -webkit-background-clip: text;
-    color: transparent;
+    color: #ff0000;
+    /*background: red;*/
+    /*-webkit-background-clip: text;*/
+    /*color: transparent;*/
 }

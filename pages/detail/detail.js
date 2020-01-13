@@ -143,8 +143,6 @@ Page({
         })
     },
     gotoInterested: function () {
-        console.log('infoId: ')
-        console.log(this.data.infoId)
         wx.navigateTo({
             url: '/pages/interested/interested?infoId=' + this.data.infoId
         })
@@ -245,7 +243,6 @@ Page({
 
         //options._id是提交请求数据data中的infoId
         await wxRequest.getBrowseringHistory(options._id).then((res) => {
-            console.log('res.detail: ',res.data.data.list)
             if (res.data.code === 20000) {
                 // console.log("请求感兴趣成功！");
                 let list = res.data.data.list;
@@ -262,7 +259,6 @@ Page({
                 })
                 // 最多显示5个头像，并且把没有头像的去除
                 avatarUrls = avatarUrls.slice(0, 5).filter(item => item !== undefined)
-                console.log('avatarUrls: ',avatarUrls)
                 try {
                     this.setData({
                         list: list,

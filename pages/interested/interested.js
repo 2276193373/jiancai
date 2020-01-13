@@ -11,13 +11,9 @@ Page({
     name: '',
     company: '',
     list: [],
-    currentPage: 0,
+    currentPage: 1,
     _id: ''
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   contact: function (e) {
     let index = e.currentTarget.dataset.index
     console.log(this.data.list, 'list.data')
@@ -25,26 +21,32 @@ Page({
       phoneNumber: this.data.list[index].userInfo.phoneNumber.toString()
     })
   },
+  listSort: function(list) {
+    let listSort = []
+    list.map(item => {
+      // 取得userId的后8位
+      item.userId = item.userId.substring(item.userId.length - 8)
+      // 当手机号为0时，让该项排在数组的后面，当有手机号时该项排前面
+      if (item.userInfo.phoneNumber === 0 || Object.keys(item.userInfo).length === 0) {
+        listSort.push(item)
+      } else {
+        listSort.unshift(item)
+      }
+    })
+    return listSort
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+
   onLoad: function (options) {
     myUtils.wxSetNavbarTitle('感兴趣的人');
     wxRequest.getBrowseringHistory(options.infoId, 1).then((res) => {
-      console.log(options.infoId)
       if (res.data.code === 20000) {
         let list = res.data.data.list
-        let listSort = []
-        list.map(item => {
-          // 取得userId的后8位
-          item.userId = item.userId.substring(item.userId.length - 8)
-          // 当手机号为0时，让该项排在数组的后面，当有手机号时该项排前面
-          if (item.userInfo.phoneNumber === 0 || Object.keys(item.userInfo).length === 0) {
-            listSort.push(item)
-          } else {
-            listSort.unshift(item)
-          }
-        })
-        console.log('listSort: ', listSort)
+        list = this.listSort(list)
         this.setData({
-          list: listSort,
+          list: list,
           _id: options.infoId
         });
       } else {
@@ -93,14 +95,15 @@ Page({
    * 页面上拉触底事件的处理函数
    */
 
-  // todo 2020/01/06
   onReachBottom: function () {
     this.data.currentPage = this.data.currentPage + 1;
-    wxRequest.getBrowseringHistory(this.data._id, this.data.currentPage, 20).then((res) => {
+    wxRequest.getBrowseringHistory(this.data._id, this.data.currentPage).then((res) => {
       if (res.data.code === 20000) {
-        console.log('res of interested: ', res.data)
+        let list = this.data.list.concat(res.data.data.list)
+        // 对列表排序，有头像的在前面
+        list = this.listSort(list)
         this.setData({
-          list: this.data.list.concat(res.data.data.list)
+          list: list
         });
         if (res.data.data.list.length === 0) {
           wx.showLoading({
